@@ -4,6 +4,7 @@ import {
   Mail, Youtube, Instagram, Twitter, MessageCircle,
   Eye, Calendar, ArrowLeft, Star, Zap, Trophy, Target,
   Gamepad2,
+  Video,
 } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -75,18 +76,18 @@ const PLAYLISTS: Playlist[] = [
 ];
 
 const POPULAR_VIDEOS: Video[] = [
-  { id: "p1", title: "Sekiro — The Most Annoying Boss Fight Yet", thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&h=280&fit=crop&auto=format", views: "12.4K views", date: "2 weeks ago", duration: "18:32", description: "" },
-  { id: "p2", title: "Wuthering Waves — Exploring Rinascita", thumbnail: "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?w=500&h=280&fit=crop&auto=format", views: "9.8K views", date: "1 week ago", duration: "28:41", description: "" },
-  { id: "p3", title: "Why Every Gamer Should Play Multiple Games", thumbnail: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&h=280&fit=crop&auto=format", views: "21.5K views", date: "3 days ago", duration: "16:48", description: "" },
+  { id: "wDjtyUnWK_g", title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔", thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg", views: "236", date: "2026-06-29T11:00:06Z", duration: "17:12", description: "" },
+  { id: "xLtKxqV6xAI", title: "GENICHIRO BECOMES THE GOD OF LIGHTNING ⚡ | Sekiro - EP7", thumbnail: "https://i.ytimg.com/vi/xLtKxqV6xAI/hqdefault.jpg", views: "124", date: "2026-05-31T02:00:33Z", duration: "37:55", description: "" },
+  { id: "qUsFGEK_oLc", title: "GIDEON CHASES ME WITH HIS RPG | Resident Evil Requiem - EP7", thumbnail: "https://i.ytimg.com/vi/qUsFGEK_oLc/hqdefault.jpg", views: "3", date: "2026-04-14T09:30:25Z", duration:"2:20:23", description: ""},
 ];
 
 const FEATURED_VIDEO = {
-  title: "Sekiro — The Most Annoying Boss Fight Yet",
-  thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=675&fit=crop&auto=format",
-  views: "12.4K views",
-  date: "Published 2 weeks ago",
-  duration: "18:32",
-  description: "Diving headfirst into the most frustrating boss encounter in Sekiro. This one took way too many attempts — but every death was a lesson. Raw gameplay, honest reactions, and the sweet taste of victory at the end.",
+  title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔",
+  thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg",
+  views: "236",
+  date: "2026-06-29T11:00:06Z",
+  duration: "17:12",
+  description: ""
 };
 
 const FEATURES = [
@@ -209,51 +210,77 @@ function ClayButton({
 
 // ─── Video Card ───────────────────────────────────────────────────────────────
 
-function VideoCard({ video, onClick }: { video: Video; onClick?: () => void }) {
+function VideoCard({ video }: { video: Video }) {
+  const openYouTube = () => {
+    window.open(
+      `https://www.youtube.com/watch?v=${video.id}`,
+      "_blank"
+    );
+  };
+
   return (
-    <ClayCard className="group cursor-pointer" onClick={onClick}>
-      <div className="relative overflow-hidden" style={{ aspectRatio: "16/9" }}>
+    <ClayCard
+      className="group cursor-pointer"
+      onClick={openYouTube}
+    >
+      <div
+        className="relative overflow-hidden"
+        style={{ aspectRatio: "16/9" }}
+      >
         <img
           src={video.thumbnail}
           alt={video.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           style={{ background: "#141a2e" }}
         />
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
         <div className="absolute inset-0 flex items-center justify-center">
           <div
             className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
             style={{
               background: "rgba(124,58,237,0.92)",
-              boxShadow: "0 0 28px rgba(124,58,237,0.7), 0 4px 12px rgba(0,0,0,0.5)",
+              boxShadow:
+                "0 0 28px rgba(124,58,237,0.7), 0 4px 12px rgba(0,0,0,0.5)",
               animation: "playPulse 2.5s ease-in-out infinite",
             }}
           >
             <Play className="w-6 h-6 text-white fill-white ml-0.5" />
           </div>
         </div>
+
         <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs font-mono px-2 py-1 rounded-md tracking-wide">
           {video.duration}
         </div>
       </div>
+
       <div className="p-4">
         <h3
           className="font-bold text-white text-sm leading-snug mb-2 line-clamp-2 overflow-hidden"
-          style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: "0.95rem" }}
+          style={{
+            fontFamily: "'Rajdhani', sans-serif",
+            fontSize: "0.95rem",
+          }}
         >
           {video.title}
         </h3>
+
         <div className="flex items-center gap-3 text-xs text-slate-400">
           <span className="flex items-center gap-1">
             <Eye className="w-3 h-3" />
             {video.views}
           </span>
+
           <span className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
             {video.date}
           </span>
         </div>
-        <p className="text-xs text-slate-600 mt-1.5 italic">Placeholder stats</p>
+
+        <p className="text-xs text-slate-600 mt-1.5 italic">
+          Placeholder stats
+        </p>
       </div>
     </ClayCard>
   );
@@ -612,7 +639,7 @@ function SectionHeading({ title, emoji }: { title: string; emoji?: string }) {
 
 // ─── Home Page ────────────────────────────────────────────────────────────────
 
-function HomePage({ onNavigate, playlists }: { onNavigate: (page: string, id?: string) => void; playlists: Playlist[] }) {
+function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page: string, id?: string) => void; playlists: Playlist[]; featuredVideo: Video }) {
   return (
     <div>
       {/* Hero */}
@@ -695,9 +722,18 @@ function HomePage({ onNavigate, playlists }: { onNavigate: (page: string, id?: s
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <ClayButton variant="primary">
-                <Play className="w-4 h-4 fill-white" />
-                Watch on YouTube ▶
+              <ClayButton
+                variant="primary"
+                onClick={() => {
+                  window.open(
+                   "https://www.youtube.com/@xTracttGG?sub_confirmation=1",
+                   "_blank",
+                   "noopener,noreferrer"
+                  );
+                }}
+              >
+              <Youtube className="w-4 h-4" />
+                Subscribe on YouTube
               </ClayButton>
               <ClayButton variant="secondary" onClick={() => onNavigate("playlists")}>
                 Explore Playlists
@@ -720,8 +756,8 @@ function HomePage({ onNavigate, playlists }: { onNavigate: (page: string, id?: s
             <div className="grid lg:grid-cols-2">
               <div className="relative" style={{ aspectRatio: "16/9", minHeight: 220 }}>
                 <img
-                  src={FEATURED_VIDEO.thumbnail}
-                  alt={FEATURED_VIDEO.title}
+                  src={featuredVideo.thumbnail}
+                  alt={featuredVideo.title}
                   className="w-full h-full object-cover"
                   style={{ background: "#141a2e" }}
                 />
@@ -739,7 +775,7 @@ function HomePage({ onNavigate, playlists }: { onNavigate: (page: string, id?: s
                   </div>
                 </div>
                 <div className="absolute bottom-3 right-3 bg-black/80 text-white text-sm font-mono px-3 py-1 rounded-lg tracking-wide">
-                  {FEATURED_VIDEO.duration}
+                  {featuredVideo.duration}
                 </div>
               </div>
               <div className="p-8 flex flex-col justify-center">
@@ -748,18 +784,23 @@ function HomePage({ onNavigate, playlists }: { onNavigate: (page: string, id?: s
                   className="text-2xl font-black text-white mb-4 leading-tight"
                   style={{ fontFamily: "'Rajdhani', sans-serif" }}
                 >
-                  {FEATURED_VIDEO.title}
+                  {featuredVideo.title}
                 </h3>
-                <p className="text-slate-400 mb-5 leading-relaxed text-sm">{FEATURED_VIDEO.description}</p>
+                <p className="text-slate-400 mb-5 leading-relaxed text-sm">{featuredVideo.description}</p>
                 <div className="flex gap-5 text-sm text-slate-500 mb-2">
-                  <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" /> {FEATURED_VIDEO.views}</span>
-                  <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {FEATURED_VIDEO.date}</span>
+                  <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" /> {featuredVideo.views}</span>
+                  <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {featuredVideo.date}</span>
                 </div>
                 <p className="text-xs text-slate-700 italic mb-6">Placeholder stats — real data via YouTube API</p>
-                <ClayButton variant="primary" className="self-start">
-                  <Play className="w-4 h-4 fill-white" />
-                  Watch on YouTube
-                </ClayButton>
+                <ClayButton
+                variant="primary"
+                onClick={() => {
+                  window.location.href = `https://www.youtube.com/watch?v=${featuredVideo.id}`;
+                }}
+              >
+              <Play className="w-4 h-4 fill-white" />
+                Watch on YouTube ▶
+              </ClayButton>
               </div>
             </div>
           </ClayCard>
@@ -809,10 +850,20 @@ function HomePage({ onNavigate, playlists }: { onNavigate: (page: string, id?: s
 
 // ─── Playlists Page ───────────────────────────────────────────────────────────
 
-function PlaylistsPage({ playlists, onSelect }: { playlists: Playlist[]; onSelect: (id: string) => void }) {
+function PlaylistsPage({
+  playlists,
+  onSelect,
+}: {
+  playlists: Playlist[];
+  onSelect: (id: string) => void;
+}) {
   return (
-    <div className="min-h-screen py-24 px-4 sm:px-8 lg:px-16" style={{ background: "#080c18" }}>
+    <div
+      className="min-h-screen py-24 px-4 sm:px-8 lg:px-16"
+      style={{ background: "#080c18" }}
+    >
       <div className="max-w-7xl mx-auto">
+
         <div className="text-center mb-14">
           <h1
             className="font-black text-white mb-4"
@@ -824,11 +875,22 @@ function PlaylistsPage({ playlists, onSelect }: { playlists: Playlist[]; onSelec
           >
             Explore My Playlists 🎮
           </h1>
-          <p className="text-slate-400 text-lg">Different games. Different genres. Different experiences.</p>
+
+          <p className="text-slate-400 text-lg">
+            Different games. Different genres. Different experiences.
+          </p>
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {playlists.map(p => <PlaylistCard key={p.id} playlist={p} onClick={() => onSelect(p.id)} />)}
+          {playlists.map((p) => (
+            <PlaylistCard
+              key={p.id}
+              playlist={p}
+              onClick={() => onSelect(p.id)}
+            />
+          ))}
         </div>
+
       </div>
     </div>
   );
@@ -899,8 +961,21 @@ function PlaylistDetailPage({ playlist, onBack }: { playlist: Playlist; onBack: 
 
 function ContactPage() {
   const socials = [
-    { icon: <Youtube className="w-5 h-5" />, label: "YouTube", color: "text-red-400", border: "rgba(239,68,68,0.25)" },
-    { icon: <Instagram className="w-5 h-5" />, label: "Instagram", color: "text-pink-400", border: "rgba(236,72,153,0.25)" },
+      {
+    label: "YouTube",
+    icon: <Youtube className="w-5 h-5" />,
+    color: "text-red-400",
+    border: "rgba(239,68,68,0.35)",
+    url: "https://www.youtube.com/@xTracttGG",
+  },
+
+   {
+    label: "Instagram",
+    icon: <Instagram className="w-5 h-5" />,
+    color: "text-pink-400",
+    border: "rgba(236,72,153,0.35)",
+    url: "https://www.instagram.com/xtract_sinju/",
+  },
     { icon: <Twitter className="w-5 h-5" />, label: "X / Twitter", color: "text-sky-400", border: "rgba(14,165,233,0.25)" },
     { icon: <MessageCircle className="w-5 h-5" />, label: "Discord", color: "text-indigo-400", border: "rgba(99,102,241,0.25)" },
   ];
@@ -954,7 +1029,15 @@ function ContactPage() {
             >
               sinjuforbusiness@gmail.com
             </a>
-            <ClayButton variant="primary" href="mailto:sinjuforbusiness@gmail.com">
+            <ClayButton
+              variant="primary"
+              onClick={() => {
+                window.location.href =
+                  "mailto:sinjuforbusiness@gmail.com" +
+                  "?subject=Business%20Inquiry%20-%20xTract%20Portfolio" +
+                  "&body=Hello%20xTract%2C%0A%0AI%20would%20like%20to%20discuss...";
+              }}
+            >
               <Mail className="w-4 h-4" />
               Send Email
             </ClayButton>
@@ -981,18 +1064,28 @@ function ContactPage() {
               Find me across the internet for gaming updates and fresh content.
             </p>
             <div className="space-y-2.5">
-              {socials.map(s => (
-                <div
-                  key={s.label}
-                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl"
-                  style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${s.border}` }}
+              {socials.map((s) => (
+                <a
+                   key={s.label}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 hover:scale-[1.02]"
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: `1px solid ${s.border}`,
+                  }}
                 >
-                  <span className={s.color}>{s.icon}</span>
-                  <span className="text-white font-semibold text-sm flex-1">{s.label}</span>
-                  <span className="text-slate-600 text-xs">Coming soon</span>
-                </div>
-              ))}
-            </div>
+                <span className={s.color}>{s.icon}</span>
+                <span className="text-white font-semibold text-sm flex-1">
+                  {s.label}
+                </span>           
+                <span className="text-slate-400 text-xs">
+                   Visit →
+                </span>
+                </a>
+             ))}
+            </div>            
           </ClayCard>
         </div>
       </div>
@@ -1042,20 +1135,52 @@ function Footer({ onNavigate }: { onNavigate: (page: string) => void }) {
             </div>
           </div>
           <div>
-            <h4 className="text-xs font-bold tracking-[0.25em] text-slate-600 uppercase mb-4">Connect</h4>
-            <div className="flex gap-3 mb-3">
-              {socials.map((s, i) => (
-                <div
-                  key={i}
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color} opacity-40`}
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-                >
-                  {s.icon}
-                </div>
-              ))}
-            </div>
-            <p className="text-slate-700 text-xs">Social links coming soon</p>
-          </div>
+  <h4 className="text-xs font-bold tracking-[0.25em] text-slate-600 uppercase mb-4">
+    Connect
+  </h4>
+
+  <div className="flex gap-3 mb-3">
+    {socials.map((s, i) => {
+      const url =
+        i === 0
+          ? "https://www.youtube.com/@xTracttGG"
+          : i === 1
+          ? "https://www.instagram.com/xtract_sinju/"
+          : null;
+
+      return url ? (
+        <a
+          key={i}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color} cursor-pointer transition-all duration-300 hover:scale-110`}
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          {s.icon}
+        </a>
+      ) : (
+        <div
+          key={i}
+          className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color} opacity-40`}
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          {s.icon}
+        </div>
+      );
+    })}
+  </div>
+
+  <p className="text-slate-700 text-xs">
+    Follow me on social media
+  </p>
+</div>
         </div>
         <div className="border-t border-white/[0.04] pt-8 text-center">
           <p className="text-slate-700 text-sm">© 2026 XTRACT. All rights reserved.</p>
@@ -1071,6 +1196,42 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
+  const [PLAYLISTS, setPLAYLISTS] = useState<Playlist[]>([]);
+  const [POPULAR_VIDEOS, setPOPULAR_VIDEOS] = useState<Video[]>([]);
+  const [FEATURED_VIDEO, setFEATURED_VIDEO] = useState<Video>({
+  id: "",
+  title: "",
+  thumbnail: "",
+  views: "",
+  date: "",
+  duration: "",
+  description: "",
+});
+
+  useEffect(() => {
+  async function loadYouTubeData() {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/youtube/data"
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch YouTube data");
+      }
+
+      const data = await response.json();
+
+      setPLAYLISTS(data.playlists || []);
+      setPOPULAR_VIDEOS(data.popularVideos || []);
+      setFEATURED_VIDEO(data.featuredVideo || null);
+
+    } catch (error) {
+      console.error("YouTube data error:", error);
+    }
+  }
+
+  loadYouTubeData();
+}, []);
 
   function navigate(page: string, id?: string) {
     setCurrentPage(page);
@@ -1175,7 +1336,7 @@ export default function App() {
 
       {/* Pages */}
       <div className="pt-[72px]">
-        {currentPage === "home" && <HomePage onNavigate={navigate} playlists={PLAYLISTS} />}
+        {currentPage === "home" && <HomePage onNavigate={navigate} playlists={PLAYLISTS} featuredVideo={FEATURED_VIDEO} />}
         {currentPage === "playlists" && (
           <PlaylistsPage playlists={PLAYLISTS} onSelect={id => navigate("playlist-detail", id)} />
         )}
