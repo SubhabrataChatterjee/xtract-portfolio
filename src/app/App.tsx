@@ -279,7 +279,7 @@ function VideoCard({ video }: { video: Video }) {
         </div>
 
         <p className="text-xs text-slate-600 mt-1.5 italic">
-          Placeholder stats
+          View On YouTube
         </p>
       </div>
     </ClayCard>
@@ -791,7 +791,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
                   <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" /> {featuredVideo.views}</span>
                   <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {featuredVideo.date}</span>
                 </div>
-                <p className="text-xs text-slate-700 italic mb-6">Placeholder stats — real data via YouTube API</p>
+                <p className="text-xs text-slate-700 italic mb-6">View on YouTube</p>
                 <ClayButton
                 variant="primary"
                 onClick={() => {
@@ -811,7 +811,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
       <section className="py-20 px-4 sm:px-8 lg:px-16" style={{ background: "#080c18" }}>
         <div className="max-w-7xl mx-auto">
           <SectionHeading title="Most Popular Videos" emoji="🎮" />
-          <p className="text-slate-600 text-xs italic -mt-6 mb-10">Stats shown are placeholders — connects to YouTube API</p>
+          <p className="text-slate-600 text-xs italic -mt-6 mb-10">View On YouTube</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {POPULAR_VIDEOS.map(v => <VideoCard key={v.id} video={v} />)}
           </div>
