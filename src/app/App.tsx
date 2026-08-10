@@ -1212,7 +1212,7 @@ export default function App() {
   async function loadYouTubeData() {
     try {
       const response = await fetch(
-        "http://localhost:3001/api/youtube/data"
+        "https://xtract-youtube-backend.onrender.com/api/youtube/data"
       );
 
       if (!response.ok) {
