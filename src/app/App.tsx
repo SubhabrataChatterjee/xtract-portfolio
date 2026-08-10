@@ -76,16 +76,16 @@ const PLAYLISTS: Playlist[] = [
 ];
 
 const POPULAR_VIDEOS: Video[] = [
-  { id: "wDjtyUnWK_g", title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔", thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg", views: "236", date: "2026-06-29T11:00:06Z", duration: "17:12", description: "" },
-  { id: "xLtKxqV6xAI", title: "GENICHIRO BECOMES THE GOD OF LIGHTNING ⚡ | Sekiro - EP7", thumbnail: "https://i.ytimg.com/vi/xLtKxqV6xAI/hqdefault.jpg", views: "124", date: "2026-05-31T02:00:33Z", duration: "37:55", description: "" },
-  { id: "qUsFGEK_oLc", title: "GIDEON CHASES ME WITH HIS RPG | Resident Evil Requiem - EP7", thumbnail: "https://i.ytimg.com/vi/qUsFGEK_oLc/hqdefault.jpg", views: "3", date: "2026-04-14T09:30:25Z", duration:"2:20:23", description: ""},
+  { id: "wDjtyUnWK_g", title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔", thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg", views: "236", date: "2026-06-29", duration: "17:12", description: "" },
+  { id: "xLtKxqV6xAI", title: "GENICHIRO BECOMES THE GOD OF LIGHTNING ⚡ | Sekiro - EP7", thumbnail: "https://i.ytimg.com/vi/xLtKxqV6xAI/hqdefault.jpg", views: "124", date: "2026-05-31", duration: "37:55", description: "" },
+  { id: "qUsFGEK_oLc", title: "GIDEON CHASES ME WITH HIS RPG | Resident Evil Requiem - EP7", thumbnail: "https://i.ytimg.com/vi/qUsFGEK_oLc/hqdefault.jpg", views: "3", date: "2026-04-14", duration:"2:20:23", description: ""},
 ];
 
 const FEATURED_VIDEO = {
   title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔",
   thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg",
   views: "236",
-  date: "2026-06-29T11:00:06Z",
+  date: "2026-06-29",
   duration: "17:12",
   description: ""
 };
