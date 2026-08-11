@@ -1,13 +1,21 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { GoogleGenAI } from "@google/genai";
 
 dotenv.config({ override: true });
 
+console.log(
+  "Gemini key loaded:",
+  process.env.GEMINI_API_KEY ? "YES" : "NO"
+);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY, });
 
 app.use(cors());
+app.use(express.json());
 
 async function youtubeRequest(endpoint, params) {
   const url = new URL(
@@ -301,6 +309,41 @@ app.get("/api/youtube/data", async (req, res) => {
     res.status(500).json({
       error: "Failed to fetch YouTube data",
       details: error.message
+    });
+  }
+});
+
+app.post("/api/ai/chat", async (req, res) => {
+  console.log("AI CHAT ROUTE HIT");
+
+  try {
+    const { message } = req.body;
+
+    console.log("Message received:", message);
+
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({
+        error: "Message is required",
+      });
+    }
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: message,
+    });
+
+    console.log("Gemini response received");
+
+    res.json({
+      reply: response.text,
+    });
+
+  } catch (error) {
+    console.error("Gemini API error:", error);
+
+    res.status(500).json({
+      error: "Failed to generate AI response",
+      details: error.message,
     });
   }
 });

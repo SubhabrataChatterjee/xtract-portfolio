@@ -6,6 +6,7 @@ import {
   Gamepad2,
   Video,
 } from "lucide-react";
+import AIChatbot from "./components/AIChatbox";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1347,6 +1348,7 @@ export default function App() {
       </div>
 
       <Footer onNavigate={navigate} />
+      <AIChatbot />
     </div>
   );
 }
