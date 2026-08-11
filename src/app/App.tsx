@@ -648,14 +648,35 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
         className="min-h-screen flex items-center py-24 px-4 sm:px-8 lg:px-16 relative overflow-hidden"
         style={{ background: "linear-gradient(135deg, #080c18 0%, #0d1128 60%, #080c18 100%)" }}
       >
-        {/* Background grid */}
-        <div
-          className="absolute inset-0 pointer-events-none hero-grid"
-          style={{
-            backgroundImage: "linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
+        {/* Animated Samurai Background */}
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
+  <video
+    className="absolute inset-0 w-full h-full object-cover"
+    src="/samurai.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+  />
+
+  {/* Dark gaming overlay */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background:
+        "linear-gradient(90deg, rgba(8,12,24,0.92) 0%, rgba(8,12,24,0.78) 45%, rgba(8,12,24,0.55) 100%)",
+    }}
+  />
+
+  {/* Purple/cyan atmosphere */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background:
+        "radial-gradient(circle at 70% 50%, rgba(124,58,237,0.16), transparent 45%), radial-gradient(circle at 85% 30%, rgba(6,182,212,0.10), transparent 35%)",
+    }}
+  />
+</div>
         {/* Radial glow */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hero glow"
