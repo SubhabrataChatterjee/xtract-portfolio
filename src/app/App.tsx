@@ -650,7 +650,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
       >
         {/* Background grid */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none hero-grid"
           style={{
             backgroundImage: "linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
@@ -658,7 +658,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
         />
         {/* Radial glow */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hero glow"
           style={{
             width: 800,
             height: 600,
@@ -669,16 +669,18 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
 
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
           {/* Left */}
-          <div>
-            <div className="mb-5">
-              <span
-                className="inline-block text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase px-4 py-1.5 rounded-full"
-                style={{ background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.22)" }}
-              >
-                YouTube Gaming Creator
-              </span>
-            </div>
-
+          <div className="hero-orbit">
+            <div className="hero-orbit-inner">
+             <div className="hero-orbit-card">
+              <div className="mb-5">
+                <span
+                  className="inline-block text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase px-4 py-1.5 rounded-full"
+                  style={{ background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.22)" }}
+                >
+                  YouTube Gaming Creator
+                </span>
+              </div>
+        </div>
             <h1
               className="font-black text-white leading-none mb-3"
               style={{
@@ -706,8 +708,9 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
               {FEATURES.map((f, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 p-4 rounded-2xl"
+                  className="flex items-start gap-3 p-4 rounded-2xl card-reveal"
                   style={{
+                    animationDelay: `${0.45 + i * 0.12}s`,
                     background: "linear-gradient(145deg, #141a2e, #111728)",
                     boxShadow: "0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
                     border: "1px solid rgba(255,255,255,0.05)",
@@ -721,8 +724,11 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
                 </div>
               ))}
             </div>
-
-            <div className="flex flex-wrap gap-4">
+            </div>
+            <div
+              className="flex flex-wrap gap-4 card-reveal"
+              style={{ animationDelay: "0.95s" }}
+            >
               <ClayButton
                 variant="primary"
                 onClick={() => {
@@ -743,14 +749,23 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
           </div>
 
           {/* Right: Gaming Visual */}
-          <div className="hidden lg:flex items-center justify-center px-8">
-            <GamingVisual />
+          <div className="hidden lg:flex items-center justify-center px-8 hero-visual-enter">
+           <div className="hero-orbit">
+            <div className="hero-orbit-inner">
+             <div className="hero-orbit-card">
+              <GamingVisual />
+            </div>
           </div>
+        </div>
+        </div>
         </div>
       </section>
 
       {/* Featured Video */}
-      <section className="py-20 px-4 sm:px-8 lg:px-16" style={{ background: "#080c18" }}>
+      <section
+        className="py-20 px-4 sm:px-8 lg:px-16 section-reveal"
+        style={{ background: "#080c18" }}
+      >
         <div className="max-w-7xl mx-auto">
           <SectionHeading title="Featured Video" />
           <ClayCard>
@@ -759,7 +774,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
                 <img
                   src={featuredVideo.thumbnail}
                   alt={featuredVideo.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   style={{ background: "#141a2e" }}
                 />
                 <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, transparent 60%, rgba(17,23,40,0.7) 100%)" }} />
@@ -814,14 +829,22 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
           <SectionHeading title="Most Popular Videos" emoji="🎮" />
           <p className="text-slate-600 text-xs italic -mt-6 mb-10">View On YouTube</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {POPULAR_VIDEOS.map(v => <VideoCard key={v.id} video={v} />)}
+            {POPULAR_VIDEOS.map((v, i) => (
+              <div
+                key={v.id}
+                className="card-reveal"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              >
+                <VideoCard video={v} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Playlists preview */}
       <section
-        className="py-20 px-4 sm:px-8 lg:px-16"
+        className="py-20 px-4 sm:px-8 lg:px-16 section-reveal"
         style={{ background: "linear-gradient(180deg, #080c18, #0a0e1e)" }}
       >
         <div className="max-w-7xl mx-auto">
@@ -839,8 +862,17 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
             <p className="text-slate-400 text-lg">Different games. Different genres. Different experiences.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {playlists.map(p => (
-              <PlaylistCard key={p.id} playlist={p} onClick={() => onNavigate("playlist-detail", p.id)} />
+            {playlists.map((p, i) => (
+              <div
+                key={p.id}
+                className="card-reveal"
+                style={{ animationDelay: `${i * 0.12}s` }}
+              >
+                <PlaylistCard
+                  playlist={p}
+                  onClick={() => onNavigate("playlist-detail", p.id)}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -1256,6 +1288,178 @@ export default function App() {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
         }
+        
+/* =========================================
+   HOMEPAGE ANIMATIONS
+   ========================================= */
+
+/* HERO: first entrance */
+@keyframes heroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HERO: continuous floating + X-Z orbit */
+/* HERO: continuous 3D Y-axis orbit */
+@keyframes heroOrbit {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  /* Complete orbit in 2.5 seconds */
+  23.8095% {
+    transform: rotateY(360deg);
+  }
+
+  /* Remaining 8 seconds = reading pause */
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+
+/* HERO RIGHT-SIDE VISUAL */
+@keyframes heroVisualEntrance {
+  0% {
+    opacity: 0;
+    transform: translateX(45px) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Continuous gentle floating */
+@keyframes continuousFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+
+/* Background glow */
+@keyframes glowFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+
+/* Moving grid */
+@keyframes gridMove {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 60px 60px;
+  }
+}
+
+
+/* Feature/card entrance */
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =========================================
+   HERO CLASSES
+   ========================================= */
+
+.hero-orbit {
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+.hero-orbit-inner {
+  transform-style: preserve-3d;
+  animation: heroOrbit 10.5s linear infinite;
+}
+
+.hero-orbit-card {
+  transform: translateZ(220px);
+  transform-style: preserve-3d;
+}
+
+/*
+   The gaming visual first enters from the right,
+   then continuously floats.
+*/
+.hero-visual-enter {
+  animation:
+    heroVisualEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+/* =========================================
+   LOWER HOMEPAGE SECTIONS
+   ========================================= */
+
+.card-reveal {
+  animation:
+    cardReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
+    continuousFloat 5.5s ease-in-out 0.65s infinite;
+}
+
+
+/* Featured section itself */
+.section-reveal {
+  animation:
+    cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both,
+    continuousFloat 6s ease-in-out 0.8s infinite;
+}
+
+
+/* Hero background */
+.hero-grid {
+  animation: gridMove 18s linear infinite;
+}
+
+.hero-glow {
+  animation: glowFloat 7s ease-in-out infinite;
+}
+
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit,
+  .hero-orbit-inner,
+  .hero-visual-enter,
+  .hero-orbit-card,
+  .card-reveal,
+  .section-reveal,
+  .hero-grid,
+  .hero-glow {
+    animation: none !important;
+  }
+}
         body { overflow-x: hidden; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #080c18; }
