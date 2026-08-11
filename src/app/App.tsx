@@ -375,7 +375,6 @@ function GamingVisual() {
         { icon: <Star className="w-5 h-5 text-yellow-400" />, bg: "rgba(124,58,237,0.18)", pos: "top-4 right-8", delay: "0s", dur: "3.2s" },
         { icon: <Zap className="w-5 h-5 text-cyan-400" />, bg: "rgba(6,182,212,0.18)", pos: "bottom-10 left-2", delay: "1.1s", dur: "4.1s" },
         { icon: <Trophy className="w-5 h-5 text-purple-400" />, bg: "rgba(59,130,246,0.18)", pos: "top-16 left-0", delay: "0.6s", dur: "5s" },
-        { icon: <Target className="w-5 h-5 text-red-400" />, bg: "rgba(239,68,68,0.18)", pos: "bottom-4 right-0", delay: "2s", dur: "3.6s" },
         { icon: <Gamepad2 className="w-5 h-5 text-green-400" />, bg: "rgba(34,197,94,0.18)", pos: "top-2 left-16", delay: "1.5s", dur: "4.6s" },
       ].map((b, i) => (
         <div
