@@ -708,7 +708,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
               {FEATURES.map((f, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 p-4 rounded-2xl card-reveal"
+                  className="flex items-start gap-3 p-4 rounded-2xl card-reveal card-float"
                   style={{
                     animationDelay: `${0.45 + i * 0.12}s`,
                     background: "linear-gradient(145deg, #141a2e, #111728)",
@@ -726,7 +726,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
             </div>
             </div>
             <div
-              className="flex flex-wrap gap-4 card-reveal"
+              className="flex flex-wrap gap-4 card-reveal card-float"
               style={{ animationDelay: "0.95s" }}
             >
               <ClayButton
@@ -763,7 +763,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
 
       {/* Featured Video */}
       <section
-        className="py-20 px-4 sm:px-8 lg:px-16 section-reveal"
+        className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
         style={{ background: "#080c18" }}
       >
         <div className="max-w-7xl mx-auto">
@@ -824,7 +824,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
       </section>
 
       {/* Most Popular Videos */}
-      <section className="py-20 px-4 sm:px-8 lg:px-16" style={{ background: "#080c18" }}>
+      <section className="py-20 px-4 sm:px-8 lg:px-16 section-float" style={{ background: "#080c18" }}>
         <div className="max-w-7xl mx-auto">
           <SectionHeading title="Most Popular Videos" emoji="🎮" />
           <p className="text-slate-600 text-xs italic -mt-6 mb-10">View On YouTube</p>
@@ -832,7 +832,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
             {POPULAR_VIDEOS.map((v, i) => (
               <div
                 key={v.id}
-                className="card-reveal"
+                className="card-reveal card-float"
                 style={{ animationDelay: `${i * 0.15}s` }}
               >
                 <VideoCard video={v} />
@@ -844,7 +844,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
 
       {/* Playlists preview */}
       <section
-        className="py-20 px-4 sm:px-8 lg:px-16 section-reveal"
+        className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
         style={{ background: "linear-gradient(180deg, #080c18, #0a0e1e)" }}
       >
         <div className="max-w-7xl mx-auto">
@@ -865,7 +865,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
             {playlists.map((p, i) => (
               <div
                 key={p.id}
-                className="card-reveal"
+                className="card-reveal card-float"
                 style={{ animationDelay: `${i * 0.12}s` }}
               >
                 <PlaylistCard
@@ -1340,13 +1340,16 @@ export default function App() {
 
 /* Continuous gentle floating */
 @keyframes continuousFloat {
-  0%,
-  100% {
-    transform: translateY(0);
+  0% {
+    transform: translate3d(0, 0, 0);
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translate3d(0, -10px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -1428,12 +1431,23 @@ export default function App() {
     continuousFloat 5.5s ease-in-out 0.65s infinite;
 }
 
+.card-float {
+  animation: continuousFloat 5s ease-in-out 0.65s infinite;
+}
+
 
 /* Featured section itself */
 .section-reveal {
-  animation:
-    cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both,
-    continuousFloat 6s ease-in-out 0.8s infinite;
+  animation: cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.section-float {
+  animation: continuousFloat 6s ease-in-out 0.8s infinite;
+}
+
+.floating-visual {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 
@@ -1454,7 +1468,10 @@ export default function App() {
   .hero-visual-enter,
   .hero-orbit-card,
   .card-reveal,
+  .card-float,
   .section-reveal,
+  .section-float,
+  .floating-visual,
   .hero-grid,
   .hero-glow {
     animation: none !important;
