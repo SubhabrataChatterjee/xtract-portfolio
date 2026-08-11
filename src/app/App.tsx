@@ -352,69 +352,23 @@ function GamingVisual() {
 
       {/* Controller clay card */}
       <div
-        className="relative z-10"
-        style={{ ...cs.card, borderRadius: 32, padding: 32 }}
-      >
-        <svg width="260" height="170" viewBox="0 0 260 170" fill="none">
-          {/* Body */}
-          <ellipse cx="130" cy="95" rx="105" ry="58" fill="url(#ctrlBody)" />
-          <ellipse cx="130" cy="95" rx="105" ry="58" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-          {/* Top highlight */}
-          <ellipse cx="130" cy="60" rx="70" ry="14" fill="rgba(255,255,255,0.05)" />
-          {/* Left grip */}
-          <ellipse cx="52" cy="126" rx="40" ry="30" fill="url(#ctrlGrip)" />
-          {/* Right grip */}
-          <ellipse cx="208" cy="126" rx="40" ry="30" fill="url(#ctrlGrip)" />
-          {/* D-pad */}
-          <rect x="54" y="83" width="9" height="25" rx="4" fill="#06b6d4" opacity="0.9" />
-          <rect x="45" y="92" width="27" height="9" rx="4" fill="#06b6d4" opacity="0.9" />
-          {/* ABXY buttons */}
-          <circle cx="183" cy="82" r="8" fill="#f43f5e" opacity="0.9" />
-          <circle cx="196" cy="96" r="8" fill="#22c55e" opacity="0.9" />
-          <circle cx="183" cy="110" r="8" fill="#3b82f6" opacity="0.9" />
-          <circle cx="170" cy="96" r="8" fill="#eab308" opacity="0.9" />
-          {/* Button labels */}
-          <text x="183" y="86" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">B</text>
-          <text x="196" y="100" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">A</text>
-          <text x="183" y="114" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">X</text>
-          <text x="170" y="100" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">Y</text>
-          {/* Center logo */}
-          <circle cx="130" cy="95" r="14" fill="url(#ctrlCenter)" />
-          <circle cx="130" cy="95" r="9" fill="rgba(255,255,255,0.08)" />
-          {/* Analog sticks */}
-          <circle cx="92" cy="108" r="15" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
-          <circle cx="92" cy="108" r="9" fill="#0d1428" />
-          <circle cx="92" cy="108" r="3" fill="rgba(255,255,255,0.15)" />
-          <circle cx="162" cy="76" r="15" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
-          <circle cx="162" cy="76" r="9" fill="#0d1428" />
-          <circle cx="162" cy="76" r="3" fill="rgba(255,255,255,0.15)" />
-          {/* Shoulder buttons */}
-          <rect x="30" y="52" width="56" height="11" rx="5.5" fill="url(#ctrlShoulder)" />
-          <rect x="174" y="52" width="56" height="11" rx="5.5" fill="url(#ctrlShoulder)" />
-          {/* Menu / start buttons */}
-          <rect x="112" y="88" width="10" height="5" rx="2.5" fill="rgba(255,255,255,0.2)" />
-          <rect x="138" y="88" width="10" height="5" rx="2.5" fill="rgba(255,255,255,0.2)" />
-
-          <defs>
-            <linearGradient id="ctrlBody" x1="25" y1="37" x2="235" y2="153" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#1e2d4a" />
-              <stop offset="1" stopColor="#111728" />
-            </linearGradient>
-            <linearGradient id="ctrlGrip" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-              <stop stopColor="#1a2240" />
-              <stop offset="1" stopColor="#0a0d1a" />
-            </linearGradient>
-            <radialGradient id="ctrlCenter" cx="40%" cy="35%" r="60%">
-              <stop stopColor="#8b5cf6" />
-              <stop offset="1" stopColor="#4c1d95" />
-            </radialGradient>
-            <linearGradient id="ctrlShoulder" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
-              <stop stopColor="#7c3aed" />
-              <stop offset="1" stopColor="#06b6d4" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+  className="flex items-center justify-center"
+  style={{
+    width: "260px",
+    height: "260px",
+    aspectRatio: "1 / 1",
+    borderRadius: "24px",
+    overflow: "hidden",
+    boxShadow:
+      "0 0 35px rgba(124,58,237,0.35), 0 8px 30px rgba(0,0,0,0.45)",
+  }}
+>
+  <img
+    src="/xtract.jpg"
+    alt="XTRACT"
+    className="w-full h-full object-cover"
+  />
+</div>
 
       {/* Floating badges */}
       {[
