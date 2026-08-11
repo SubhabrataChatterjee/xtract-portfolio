@@ -319,20 +319,269 @@ app.post("/api/ai/chat", async (req, res) => {
   try {
     const { message } = req.body;
 
-    console.log("Message received:", message);
-
     if (!message || typeof message !== "string") {
       return res.status(400).json({
         error: "Message is required",
       });
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
-      contents: message,
+    // --------------------------------
+    // 1. GET CHANNEL
+    // --------------------------------
+
+    const channelData = await youtubeRequest("channels", {
+      part: "snippet,contentDetails,statistics",
+      forHandle: process.env.YOUTUBE_HANDLE,
     });
 
-    console.log("Gemini response received");
+    if (!channelData.items?.length) {
+      return res.status(404).json({
+        error: "YouTube channel not found",
+      });
+    }
+
+    const channel = channelData.items[0];
+
+    const channelId = channel.id;
+
+    // --------------------------------
+    // 2. GET PLAYLISTS
+    // --------------------------------
+
+    const playlistData = await youtubeRequest("playlists", {
+      part: "snippet,contentDetails",
+      channelId,
+      maxResults: "50",
+    });
+
+    const playlistContext = playlistData.items.map((playlist) => ({
+      id: playlist.id,
+      name: playlist.snippet.title,
+      description: playlist.snippet.description || "",
+      videoCount: playlist.contentDetails.itemCount || 0,
+    }));
+
+    // --------------------------------
+    // 3. GET ALL INDIVIDUAL VIDEOS
+    // --------------------------------
+
+    const uploadsPlaylistId =
+      channel.contentDetails.relatedPlaylists.uploads;
+
+    const uploadsData = await youtubeRequest(
+      "playlistItems",
+      {
+        part: "snippet,contentDetails",
+        playlistId: uploadsPlaylistId,
+        maxResults: "50",
+      }
+    );
+
+    const videoIds = uploadsData.items
+      .map((item) => item.contentDetails.videoId)
+      .filter(Boolean)
+      .join(",");
+
+    let videoContext = [];
+
+    if (videoIds) {
+      const videoData = await youtubeRequest(
+        "videos",
+        {
+          part: "snippet,contentDetails,statistics",
+          id: videoIds,
+        }
+      );
+
+      videoContext = videoData.items.map((video) => ({
+        id: video.id,
+
+        title: video.snippet.title,
+
+        description:
+          video.snippet.description || "",
+
+        publishedAt:
+          video.snippet.publishedAt,
+
+        views:
+          Number(
+            video.statistics?.viewCount || 0
+          ),
+
+        likes:
+          Number(
+            video.statistics?.likeCount || 0
+          ),
+
+        comments:
+          Number(
+            video.statistics?.commentCount || 0
+          ),
+
+        duration:
+          video.contentDetails?.duration || "",
+      }));
+    }
+
+    // --------------------------------
+    // 4. CHANNEL INFORMATION
+    // --------------------------------
+
+    const channelContext = {
+      name: channel.snippet.title,
+
+      description:
+        channel.snippet.description || "",
+
+      subscribers:
+        Number(
+          channel.statistics?.subscriberCount || 0
+        ),
+
+      totalViews:
+        Number(
+          channel.statistics?.viewCount || 0
+        ),
+
+      totalVideos:
+        Number(
+          channel.statistics?.videoCount || 0
+        ),
+    };
+
+    // --------------------------------
+    // 5. CALCULATE USEFUL VIDEO DATA
+    // --------------------------------
+
+    const mostViewedVideo =
+      videoContext.length > 0
+        ? [...videoContext].sort(
+            (a, b) => b.views - a.views
+          )[0]
+        : null;
+
+    const mostLikedVideo =
+      videoContext.length > 0
+        ? [...videoContext].sort(
+            (a, b) => b.likes - a.likes
+          )[0]
+        : null;
+
+    // --------------------------------
+    // 6. CALCULATE LARGEST PLAYLIST
+    // --------------------------------
+
+    const largestPlaylist =
+      playlistContext.length > 0
+        ? [...playlistContext].sort(
+            (a, b) => b.videoCount - a.videoCount
+          )[0]
+        : null;
+
+    // --------------------------------
+    // 7. GIVE GEMINI THE DATA
+    // --------------------------------
+
+    const context = `
+You are XTRACT AI, the official AI assistant
+for XTRACT's gaming portfolio website.
+
+You have access to CURRENT DATA fetched directly
+from XTRACT's YouTube channel.
+
+========================
+IMPORTANT RULES
+========================
+
+1. Use the data below to answer questions about XTRACT.
+
+2. NEVER ask the user to provide a dataset,
+YouTube channel, database, or additional context.
+
+3. NEVER tell the user to go to YouTube to find
+information that is already provided below.
+
+4. NEVER invent video titles, views, dates,
+playlist counts, subscribers, or other statistics.
+
+5. If information exists below, give the exact
+information.
+
+6. If information is not available, clearly say
+that the information is not available.
+
+7. When asked about a specific video, search the
+INDIVIDUAL VIDEOS section using the video title
+or relevant keywords.
+
+8. When asked about the most viewed video, use
+MOST VIEWED VIDEO.
+
+9. When asked about the most liked video, use
+MOST LIKED VIDEO.
+
+10. When asked about playlists, use PLAYLIST DATA.
+
+11. When asked which playlist has the most videos,
+use LARGEST PLAYLIST.
+
+12. Keep responses concise and natural.
+
+========================
+CHANNEL DATA
+========================
+
+${JSON.stringify(channelContext, null, 2)}
+
+========================
+PLAYLIST DATA
+========================
+
+${JSON.stringify(playlistContext, null, 2)}
+
+========================
+INDIVIDUAL VIDEOS
+========================
+
+${JSON.stringify(videoContext, null, 2)}
+
+========================
+MOST VIEWED VIDEO
+========================
+
+${JSON.stringify(mostViewedVideo, null, 2)}
+
+========================
+MOST LIKED VIDEO
+========================
+
+${JSON.stringify(mostLikedVideo, null, 2)}
+
+========================
+LARGEST PLAYLIST
+========================
+
+${JSON.stringify(largestPlaylist, null, 2)}
+
+========================
+USER QUESTION
+========================
+
+${message}
+
+Answer the user's question using the
+authoritative YouTube data above.
+`;
+
+    // --------------------------------
+    // 8. ASK GEMINI
+    // --------------------------------
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: context,
+    });
 
     res.json({
       reply: response.text,
