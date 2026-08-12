@@ -8,6 +8,9 @@ import {
 } from "lucide-react";
 import AIChatbot from "./components/AIChatbox";
 import RocketIntro from "./components/RocketIntro";
+import ThreeDBackground from "./components/ThreeDBackground";
+import ThreeDPanel from "./components/ThreeDPanel";
+import ThreeDParallax from "./components/ThreeDParallax";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -221,6 +224,7 @@ function VideoCard({ video }: { video: Video }) {
   };
 
   return (
+    <ThreeDPanel intensity={18} draggable>
     <ClayCard
       className="group cursor-pointer"
       onClick={openYouTube}
@@ -285,6 +289,7 @@ function VideoCard({ video }: { video: Video }) {
         </p>
       </div>
     </ClayCard>
+    </ThreeDPanel>
   );
 }
 
@@ -694,6 +699,10 @@ function HomePage({ onNavigate, playlists, featuredVideo, channel, totalLikes }:
   return (
     <div>
       {/* Hero */}
+      <ThreeDParallax
+      intensity={12}
+        depth={0}
+      >
       <section
         className="min-h-screen flex items-center py-24 px-4 sm:px-8 lg:px-16 relative overflow-hidden"
         style={{ background: "linear-gradient(135deg, #080c18 0%, #0d1128 60%, #080c18 100%)" }}
@@ -825,7 +834,8 @@ function HomePage({ onNavigate, playlists, featuredVideo, channel, totalLikes }:
             </div>
         </div>
       </section>
-
+      </ThreeDParallax>
+      
       {/* Featured Video */}
       <section
           id="featured-video"
@@ -1445,6 +1455,7 @@ export default function App() {
       />
     )}
 
+    <ThreeDBackground />
 
     <div className="min-h-screen" style={{ background: "#080c18", fontFamily: "'Inter', sans-serif" }}>
       {/* Animations */}
