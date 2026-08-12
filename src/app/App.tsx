@@ -7,7 +7,6 @@ import {
   Video,
 } from "lucide-react";
 import AIChatbot from "./components/AIChatbox";
-import RocketIntro from "./components/RocketIntro";
 import ThreeDBackground from "./components/ThreeDBackground";
 import ThreeDPanel from "./components/ThreeDPanel";
 import ThreeDParallax from "./components/ThreeDParallax";
@@ -1392,7 +1391,6 @@ function Footer({ onNavigate }: { onNavigate: (page: string) => void }) {
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [showRocketIntro, setShowRocketIntro] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
@@ -1448,15 +1446,6 @@ export default function App() {
 
   return (
     
-     <>
-    {showRocketIntro && (
-      <RocketIntro
-        onComplete={() => setShowRocketIntro(false)}
-      />
-    )}
-
-    <ThreeDBackground />
-
     <div className="min-h-screen" style={{ background: "#080c18", fontFamily: "'Inter', sans-serif" }}>
       {/* Animations */}
       <style>{`
@@ -1751,6 +1740,5 @@ export default function App() {
       <Footer onNavigate={navigate} />
       <AIChatbot />
     </div>
-  </>
   );
 }
