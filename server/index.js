@@ -68,37 +68,72 @@ app.get("/api/youtube/data", async (req, res) => {
       channel.contentDetails.relatedPlaylists.uploads;
 
     // --------------------------------
-    // 2. VIDEOS
-    // --------------------------------
+// 2. ALL VIDEOS
+// --------------------------------
 
-    const uploadsData = await youtubeRequest(
-      "playlistItems",
-      {
-        part: "snippet,contentDetails",
-        playlistId: uploadsPlaylistId,
-        maxResults: "50"
-      }
-    );
+let allUploadItems = [];
+let nextPageToken = null;
 
-    const videoIds = uploadsData.items
-      .map((item) => item.contentDetails.videoId)
-      .join(",");
+do {
+  const params = {
+    part: "snippet,contentDetails",
+    playlistId: uploadsPlaylistId,
+    maxResults: "50",
+  };
+
+  if (nextPageToken) {
+    params.pageToken = nextPageToken;
+  }
+
+  const uploadsData = await youtubeRequest(
+    "playlistItems",
+    params
+  );
+
+  allUploadItems.push(...(uploadsData.items || []));
+
+  nextPageToken = uploadsData.nextPageToken || null;
+
+} while (nextPageToken);
+
+console.log(
+  `Fetched ${allUploadItems.length} videos from YouTube`
+);
+
+const videoIds = allUploadItems
+  .map((item) => item.contentDetails.videoId)
+  .filter(Boolean)
+  .join(",");
 
     let videoDetails = {
       items: []
     };
 
-    if (videoIds) {
-      videoDetails = await youtubeRequest(
-        "videos",
-        {
-          part: "snippet,contentDetails,statistics",
-          id: videoIds
-        }
-      );
-    }
+    let allVideoDetails = [];
 
-    const videos = videoDetails.items.map((video) => {
+const videoIdArray = allUploadItems
+  .map((item) => item.contentDetails.videoId)
+  .filter(Boolean);
+
+for (let i = 0; i < videoIdArray.length; i += 50) {
+  const batch = videoIdArray.slice(i, i + 50);
+
+  const videoDetails = await youtubeRequest(
+    "videos",
+    {
+      part: "snippet,contentDetails,statistics",
+      id: batch.join(",")
+    }
+  );
+
+  allVideoDetails.push(...(videoDetails.items || []));
+}
+
+console.log(
+  `Fetched detailed data for ${allVideoDetails.length} videos`
+);
+
+    const videos = allVideoDetails.map((video) => {
       const seconds =
         parseDuration(video.contentDetails.duration);
 
@@ -126,34 +161,80 @@ app.get("/api/youtube/data", async (req, res) => {
       };
     });
 
-    // --------------------------------
-    // 3. PLAYLISTS
-    // --------------------------------
-
-    const playlistData = await youtubeRequest(
-      "playlists",
-      {
-        part: "snippet,contentDetails",
-        channelId,
-        maxResults: "50"
-      }
+    const totalLikes = allVideoDetails.reduce(
+      (total, video) =>
+      total + Number(video.statistics?.likeCount || 0),
+      0
     );
+   // --------------------------------
+// 3. GET ALL PLAYLISTS
+// --------------------------------
+
+let allPlaylists = [];
+let playlistPageToken = null;
+
+do {
+  const params = {
+    part: "snippet,contentDetails",
+    channelId,
+    maxResults: "50",
+  };
+
+  if (playlistPageToken) {
+    params.pageToken = playlistPageToken;
+  }
+
+  const playlistPage = await youtubeRequest(
+    "playlists",
+    params
+  );
+
+  allPlaylists.push(...(playlistPage.items || []));
+
+  playlistPageToken =
+    playlistPage.nextPageToken || null;
+
+} while (playlistPageToken);
+
+console.log(
+  `Fetched ${allPlaylists.length} playlists from YouTube`
+);
 
     const playlists = [];
 
-    for (const playlist of playlistData.items) {
-      const playlistItems =
-        await youtubeRequest(
-          "playlistItems",
-          {
-            part: "snippet,contentDetails",
-            playlistId: playlist.id,
-            maxResults: "50"
-          }
-        );
+    for (const playlist of allPlaylists) {
+       let allPlaylistItems = [];
+  let playlistItemsPageToken = null;
+
+  do {
+    const params = {
+      part: "snippet,contentDetails",
+      playlistId: playlist.id,
+      maxResults: "50",
+    };
+
+    if (playlistItemsPageToken) {
+      params.pageToken = playlistItemsPageToken;
+    }
+
+    const playlistPage = await youtubeRequest(
+      "playlistItems",
+      params
+    );
+
+    allPlaylistItems.push(...(playlistPage.items || []));
+
+    playlistItemsPageToken =
+      playlistPage.nextPageToken || null;
+
+  } while (playlistItemsPageToken);
+
+  console.log(
+    `Playlist "${playlist.snippet.title}" → ${allPlaylistItems.length} videos`
+  );
 
       const playlistVideoIds =
-        playlistItems.items
+        allPlaylistItems
           .map(
             (item) =>
               item.contentDetails.videoId
@@ -297,7 +378,9 @@ app.get("/api/youtube/data", async (req, res) => {
 
       popularVideos,
 
-      featuredVideo
+      featuredVideo,
+
+      totalLikes
     });
 
   } catch (error) {
@@ -362,29 +445,49 @@ app.post("/api/ai/chat", async (req, res) => {
     }));
 
     // --------------------------------
-    // 3. GET ALL INDIVIDUAL VIDEOS
-    // --------------------------------
+// 3. GET ALL INDIVIDUAL VIDEOS
+// --------------------------------
 
-    const uploadsPlaylistId =
-      channel.contentDetails.relatedPlaylists.uploads;
+const uploadsPlaylistId =
+  channel.contentDetails.relatedPlaylists.uploads;
 
-    const uploadsData = await youtubeRequest(
-      "playlistItems",
-      {
-        part: "snippet,contentDetails",
-        playlistId: uploadsPlaylistId,
-        maxResults: "50",
-      }
-    );
+let allUploadItems = [];
+let nextPageToken = null;
 
-    const videoIds = uploadsData.items
-      .map((item) => item.contentDetails.videoId)
-      .filter(Boolean)
-      .join(",");
+do {
+  const params = {
+    part: "snippet,contentDetails",
+    playlistId: uploadsPlaylistId,
+    maxResults: "50",
+  };
+
+  if (nextPageToken) {
+    params.pageToken = nextPageToken;
+  }
+
+  const uploadsData = await youtubeRequest(
+    "playlistItems",
+    params
+  );
+
+  allUploadItems.push(...(uploadsData.items || []));
+
+  nextPageToken =
+    uploadsData.nextPageToken || null;
+
+} while (nextPageToken);
+
+console.log(
+  `Fetched ${allUploadItems.length} videos from YouTube`
+);
+
+   const videoIdArray = allUploadItems
+  .map((item) => item.contentDetails.videoId)
+  .filter(Boolean);
 
     let videoContext = [];
 
-    if (videoIds) {
+    if (videoIdArray.length > 0) {
       const videoData = await youtubeRequest(
         "videos",
         {

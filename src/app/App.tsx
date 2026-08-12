@@ -331,9 +331,95 @@ function PlaylistCard({ playlist, onClick }: { playlist: Playlist; onClick: () =
 
 // ─── Gaming Visual ────────────────────────────────────────────────────────────
 
-function GamingVisual() {
+function GamingVisual({
+  onNavigate,
+}: {
+  onNavigate: (page: string, id?: string) => void;
+}) {
+  const handleBadgeClick = (action: string) => {
+    switch (action) {
+      case "stats":
+        document.getElementById("channel-stats")?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+
+      case "featured":
+        document.getElementById("featured-video")?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+
+      case "playlists-preview":
+        document.getElementById("playlists-preview")?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        break;
+
+      case "contact":
+        onNavigate("contact");
+        break;
+
+      case "playlist-page":
+        onNavigate("playlists");
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const badges = [
+    {
+      icon: <Star className="w-5 h-5 text-yellow-400" />,
+      bg: "rgba(124,58,237,0.18)",
+      pos: "top-4 right-8",
+      delay: "0s",
+      dur: "3.2s",
+      action: "featured",
+    },
+    {
+      icon: <Zap className="w-5 h-5 text-cyan-400" />,
+      bg: "rgba(6,182,212,0.18)",
+      pos: "bottom-10 left-2",
+      delay: "1.1s",
+      dur: "4.1s",
+      action: "contact",
+    },
+    {
+      icon: <Trophy className="w-5 h-5 text-purple-400" />,
+      bg: "rgba(59,130,246,0.18)",
+      pos: "top-16 left-0",
+      delay: "0.6s",
+      dur: "5s",
+      action: "stats",
+    },
+    {
+      icon: <Gamepad2 className="w-5 h-5 text-green-400" />,
+      bg: "rgba(34,197,94,0.18)",
+      pos: "top-2 left-16",
+      delay: "1.5s",
+      dur: "4.6s",
+      action: "playlists-preview",
+    },
+
+    // Keep your remaining badges here
+  ];
+
   return (
-    <div className="relative flex items-center justify-center select-none" style={{ minHeight: 420 }}>
+    <div
+      className="relative flex items-center justify-center select-none"
+      style={{
+        minHeight: 420,
+      }}
+    >
+       <div className="hero-orbit">
+        <div className="hero-orbit-inner">
+          <div className="hero-orbit-card">
+
       {/* Ambient glow */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -344,69 +430,79 @@ function GamingVisual() {
             width: 280,
             height: 280,
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(124,58,237,0.22) 0%, rgba(6,182,212,0.14) 50%, transparent 72%)",
+            background:
+              "radial-gradient(circle, rgba(124,58,237,0.22) 0%, rgba(6,182,212,0.14) 50%, transparent 72%)",
             filter: "blur(38px)",
           }}
         />
       </div>
 
-      {/* Controller clay card */}
+      {/* Profile image */}
       <div
-  className="flex items-center justify-center"
-  style={{
-    width: "260px",
-    height: "260px",
-    aspectRatio: "1 / 1",
-    borderRadius: "24px",
-    overflow: "hidden",
-    boxShadow:
-      "0 0 35px rgba(124,58,237,0.35), 0 8px 30px rgba(0,0,0,0.45)",
-  }}
->
-  <img
-    src="/xtract.jpg"
-    alt="XTRACT"
-    className="w-full h-full object-cover"
-  />
-</div>
-
-      {/* Floating badges */}
-      {[
-        { icon: <Star className="w-5 h-5 text-yellow-400" />, bg: "rgba(124,58,237,0.18)", pos: "top-4 right-8", delay: "0s", dur: "3.2s" },
-        { icon: <Zap className="w-5 h-5 text-cyan-400" />, bg: "rgba(6,182,212,0.18)", pos: "bottom-10 left-2", delay: "1.1s", dur: "4.1s" },
-        { icon: <Trophy className="w-5 h-5 text-purple-400" />, bg: "rgba(59,130,246,0.18)", pos: "top-16 left-0", delay: "0.6s", dur: "5s" },
-        { icon: <Gamepad2 className="w-5 h-5 text-green-400" />, bg: "rgba(34,197,94,0.18)", pos: "top-2 left-16", delay: "1.5s", dur: "4.6s" },
-      ].map((b, i) => (
-        <div
-          key={i}
-          className={`absolute z-20 ${b.pos}`}
-          style={{ animation: `floatBadge ${b.dur} ease-in-out infinite`, animationDelay: b.delay }}
-        >
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center"
-            style={{
-              background: b.bg,
-              ...cs.card,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.1)",
-            }}
-          >
-            {b.icon}
-          </div>
-        </div>
-      ))}
-
-      {/* Profile badge */}
-      <div
-        className="absolute -bottom-3 -right-3 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl z-20"
+        className="relative z-10 flex items-center justify-center"
         style={{
-          ...cs.card,
-          background: "linear-gradient(145deg, #1a2240, #0a0d1a)",
-          boxShadow: "0 12px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)",
+          width: "260px",
+          height: "260px",
+          aspectRatio: "1 / 1",
+          borderRadius: "24px",
+          overflow: "hidden",
+          boxShadow:
+            "0 0 35px rgba(124,58,237,0.35), 0 8px 30px rgba(0,0,0,0.45)",
+          pointerEvents: "none",
         }}
       >
-        🎮
+        <img
+          src="/xtract.jpg"
+          alt="XTRACT"
+          className="w-full h-full object-cover"
+          draggable={false}
+        />
       </div>
-    </div>
+      </div>
+      </div>
+      </div>
+
+      {/* Floating clickable badges */}
+      <div className="hero-orbit">
+        <div className="hero-orbit-inner">
+          <div className="hero-orbit-card">
+<div
+        className="absolute inset-0"
+        style={{
+          zIndex: 100,
+          pointerEvents: "none",
+        }}
+      >
+{badges.map((b, i) => (
+  <button
+    key={i}
+    type="button"
+    onClick={() => handleBadgeClick(b.action)}
+    aria-label={`Open ${b.action}`}
+    className={`absolute ${b.pos} w-11 h-11 rounded-2xl flex items-center justify-center cursor-pointer`}
+    style={{
+      background: b.bg,
+      ...cs.card,
+
+      boxShadow:
+        "0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.1)",
+
+      animation: `floatBadge ${b.dur} ease-in-out infinite`,
+      animationDelay: b.delay,
+
+      pointerEvents: "auto",
+    }}
+  >
+    {b.icon}
+  </button>
+))}
+</div>
+</div>
+</div>
+</div>
+      
+      </div>
+    
   );
 }
 
@@ -593,7 +689,7 @@ function SectionHeading({ title, emoji }: { title: string; emoji?: string }) {
 
 // ─── Home Page ────────────────────────────────────────────────────────────────
 
-function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page: string, id?: string) => void; playlists: Playlist[]; featuredVideo: Video }) {
+function HomePage({ onNavigate, playlists, featuredVideo, channel, totalLikes }: { onNavigate: (page: string, id?: string) => void; playlists: Playlist[]; featuredVideo: Video; channel: any; totalLikes: number;}) {
   return (
     <div>
       {/* Hero */}
@@ -724,19 +820,14 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
 
           {/* Right: Gaming Visual */}
           <div className="hidden lg:flex items-center justify-center px-8 hero-visual-enter">
-           <div className="hero-orbit">
-            <div className="hero-orbit-inner">
-             <div className="hero-orbit-card">
-              <GamingVisual />
+              <GamingVisual onNavigate={onNavigate}/>
             </div>
-          </div>
-        </div>
-        </div>
         </div>
       </section>
 
       {/* Featured Video */}
       <section
+          id="featured-video"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
         style={{ background: "#080c18" }}
       >
@@ -797,6 +888,95 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
         </div>
       </section>
 
+      {/* Channel Stats */}
+<section
+  id="channel-stats"
+  className="py-20 px-4 sm:px-8 lg:px-16"
+  style={{
+    background: "linear-gradient(180deg, #080c18, #0a0e1e)",
+  }}
+>
+  <div className="max-w-7xl mx-auto">
+    <SectionHeading title="Channel Stats" emoji="📊" />
+
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
+      
+      {/* Subscribers */}
+      <div
+        className="p-8 rounded-3xl text-center"
+        style={{
+          background: "linear-gradient(145deg, #141a2e, #111728)",
+          boxShadow:
+            "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <div className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
+          Subscribers
+        </div>
+
+        <div
+          className="text-4xl font-black text-white"
+          style={{ fontFamily: "'Orbitron', sans-serif" }}
+        >
+          {channel?.subscribers
+            ? Number(channel.subscribers).toLocaleString()
+            : "—"}
+        </div>
+      </div>
+
+      {/* Views */}
+      <div
+        className="p-8 rounded-3xl text-center"
+        style={{
+          background: "linear-gradient(145deg, #141a2e, #111728)",
+          boxShadow:
+            "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <div className="text-purple-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
+          Total Views
+        </div>
+
+        <div
+          className="text-4xl font-black text-white"
+          style={{ fontFamily: "'Orbitron', sans-serif" }}
+        >
+          {channel?.views
+            ? Number(channel.views).toLocaleString()
+            : "—"}
+        </div>
+      </div>
+
+      {/* Likes */}
+      <div
+        className="p-8 rounded-3xl text-center"
+        style={{
+          background: "linear-gradient(145deg, #141a2e, #111728)",
+          boxShadow:
+            "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <div className="text-pink-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
+          Total Likes
+        </div>
+
+        <div
+          className="text-4xl font-black text-white"
+          style={{ fontFamily: "'Orbitron', sans-serif" }}
+        >
+          {totalLikes > 0
+  ? totalLikes.toLocaleString()
+  : "—"}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
       {/* Most Popular Videos */}
       <section className="py-20 px-4 sm:px-8 lg:px-16 section-float" style={{ background: "#080c18" }}>
         <div className="max-w-7xl mx-auto">
@@ -818,6 +998,7 @@ function HomePage({ onNavigate, playlists, featuredVideo }: { onNavigate: (page:
 
       {/* Playlists preview */}
       <section
+        id="playlists-preview"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
         style={{ background: "linear-gradient(180deg, #080c18, #0a0e1e)" }}
       >
@@ -1203,6 +1384,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
+  const [CHANNEL, setCHANNEL] = useState<any>(null);
   const [PLAYLISTS, setPLAYLISTS] = useState<Playlist[]>([]);
   const [POPULAR_VIDEOS, setPOPULAR_VIDEOS] = useState<Video[]>([]);
   const [FEATURED_VIDEO, setFEATURED_VIDEO] = useState<Video>({
@@ -1214,7 +1396,7 @@ export default function App() {
   duration: "",
   description: "",
 });
-
+   const [totalLikes, setTotalLikes] = useState<number>(0);
   useEffect(() => {
   async function loadYouTubeData() {
     try {
@@ -1228,9 +1410,11 @@ export default function App() {
 
       const data = await response.json();
 
+      setCHANNEL(data.channel || null);
       setPLAYLISTS(data.playlists || []);
       setPOPULAR_VIDEOS(data.popularVideos || []);
       setFEATURED_VIDEO(data.featuredVideo || null);
+      setTotalLikes(Number(data.totalLikes || 0));
 
     } catch (error) {
       console.error("YouTube data error:", error);
@@ -1532,7 +1716,7 @@ export default function App() {
 
       {/* Pages */}
       <div className="pt-[72px]">
-        {currentPage === "home" && <HomePage onNavigate={navigate} playlists={PLAYLISTS} featuredVideo={FEATURED_VIDEO} />}
+        {currentPage === "home" && <HomePage onNavigate={navigate} playlists={PLAYLISTS} featuredVideo={FEATURED_VIDEO} channel={CHANNEL} totalLikes={totalLikes}/>}
         {currentPage === "playlists" && (
           <PlaylistsPage playlists={PLAYLISTS} onSelect={id => navigate("playlist-detail", id)} />
         )}
