@@ -1,3 +1,7 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+.smoke-intro-fade {
+  opacity: 0 !important;
+  transition: opacity 1.5s ease-out;
+}

@@ -7,6 +7,7 @@ import {
   Video,
 } from "lucide-react";
 import AIChatbot from "./components/AIChatbox";
+import RocketIntro from "./components/RocketIntro";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1381,6 +1382,7 @@ function Footer({ onNavigate }: { onNavigate: (page: string) => void }) {
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const [showRocketIntro, setShowRocketIntro] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
@@ -1435,6 +1437,15 @@ export default function App() {
   const isPlaylistActive = currentPage === "playlists" || currentPage === "playlist-detail";
 
   return (
+    
+     <>
+    {showRocketIntro && (
+      <RocketIntro
+        onComplete={() => setShowRocketIntro(false)}
+      />
+    )}
+
+
     <div className="min-h-screen" style={{ background: "#080c18", fontFamily: "'Inter', sans-serif" }}>
       {/* Animations */}
       <style>{`
@@ -1729,5 +1740,6 @@ export default function App() {
       <Footer onNavigate={navigate} />
       <AIChatbot />
     </div>
+  </>
   );
 }
