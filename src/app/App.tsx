@@ -6,7 +6,6 @@ import {
   Gamepad2,
   Video,
 } from "lucide-react";
-import AIChatbot from "./components/AIChatbox";
 import ThreeDBackground from "./components/ThreeDBackground";
 import ThreeDPanel from "./components/ThreeDPanel";
 import ThreeDParallax from "./components/ThreeDParallax";
@@ -1740,7 +1739,6 @@ export default function App() {
       </div>
 
       <Footer onNavigate={navigate} />
-      <AIChatbot />
     </div>
     </>
   );
