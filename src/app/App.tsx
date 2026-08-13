@@ -10,6 +10,7 @@ import AIChatbot from "./components/AIChatbox";
 import ThreeDBackground from "./components/ThreeDBackground";
 import ThreeDPanel from "./components/ThreeDPanel";
 import ThreeDParallax from "./components/ThreeDParallax";
+import BackgroundMusic from "./components/BackgroundMusic";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1445,7 +1446,8 @@ export default function App() {
   const isPlaylistActive = currentPage === "playlists" || currentPage === "playlist-detail";
 
   return (
-    
+    <>
+    <BackgroundMusic />
     <div className="min-h-screen" style={{ background: "#080c18", fontFamily: "'Inter', sans-serif" }}>
       {/* Animations */}
       <style>{`
@@ -1740,5 +1742,6 @@ export default function App() {
       <Footer onNavigate={navigate} />
       <AIChatbot />
     </div>
+    </>
   );
 }
