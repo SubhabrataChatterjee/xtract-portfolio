@@ -6,35 +6,50 @@ export default function BackgroundMusic() {
 
   useEffect(() => {
     const audio = audioRef.current;
+
     if (!audio) return;
 
-    audio.volume = 0.2;
+    audio.volume = 0.04;
 
-    const startMusic = () => {
+    const startAfterInteraction = () => {
       audio
         .play()
         .then(() => {
           setPlaying(true);
+          document.removeEventListener("click", startAfterInteraction);
+          document.removeEventListener("keydown", startAfterInteraction);
         })
-        .catch(() => {
-          // Browser blocked autoplay
+        .catch((error) => {
+          console.log("Music could not start:", error);
         });
     };
 
-    startMusic();
+    // Try immediately
+    audio.play().catch(() => {
+      // Browser blocked autoplay.
+      // Wait for the user's first interaction.
+      document.addEventListener("click", startAfterInteraction);
+      document.addEventListener("keydown", startAfterInteraction);
+    });
 
     return () => {
-      audio.pause();
+      document.removeEventListener("click", startAfterInteraction);
+      document.removeEventListener("keydown", startAfterInteraction);
     };
   }, []);
 
   const toggleMusic = () => {
     const audio = audioRef.current;
+
     if (!audio) return;
 
     if (audio.paused) {
-      audio.play();
-      setPlaying(true);
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch((error) => {
+          console.log("Could not play music:", error);
+        });
     } else {
       audio.pause();
       setPlaying(false);
@@ -51,9 +66,10 @@ export default function BackgroundMusic() {
       />
 
       <button
+        type="button"
         onClick={toggleMusic}
         aria-label={playing ? "Mute music" : "Play music"}
-        className="fixed bottom-6 right-6 z-[9999] w-12 h-12 rounded-full flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-[99999] w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
         style={{
           background: "rgba(124,58,237,0.18)",
           border: "1px solid rgba(124,58,237,0.35)",
