@@ -694,326 +694,536 @@ function SectionHeading({ title, emoji }: { title: string; emoji?: string }) {
 
 // ─── Home Page ────────────────────────────────────────────────────────────────
 
-function HomePage({ onNavigate, playlists, featuredVideo, channel, totalLikes }: { onNavigate: (page: string, id?: string) => void; playlists: Playlist[]; featuredVideo: Video; channel: any; totalLikes: number;}) {
+function HomePage({
+  onNavigate,
+  playlists,
+  featuredVideo,
+  channel,
+  totalLikes,
+  activeStat,
+  displayStat,
+}: {
+  onNavigate: (page: string, id?: string) => void;
+  playlists: Playlist[];
+  featuredVideo: Video;
+  channel: any;
+  totalLikes: number;
+  activeStat: number;
+  displayStat: number;
+}) {
   return (
     <div>
-      {/* Hero */}
+      {/* =========================================
+          HERO
+      ========================================= */}
+
       <ThreeDParallax
-      intensity={12}
+        intensity={12}
         depth={0}
       >
-      <section
-        className="min-h-screen flex items-center py-24 px-4 sm:px-8 lg:px-16 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #080c18 0%, #0d1128 60%, #080c18 100%)" }}
-      >
-        {/* Animated Samurai Background */}
-<div className="absolute inset-0 overflow-hidden pointer-events-none">
-  <video
-    className="absolute inset-0 w-full h-full object-cover"
-    src="/samurai.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-  />
-
-  {/* Dark gaming overlay */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background:
-        "linear-gradient(90deg, rgba(8,12,24,0.92) 0%, rgba(8,12,24,0.78) 45%, rgba(8,12,24,0.55) 100%)",
-    }}
-  />
-
-  {/* Purple/cyan atmosphere */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background:
-        "radial-gradient(circle at 70% 50%, rgba(124,58,237,0.16), transparent 45%), radial-gradient(circle at 85% 30%, rgba(6,182,212,0.10), transparent 35%)",
-    }}
-  />
-</div>
-        {/* Radial glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hero glow"
+        <section
+          className="min-h-screen flex items-center py-24 px-4 sm:px-8 lg:px-16 relative overflow-hidden"
           style={{
-            width: 800,
-            height: 600,
-            background: "radial-gradient(ellipse, rgba(124,58,237,0.07) 0%, rgba(6,182,212,0.04) 40%, transparent 70%)",
-            filter: "blur(20px)",
+            background:
+              "linear-gradient(135deg, #080c18 0%, #0d1128 60%, #080c18 100%)",
           }}
-        />
+        >
+          {/* Animated Samurai Background */}
 
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
-          {/* Left */}
-          <div className="hero-orbit">
-            <div className="hero-orbit-inner">
-             <div className="hero-orbit-card">
-              <div className="mb-5">
-                <span
-                  className="inline-block text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase px-4 py-1.5 rounded-full"
-                  style={{ background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.22)" }}
-                >
-                  YouTube Gaming Creator
-                </span>
-              </div>
-        </div>
-            <h1
-              className="font-black text-white leading-none mb-3"
-              style={{
-                fontFamily: "'Orbitron', sans-serif",
-                fontSize: "clamp(3.5rem, 9vw, 6rem)",
-                textShadow: "0 0 60px rgba(124,58,237,0.45)",
-              }}
-            >
-              XTRACT
-            </h1>
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <video
+              className="absolute inset-0 w-full h-full object-cover"
+              src="/samurai.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
 
-            <p
-              className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold"
-              style={{ fontFamily: "'Rajdhani', sans-serif" }}
-            >
-              PC & Mobile Gaming Across All Genres 🎮
-            </p>
+            {/* Dark gaming overlay */}
 
-            <p className="text-slate-400 mb-8 leading-relaxed text-[0.95rem]">
-              Hello! I am Sinju — your destination for PC & Mobile Gaming across all genres. From action-packed adventures and intense FPS battles to story-driven games, indie gems, and casual fun — I play it all.
-            </p>
-
-            {/* Feature cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
-              {FEATURES.map((f, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-4 rounded-2xl card-reveal card-float"
-                  style={{
-                    animationDelay: `${0.45 + i * 0.12}s`,
-                    background: "linear-gradient(145deg, #141a2e, #111728)",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.05)",
-                  }}
-                >
-                  <span className="text-2xl leading-none mt-0.5">{f.icon}</span>
-                  <div>
-                    <div className="font-bold text-white text-sm" style={{ fontFamily: "'Rajdhani', sans-serif" }}>{f.title}</div>
-                    <div className="text-slate-500 text-xs mt-0.5">{f.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            </div>
             <div
-              className="flex flex-wrap gap-4 card-reveal card-float"
-              style={{ animationDelay: "0.95s" }}
-            >
-              <ClayButton
-                variant="primary"
-                onClick={() => {
-                  window.open(
-                   "https://www.youtube.com/@xTracttGG?sub_confirmation=1",
-                   "_blank",
-                   "noopener,noreferrer"
-                  );
-                }}
-              >
-              <Youtube className="w-4 h-4" />
-                Subscribe on YouTube
-              </ClayButton>
-              <ClayButton variant="secondary" onClick={() => onNavigate("playlists")}>
-                Explore Playlists
-              </ClayButton>
-            </div>
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(8,12,24,0.92) 0%, rgba(8,12,24,0.78) 45%, rgba(8,12,24,0.55) 100%)",
+              }}
+            />
+
+            {/* Purple/cyan atmosphere */}
+
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(circle at 70% 50%, rgba(124,58,237,0.16), transparent 45%), radial-gradient(circle at 85% 30%, rgba(6,182,212,0.10), transparent 35%)",
+              }}
+            />
           </div>
 
-          {/* Right: Gaming Visual */}
-          <div className="hidden lg:flex items-center justify-center px-8 hero-visual-enter">
-              <GamingVisual onNavigate={onNavigate}/>
+          {/* Radial glow */}
+
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hero glow"
+            style={{
+              width: 800,
+              height: 600,
+              background:
+                "radial-gradient(ellipse, rgba(124,58,237,0.07) 0%, rgba(6,182,212,0.04) 40%, transparent 70%)",
+              filter: "blur(20px)",
+            }}
+          />
+
+          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
+
+            {/* =========================================
+                LEFT HERO
+            ========================================= */}
+
+            <div className="hero-orbit">
+              <div className="hero-orbit-inner">
+                <div className="hero-orbit-card">
+
+                  <div className="mb-5">
+                    <span
+                      className="inline-block text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase px-4 py-1.5 rounded-full"
+                      style={{
+                        background: "rgba(6,182,212,0.1)",
+                        border: "1px solid rgba(6,182,212,0.22)",
+                      }}
+                    >
+                      YouTube Gaming Creator
+                    </span>
+                  </div>
+
+                </div>
+
+                <h1
+                  className="font-black text-white leading-none mb-3"
+                  style={{
+                    fontFamily: "'Orbitron', sans-serif",
+                    fontSize: "clamp(3.5rem, 9vw, 6rem)",
+                    textShadow: "0 0 60px rgba(124,58,237,0.45)",
+                  }}
+                >
+                  XTRACT
+                </h1>
+
+                <p
+                  className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold"
+                  style={{
+                    fontFamily: "'Rajdhani', sans-serif",
+                  }}
+                >
+                  PC & Mobile Gaming Across All Genres 🎮
+                </p>
+
+                <p className="text-slate-400 mb-8 leading-relaxed text-[0.95rem]">
+                  Hello! I am Sinju — your destination for PC & Mobile Gaming
+                  across all genres. From action-packed adventures and intense
+                  FPS battles to story-driven games, indie gems, and casual
+                  fun — I play it all.
+                </p>
+
+                {/* Feature cards */}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+                  {FEATURES.map((f, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start gap-3 p-4 rounded-2xl card-reveal card-float"
+                      style={{
+                        animationDelay: `${0.45 + i * 0.12}s`,
+                        background:
+                          "linear-gradient(145deg, #141a2e, #111728)",
+                        boxShadow:
+                          "0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
+                        border:
+                          "1px solid rgba(255,255,255,0.05)",
+                      }}
+                    >
+                      <span className="text-2xl leading-none mt-0.5">
+                        {f.icon}
+                      </span>
+
+                      <div>
+                        <div
+                          className="font-bold text-white text-sm"
+                          style={{
+                            fontFamily: "'Rajdhani', sans-serif",
+                          }}
+                        >
+                          {f.title}
+                        </div>
+
+                        <div className="text-slate-500 text-xs mt-0.5">
+                          {f.desc}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hero buttons */}
+
+              <div
+                className="flex flex-wrap gap-4 card-reveal card-float"
+                style={{
+                  animationDelay: "0.95s",
+                }}
+              >
+                <ClayButton
+                  variant="primary"
+                  onClick={() => {
+                    window.open(
+                      "https://www.youtube.com/@xTracttGG?sub_confirmation=1",
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
+                  <Youtube className="w-4 h-4" />
+                  Subscribe on YouTube
+                </ClayButton>
+
+                <ClayButton
+                  variant="secondary"
+                  onClick={() => onNavigate("playlists")}
+                >
+                  Explore Playlists
+                </ClayButton>
+              </div>
             </div>
-        </div>
-      </section>
+
+            {/* =========================================
+                RIGHT: GAMING VISUAL
+            ========================================= */}
+
+            <div className="hidden lg:flex items-center justify-center px-8 hero-visual-enter">
+              <GamingVisual onNavigate={onNavigate} />
+            </div>
+          </div>
+        </section>
       </ThreeDParallax>
-      
-      {/* Featured Video */}
+
+      {/* =========================================
+          FEATURED VIDEO
+      ========================================= */}
+
       <section
-          id="featured-video"
+        id="featured-video"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
-        style={{ background: "#080c18" }}
+        style={{
+          background: "#080c18",
+        }}
       >
         <div className="max-w-7xl mx-auto">
+
           <SectionHeading title="Featured Video" />
+
           <ClayCard>
             <div className="grid lg:grid-cols-2">
-              <div className="relative" style={{ aspectRatio: "16/9", minHeight: 220 }}>
+
+              <div
+                className="relative"
+                style={{
+                  aspectRatio: "16/9",
+                  minHeight: 220,
+                }}
+              >
                 <img
                   src={featuredVideo.thumbnail}
                   alt={featuredVideo.title}
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                  style={{ background: "#141a2e" }}
+                  style={{
+                    background: "#141a2e",
+                  }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, transparent 60%, rgba(17,23,40,0.7) 100%)" }} />
+
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent 60%, rgba(17,23,40,0.7) 100%)",
+                  }}
+                />
+
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div
                     className="w-20 h-20 rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
                     style={{
                       background: "rgba(124,58,237,0.9)",
-                      boxShadow: "0 0 50px rgba(124,58,237,0.75), 0 4px 20px rgba(0,0,0,0.55)",
-                      animation: "playPulse 2.5s ease-in-out infinite",
+                      boxShadow:
+                        "0 0 50px rgba(124,58,237,0.75), 0 4px 20px rgba(0,0,0,0.55)",
+                      animation:
+                        "playPulse 2.5s ease-in-out infinite",
                     }}
                   >
                     <Play className="w-9 h-9 text-white fill-white ml-1" />
                   </div>
                 </div>
+
                 <div className="absolute bottom-3 right-3 bg-black/80 text-white text-sm font-mono px-3 py-1 rounded-lg tracking-wide">
                   {featuredVideo.duration}
                 </div>
               </div>
+
               <div className="p-8 flex flex-col justify-center">
-                <div className="text-xs font-bold tracking-[0.25em] text-purple-400 uppercase mb-3">Featured</div>
+
+                <div className="text-xs font-bold tracking-[0.25em] text-purple-400 uppercase mb-3">
+                  Featured
+                </div>
+
                 <h3
                   className="text-2xl font-black text-white mb-4 leading-tight"
-                  style={{ fontFamily: "'Rajdhani', sans-serif" }}
+                  style={{
+                    fontFamily: "'Rajdhani', sans-serif",
+                  }}
                 >
                   {featuredVideo.title}
                 </h3>
-                <p className="text-slate-400 mb-5 leading-relaxed text-sm">{featuredVideo.description}</p>
+
+                <p className="text-slate-400 mb-5 leading-relaxed text-sm">
+                  {featuredVideo.description}
+                </p>
+
                 <div className="flex gap-5 text-sm text-slate-500 mb-2">
-                  <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" /> {featuredVideo.views}</span>
-                  <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {featuredVideo.date}</span>
+                  <span className="flex items-center gap-1.5">
+                    <Eye className="w-4 h-4" />
+                    {featuredVideo.views}
+                  </span>
+
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4" />
+                    {featuredVideo.date}
+                  </span>
                 </div>
-                <p className="text-xs text-slate-700 italic mb-6">View on YouTube</p>
+
+                <p className="text-xs text-slate-700 italic mb-6">
+                  View on YouTube
+                </p>
+
                 <ClayButton
-                variant="primary"
-                onClick={() => {
-                  window.location.href = `https://www.youtube.com/watch?v=${featuredVideo.id}`;
-                }}
-              >
-              <Play className="w-4 h-4 fill-white" />
-                Watch on YouTube ▶
-              </ClayButton>
+                  variant="primary"
+                  onClick={() => {
+                    window.location.href =
+                      `https://www.youtube.com/watch?v=${featuredVideo.id}`;
+                  }}
+                >
+                  <Play className="w-4 h-4 fill-white" />
+                  Watch on YouTube ▶
+                </ClayButton>
+
               </div>
             </div>
           </ClayCard>
         </div>
       </section>
 
-      {/* Channel Stats */}
-<section
-  id="channel-stats"
-  className="py-20 px-4 sm:px-8 lg:px-16"
-  style={{
-    background: "linear-gradient(180deg, #080c18, #0a0e1e)",
-  }}
->
-  <div className="max-w-7xl mx-auto">
-    <SectionHeading title="Channel Stats" emoji="📊" />
+      {/* =========================================
+          CHANNEL STATS
+      ========================================= */}
 
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
-      
-      {/* Subscribers */}
-      <div
-        className="p-8 rounded-3xl text-center"
+      <section
+        id="channel-stats"
+        className="py-20 px-4 sm:px-8 lg:px-16"
         style={{
-          background: "linear-gradient(145deg, #141a2e, #111728)",
-          boxShadow:
-            "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.05)",
+          background:
+            "linear-gradient(180deg, #080c18, #0a0e1e)",
         }}
       >
-        <div className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
-          Subscribers
-        </div>
-
-        <div
-          className="text-4xl font-black text-white"
-          style={{ fontFamily: "'Orbitron', sans-serif" }}
-        >
-          {channel?.subscribers
-            ? Number(channel.subscribers).toLocaleString()
-            : "—"}
-        </div>
-      </div>
-
-      {/* Views */}
-      <div
-        className="p-8 rounded-3xl text-center"
-        style={{
-          background: "linear-gradient(145deg, #141a2e, #111728)",
-          boxShadow:
-            "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.05)",
-        }}
-      >
-        <div className="text-purple-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
-          Total Views
-        </div>
-
-        <div
-          className="text-4xl font-black text-white"
-          style={{ fontFamily: "'Orbitron', sans-serif" }}
-        >
-          {channel?.views
-            ? Number(channel.views).toLocaleString()
-            : "—"}
-        </div>
-      </div>
-
-      {/* Likes */}
-      <div
-        className="p-8 rounded-3xl text-center"
-        style={{
-          background: "linear-gradient(145deg, #141a2e, #111728)",
-          boxShadow:
-            "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.05)",
-        }}
-      >
-        <div className="text-pink-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
-          Total Likes
-        </div>
-
-        <div
-          className="text-4xl font-black text-white"
-          style={{ fontFamily: "'Orbitron', sans-serif" }}
-        >
-          {totalLikes > 0
-  ? totalLikes.toLocaleString()
-  : "—"}
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-      {/* Most Popular Videos */}
-      <section className="py-20 px-4 sm:px-8 lg:px-16 section-float" style={{ background: "#080c18" }}>
         <div className="max-w-7xl mx-auto">
-          <SectionHeading title="Most Popular Videos" emoji="🎮" />
-          <p className="text-slate-600 text-xs italic -mt-6 mb-10">View On YouTube</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {POPULAR_VIDEOS.map((v, i) => (
-              <div
-                key={v.id}
-                className="card-reveal card-float"
-                style={{ animationDelay: `${i * 0.15}s` }}
-              >
-                <VideoCard video={v} />
+
+          <SectionHeading
+            title="Channel Stats"
+            emoji="📊"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
+
+            {/* =====================================
+                SUBSCRIBERS
+            ===================================== */}
+
+            <div
+              className={`p-8 rounded-3xl text-center stat-card ${
+                activeStat === 0 ? "stat-card-active" : ""
+              }`}
+              style={{
+                background:
+                  "linear-gradient(145deg, #141a2e, #111728)",
+                boxShadow:
+                  "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+                border:
+                  "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
+                Subscribers
               </div>
-            ))}
+
+              <div
+                className={`text-4xl font-black text-white stat-value ${
+                  activeStat === 0 ? "stat-active" : ""
+                }`}
+                style={{
+                  fontFamily: "'Orbitron', sans-serif",
+                }}
+              >
+                {activeStat === 0
+                  ? displayStat.toLocaleString()
+                  : Number(channel?.subscribers || 0).toLocaleString()}
+              </div>
+
+              {activeStat === 0 && (
+                <div className="mt-3 text-[10px] tracking-[0.25em] text-cyan-400 uppercase opacity-70">
+                  ● LIVE DATA
+                </div>
+              )}
+            </div>
+
+            {/* =====================================
+                TOTAL VIEWS
+            ===================================== */}
+
+            <div
+              className={`p-8 rounded-3xl text-center stat-card ${
+                activeStat === 1 ? "stat-card-active" : ""
+              }`}
+              style={{
+                background:
+                  "linear-gradient(145deg, #141a2e, #111728)",
+                boxShadow:
+                  "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+                border:
+                  "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="text-purple-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
+                Total Views
+              </div>
+
+              <div
+                className={`text-4xl font-black text-white stat-value ${
+                  activeStat === 1 ? "stat-active" : ""
+                }`}
+                style={{
+                  fontFamily: "'Orbitron', sans-serif",
+                }}
+              >
+                {activeStat === 1
+                  ? displayStat.toLocaleString()
+                  : Number(channel?.views || 0).toLocaleString()}
+              </div>
+
+              {activeStat === 1 && (
+                <div className="mt-3 text-[10px] tracking-[0.25em] text-purple-400 uppercase opacity-70">
+                  ● LIVE DATA
+                </div>
+              )}
+            </div>
+
+            {/* =====================================
+                TOTAL LIKES
+            ===================================== */}
+
+            <div
+              className={`p-8 rounded-3xl text-center stat-card ${
+                activeStat === 2 ? "stat-card-active" : ""
+              }`}
+              style={{
+                background:
+                  "linear-gradient(145deg, #141a2e, #111728)",
+                boxShadow:
+                  "0 8px 25px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+                border:
+                  "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="text-pink-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">
+                Total Likes
+              </div>
+
+              <div
+                className={`text-4xl font-black text-white stat-value ${
+                  activeStat === 2 ? "stat-active" : ""
+                }`}
+                style={{
+                  fontFamily: "'Orbitron', sans-serif",
+                }}
+              >
+                {activeStat === 2
+                  ? displayStat.toLocaleString()
+                  : Number(totalLikes || 0).toLocaleString()}
+              </div>
+
+              {activeStat === 2 && (
+                <div className="mt-3 text-[10px] tracking-[0.25em] text-pink-400 uppercase opacity-70">
+                  ● LIVE DATA
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* Playlists preview */}
+      {/* =========================================
+          MOST POPULAR VIDEOS
+      ========================================= */}
+
+      <section
+        className="py-20 px-4 sm:px-8 lg:px-16 section-float"
+        style={{
+          background: "#080c18",
+        }}
+      >
+        <div className="max-w-7xl mx-auto">
+
+          <SectionHeading
+            title="Most Popular Videos"
+            emoji="🎮"
+          />
+
+          <p className="text-slate-600 text-xs italic -mt-6 mb-10">
+            View On YouTube
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {POPULAR_VIDEOS.map((v, i) => (
+              <div
+                key={v.id}
+                className="card-reveal card-float"
+                style={{
+                  animationDelay: `${i * 0.15}s`,
+                }}
+              >
+                <VideoCard video={v} />
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
+          PLAYLISTS PREVIEW
+      ========================================= */}
+
       <section
         id="playlists-preview"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
-        style={{ background: "linear-gradient(180deg, #080c18, #0a0e1e)" }}
+        style={{
+          background:
+            "linear-gradient(180deg, #080c18, #0a0e1e)",
+        }}
       >
         <div className="max-w-7xl mx-auto">
+
           <div className="text-center mb-14">
+
             <h2
               className="font-black text-white mb-3"
               style={{
@@ -1024,24 +1234,36 @@ function HomePage({ onNavigate, playlists, featuredVideo, channel, totalLikes }:
             >
               Explore My Playlists 🎮
             </h2>
-            <p className="text-slate-400 text-lg">Different games. Different genres. Different experiences.</p>
+
+            <p className="text-slate-400 text-lg">
+              Different games. Different genres. Different experiences.
+            </p>
+
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
             {playlists.map((p, i) => (
               <div
                 key={p.id}
                 className="card-reveal card-float"
-                style={{ animationDelay: `${i * 0.12}s` }}
+                style={{
+                  animationDelay: `${i * 0.12}s`,
+                }}
               >
                 <PlaylistCard
                   playlist={p}
-                  onClick={() => onNavigate("playlist-detail", p.id)}
+                  onClick={() =>
+                    onNavigate("playlist-detail", p.id)
+                  }
                 />
               </div>
             ))}
+
           </div>
         </div>
       </section>
+
     </div>
   );
 }
@@ -1394,352 +1616,600 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
+
   const [CHANNEL, setCHANNEL] = useState<any>(null);
   const [PLAYLISTS, setPLAYLISTS] = useState<Playlist[]>([]);
   const [POPULAR_VIDEOS, setPOPULAR_VIDEOS] = useState<Video[]>([]);
-  const [FEATURED_VIDEO, setFEATURED_VIDEO] = useState<Video>({
-  id: "",
-  title: "",
-  thumbnail: "",
-  views: "",
-  date: "",
-  duration: "",
-  description: "",
-});
-   const [totalLikes, setTotalLikes] = useState<number>(0);
-  useEffect(() => {
-  async function loadYouTubeData() {
-    try {
-      const response = await fetch(
-        "https://xtract-youtube-backend.onrender.com/api/youtube/data"
-      );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch YouTube data");
+  const [FEATURED_VIDEO, setFEATURED_VIDEO] = useState<Video>({
+    id: "",
+    title: "",
+    thumbnail: "",
+    views: "",
+    date: "",
+    duration: "",
+    description: "",
+  });
+
+  const [totalLikes, setTotalLikes] = useState<number>(0);
+
+  // =========================================
+  // CHANNEL STATS ANIMATION
+  // =========================================
+
+  const [activeStat, setActiveStat] = useState(0);
+  const [displayStat, setDisplayStat] = useState(0);
+
+  // =========================================
+  // FETCH YOUTUBE DATA
+  // =========================================
+
+  useEffect(() => {
+    async function loadYouTubeData() {
+      try {
+        const response = await fetch(
+          "https://xtract-youtube-backend.onrender.com/api/youtube/data"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch YouTube data");
+        }
+
+        const data = await response.json();
+
+        setCHANNEL(data.channel || null);
+        setPLAYLISTS(data.playlists || []);
+        setPOPULAR_VIDEOS(data.popularVideos || []);
+        setFEATURED_VIDEO(data.featuredVideo || null);
+        setTotalLikes(Number(data.totalLikes || 0));
+      } catch (error) {
+        console.error("YouTube data error:", error);
+      }
+    }
+
+    loadYouTubeData();
+  }, []);
+
+  // =========================================
+  // COUNTING ANIMATION
+  // =========================================
+
+  useEffect(() => {
+    const stats = [
+      Number(CHANNEL?.subscribers || 0),
+      Number(CHANNEL?.views || 0),
+      Number(totalLikes || 0),
+    ];
+
+    const target = stats[activeStat];
+
+    // Don't animate if data hasn't loaded yet
+    if (!target) {
+      setDisplayStat(0);
+      return;
+    }
+
+    let current = 0;
+
+    const duration = 1200;
+    const steps = 40;
+    const increment = target / steps;
+
+    const counter = window.setInterval(() => {
+      current += increment;
+
+      if (current >= target) {
+        current = target;
+        window.clearInterval(counter);
       }
 
-      const data = await response.json();
+      setDisplayStat(Math.floor(current));
+    }, duration / steps);
 
-      setCHANNEL(data.channel || null);
-      setPLAYLISTS(data.playlists || []);
-      setPOPULAR_VIDEOS(data.popularVideos || []);
-      setFEATURED_VIDEO(data.featuredVideo || null);
-      setTotalLikes(Number(data.totalLikes || 0));
+    return () => {
+      window.clearInterval(counter);
+    };
+  }, [activeStat, CHANNEL, totalLikes]);
 
-    } catch (error) {
-      console.error("YouTube data error:", error);
-    }
-  }
+  // =========================================
+  // ROTATE BETWEEN STATS
+  // =========================================
 
-  loadYouTubeData();
-}, []);
+  useEffect(() => {
+    const rotationTimer = window.setInterval(() => {
+      setActiveStat((prev) => (prev + 1) % 3);
+    }, 4000);
+
+    return () => {
+      window.clearInterval(rotationTimer);
+    };
+  }, []);
+
+  // =========================================
+  // NAVIGATION
+  // =========================================
 
   function navigate(page: string, id?: string) {
     setCurrentPage(page);
-    if (id) setSelectedPlaylistId(id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (id) {
+      setSelectedPlaylistId(id);
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
-  const selectedPlaylist = PLAYLISTS.find(p => p.id === selectedPlaylistId) ?? null;
+  const selectedPlaylist =
+    PLAYLISTS.find((p) => p.id === selectedPlaylistId) ?? null;
 
-  const isPlaylistActive = currentPage === "playlists" || currentPage === "playlist-detail";
+  const isPlaylistActive =
+    currentPage === "playlists" ||
+    currentPage === "playlist-detail";
 
   return (
     <>
-    <BackgroundMusic />
-    <div className="min-h-screen" style={{ background: "#080c18", fontFamily: "'Inter', sans-serif" }}>
-      {/* Animations */}
-      <style>{`
-        @keyframes playPulse {
-          0%, 100% { box-shadow: 0 0 24px rgba(124,58,237,0.65), 0 4px 12px rgba(0,0,0,0.5); }
-          50% { box-shadow: 0 0 48px rgba(124,58,237,1), 0 4px 18px rgba(0,0,0,0.6); }
-        }
-        @keyframes floatBadge {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-/* =========================================
-   HOMEPAGE ANIMATIONS
-   ========================================= */
+      <BackgroundMusic />
 
-/* HERO: first entrance */
-@keyframes heroEntrance {
-  0% {
-    opacity: 0;
-    transform: translateY(35px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* HERO: continuous floating + X-Z orbit */
-/* HERO: continuous 3D Y-axis orbit */
-@keyframes heroOrbit {
-  0% {
-    transform: rotateY(0deg);
-  }
-
-  /* Complete orbit in 2.5 seconds */
-  23.8095% {
-    transform: rotateY(360deg);
-  }
-
-  /* Remaining 8 seconds = reading pause */
-  100% {
-    transform: rotateY(360deg);
-  }
-}
-
-
-/* HERO RIGHT-SIDE VISUAL */
-@keyframes heroVisualEntrance {
-  0% {
-    opacity: 0;
-    transform: translateX(45px) scale(0.96);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-/* Continuous gentle floating */
-@keyframes continuousFloat {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -10px, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-
-/* Background glow */
-@keyframes glowFloat {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.12);
-  }
-}
-
-
-/* Moving grid */
-@keyframes gridMove {
-  from {
-    background-position: 0 0;
-  }
-
-  to {
-    background-position: 60px 60px;
-  }
-}
-
-
-/* Feature/card entrance */
-@keyframes cardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(25px) scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-
-/* =========================================
-   HERO CLASSES
-   ========================================= */
-
-.hero-orbit {
-  perspective: 1400px;
-  transform-style: preserve-3d;
-}
-
-.hero-orbit-inner {
-  transform-style: preserve-3d;
-  animation: heroOrbit 10.5s linear infinite;
-}
-
-.hero-orbit-card {
-  transform: translateZ(220px);
-  transform-style: preserve-3d;
-}
-
-/*
-   The gaming visual first enters from the right,
-   then continuously floats.
-*/
-.hero-visual-enter {
-  animation:
-    heroVisualEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-}
-
-/* =========================================
-   LOWER HOMEPAGE SECTIONS
-   ========================================= */
-
-.card-reveal {
-  animation:
-    cardReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-    continuousFloat 5.5s ease-in-out 0.65s infinite;
-}
-
-.card-float {
-  animation: continuousFloat 5s ease-in-out 0.65s infinite;
-}
-
-
-/* Featured section itself */
-.section-reveal {
-  animation: cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.section-float {
-  animation: continuousFloat 6s ease-in-out 0.8s infinite;
-}
-
-.floating-visual {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-}
-
-
-/* Hero background */
-.hero-grid {
-  animation: gridMove 18s linear infinite;
-}
-
-.hero-glow {
-  animation: glowFloat 7s ease-in-out infinite;
-}
-
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .hero-orbit,
-  .hero-orbit-inner,
-  .hero-visual-enter,
-  .hero-orbit-card,
-  .card-reveal,
-  .card-float,
-  .section-reveal,
-  .section-float,
-  .floating-visual,
-  .hero-grid,
-  .hero-glow {
-    animation: none !important;
-  }
-}
-        body { overflow-x: hidden; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #080c18; }
-        ::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.35); border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.55); }
-      `}</style>
-
-      <Sidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        currentPage={currentPage}
-        onNavigate={navigate}
-        playlists={PLAYLISTS}
-      />
-
-      {/* Topbar */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-30 flex items-center gap-3 px-4 sm:px-8 py-4"
+      <div
+        className="min-h-screen"
         style={{
-          background: "rgba(8,12,24,0.82)",
-          backdropFilter: "blur(20px)",
-          borderBottom: "1px solid rgba(255,255,255,0.04)",
+          background: "#080c18",
+          fontFamily: "'Inter', sans-serif",
         }}
       >
-        {/* Hamburger */}
-        <button
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Open menu"
-          className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 shrink-0"
+        {/* =========================================
+            ANIMATIONS
+        ========================================= */}
+
+        <style>{`
+          @keyframes playPulse {
+            0%, 100% {
+              box-shadow:
+                0 0 24px rgba(124,58,237,0.65),
+                0 4px 12px rgba(0,0,0,0.5);
+            }
+
+            50% {
+              box-shadow:
+                0 0 48px rgba(124,58,237,1),
+                0 4px 18px rgba(0,0,0,0.6);
+            }
+          }
+
+          @keyframes floatBadge {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+
+            50% {
+              transform: translateY(-10px);
+            }
+          }
+
+          /* =========================================
+             HOMEPAGE ANIMATIONS
+          ========================================= */
+
+          @keyframes heroEntrance {
+            0% {
+              opacity: 0;
+              transform: translateY(35px);
+            }
+
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          /* HERO: continuous 3D Y-axis orbit */
+
+          @keyframes heroOrbit {
+            0% {
+              transform: rotateY(0deg);
+            }
+
+            23.8095% {
+              transform: rotateY(360deg);
+            }
+
+            100% {
+              transform: rotateY(360deg);
+            }
+          }
+
+          /* HERO RIGHT-SIDE VISUAL */
+
+          @keyframes heroVisualEntrance {
+            0% {
+              opacity: 0;
+              transform: translateX(45px) scale(0.96);
+            }
+
+            100% {
+              opacity: 1;
+              transform: translateX(0) scale(1);
+            }
+          }
+
+          /* Continuous gentle floating */
+
+          @keyframes continuousFloat {
+            0% {
+              transform: translate3d(0, 0, 0);
+            }
+
+            50% {
+              transform: translate3d(0, -10px, 0);
+            }
+
+            100% {
+              transform: translate3d(0, 0, 0);
+            }
+          }
+
+          /* Background glow */
+
+          @keyframes glowFloat {
+            0%,
+            100% {
+              transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+              transform: translate(-50%, -50%) scale(1.12);
+            }
+          }
+
+          /* Moving grid */
+
+          @keyframes gridMove {
+            from {
+              background-position: 0 0;
+            }
+
+            to {
+              background-position: 60px 60px;
+            }
+          }
+
+          /* Feature/card entrance */
+
+          @keyframes cardReveal {
+            from {
+              opacity: 0;
+              transform: translateY(25px) scale(0.97);
+            }
+
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+
+          /*Stat number entrance*/
+
+          .stat-card {
+  transition:
+    transform 0.45s ease,
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+
+.stat-card-active {
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(124, 58, 237, 0.35) !important;
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.45),
+    0 0 30px rgba(124,58,237,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+          /* =========================================
+             HERO CLASSES
+          ========================================= */
+
+          .hero-orbit {
+            perspective: 1400px;
+            transform-style: preserve-3d;
+          }
+
+          .hero-orbit-inner {
+            transform-style: preserve-3d;
+            animation: heroOrbit 10.5s linear infinite;
+          }
+
+          .hero-orbit-card {
+            transform: translateZ(220px);
+            transform-style: preserve-3d;
+          }
+
+          /*
+             The gaming visual first enters from the right,
+             then continuously floats.
+          */
+
+          .hero-visual-enter {
+            animation:
+              heroVisualEntrance 1s cubic-bezier(0.22, 1, 0.36, 1)
+              0.2s both;
+          }
+
+          /* =========================================
+             LOWER HOMEPAGE SECTIONS
+          ========================================= */
+
+          .card-reveal {
+            animation:
+              cardReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
+              continuousFloat 5.5s ease-in-out 0.65s infinite;
+          }
+
+          .card-float {
+            animation:
+              continuousFloat 5s ease-in-out 0.65s infinite;
+          }
+
+          /* Featured section itself */
+
+          .section-reveal {
+            animation:
+              cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+          }
+
+          .section-float {
+            animation:
+              continuousFloat 6s ease-in-out 0.8s infinite;
+          }
+
+          .floating-visual {
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+          }
+
+          /* Hero background */
+
+          .hero-grid {
+            animation: gridMove 18s linear infinite;
+          }
+
+          .hero-glow {
+            animation: glowFloat 7s ease-in-out infinite;
+          }
+
+          /* =========================================
+             CHANNEL STATS
+          ========================================= */
+
+          .stat-value {
+            transition:
+              transform 0.45s ease,
+              opacity 0.45s ease,
+              filter 0.45s ease;
+          }
+
+          .stat-value.stat-active {
+            animation: statNumberEnter 0.6s ease-out;
+          }
+
+          @keyframes statNumberEnter {
+            0% {
+              opacity: 0;
+              transform: translateY(18px) rotateX(-35deg);
+              filter: blur(6px);
+            }
+
+            60% {
+              opacity: 1;
+              transform: translateY(-3px) rotateX(5deg);
+              filter: blur(0);
+            }
+
+            100% {
+              opacity: 1;
+              transform: translateY(0) rotateX(0deg);
+              filter: blur(0);
+            }
+          }
+
+          /* =========================================
+             ACCESSIBILITY
+          ========================================= */
+
+          @media (prefers-reduced-motion: reduce) {
+            .hero-orbit,
+            .hero-orbit-inner,
+            .hero-visual-enter,
+            .hero-orbit-card,
+            .card-reveal,
+            .card-float,
+            .section-reveal,
+            .section-float,
+            .floating-visual,
+            .hero-grid,
+            .hero-glow,
+            .stat-value.stat-active {
+              animation: none !important;
+            }
+          }
+
+          body {
+            overflow-x: hidden;
+          }
+
+          ::-webkit-scrollbar {
+            width: 5px;
+          }
+
+          ::-webkit-scrollbar-track {
+            background: #080c18;
+          }
+
+          ::-webkit-scrollbar-thumb {
+            background: rgba(124,58,237,0.35);
+            border-radius: 9999px;
+          }
+
+          ::-webkit-scrollbar-thumb:hover {
+            background: rgba(124,58,237,0.55);
+          }
+        `}</style>
+
+        {/* =========================================
+            SIDEBAR
+        ========================================= */}
+
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          currentPage={currentPage}
+          onNavigate={navigate}
+          playlists={PLAYLISTS}
+        />
+
+        {/* =========================================
+            TOPBAR
+        ========================================= */}
+
+        <nav
+          className="fixed top-0 left-0 right-0 z-30 flex items-center gap-3 px-4 sm:px-8 py-4"
           style={{
-            background: "linear-gradient(145deg, #1a2240, #141a2e)",
-            boxShadow: "0 4px 14px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.07)",
+            background: "rgba(8,12,24,0.82)",
+            backdropFilter: "blur(20px)",
+            borderBottom: "1px solid rgba(255,255,255,0.04)",
           }}
         >
-          <Menu className="w-5 h-5 text-white" />
-        </button>
+          {/* Hamburger */}
 
-        {/* Logo */}
-        <button
-          onClick={() => navigate("home")}
-          className="font-black text-white text-lg tracking-widest flex-1 text-left sm:text-center"
-          style={{ fontFamily: "'Orbitron', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.4)" }}
-        >
-          XTRACT
-        </button>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Open menu"
+            className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 shrink-0"
+            style={{
+              background:
+                "linear-gradient(145deg, #1a2240, #141a2e)",
+              boxShadow:
+                "0 4px 14px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)",
+              border:
+                "1px solid rgba(255,255,255,0.07)",
+            }}
+          >
+            <Menu className="w-5 h-5 text-white" />
+          </button>
 
-        {/* Desktop nav */}
-        <div className="hidden sm:flex items-center gap-1">
-          {([["Home", "home"], ["Playlists", "playlists"], ["Contact", "contact"]] as [string, string][]).map(([label, page]) => {
-            const active = currentPage === page || (page === "playlists" && isPlaylistActive);
-            return (
-              <button
-                key={page}
-                onClick={() => navigate(page)}
-                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  active ? "text-white" : "text-slate-400 hover:text-white hover:bg-white/5"
-                }`}
-                style={
-                  active
-                    ? {
-                        background: "linear-gradient(145deg, rgba(124,58,237,0.18), rgba(6,182,212,0.08))",
-                        border: "1px solid rgba(124,58,237,0.28)",
-                      }
-                    : {}
-                }
-              >
-                {label}
-              </button>
-            );
-          })}
+          {/* Logo */}
+
+          <button
+            onClick={() => navigate("home")}
+            className="font-black text-white text-lg tracking-widest flex-1 text-left sm:text-center"
+            style={{
+              fontFamily: "'Orbitron', sans-serif",
+              textShadow:
+                "0 0 20px rgba(124,58,237,0.4)",
+            }}
+          >
+            XTRACT
+          </button>
+
+          {/* Desktop nav */}
+
+          <div className="hidden sm:flex items-center gap-1">
+            {(
+              [
+                ["Home", "home"],
+                ["Playlists", "playlists"],
+                ["Contact", "contact"],
+              ] as [string, string][]
+            ).map(([label, page]) => {
+              const active =
+                currentPage === page ||
+                (page === "playlists" && isPlaylistActive);
+
+              return (
+                <button
+                  key={page}
+                  onClick={() => navigate(page)}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    active
+                      ? "text-white"
+                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                  }`}
+                  style={
+                    active
+                      ? {
+                          background:
+                            "linear-gradient(145deg, rgba(124,58,237,0.18), rgba(6,182,212,0.08))",
+                          border:
+                            "1px solid rgba(124,58,237,0.28)",
+                        }
+                      : {}
+                  }
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Contact */}
+
+          <ClayButton
+            variant="primary"
+            href="mailto:sinjuforbusiness@gmail.com"
+            className="shrink-0 text-xs px-4 py-2.5 hidden sm:inline-flex"
+          >
+            <Mail className="w-3.5 h-3.5" />
+            Contact
+          </ClayButton>
+        </nav>
+
+        {/* =========================================
+            PAGES
+        ========================================= */}
+
+        <div className="pt-[72px]">
+          {currentPage === "home" && (
+            <HomePage
+              onNavigate={navigate}
+              playlists={PLAYLISTS}
+              featuredVideo={FEATURED_VIDEO}
+              channel={CHANNEL}
+              totalLikes={totalLikes}
+              activeStat={activeStat}
+              displayStat={displayStat}
+            />
+          )}
+
+          {currentPage === "playlists" && (
+            <PlaylistsPage
+              playlists={PLAYLISTS}
+              onSelect={(id) =>
+                navigate("playlist-detail", id)
+              }
+            />
+          )}
+
+          {currentPage === "playlist-detail" &&
+            selectedPlaylist && (
+              <PlaylistDetailPage
+                playlist={selectedPlaylist}
+                onBack={() => navigate("playlists")}
+              />
+            )}
+
+          {currentPage === "contact" && <ContactPage />}
         </div>
 
-        <ClayButton variant="primary" href="mailto:sinjuforbusiness@gmail.com" className="shrink-0 text-xs px-4 py-2.5 hidden sm:inline-flex">
-          <Mail className="w-3.5 h-3.5" />
-          Contact
-        </ClayButton>
-      </nav>
+        {/* =========================================
+            FOOTER
+        ========================================= */}
 
-      {/* Pages */}
-      <div className="pt-[72px]">
-        {currentPage === "home" && <HomePage onNavigate={navigate} playlists={PLAYLISTS} featuredVideo={FEATURED_VIDEO} channel={CHANNEL} totalLikes={totalLikes}/>}
-        {currentPage === "playlists" && (
-          <PlaylistsPage playlists={PLAYLISTS} onSelect={id => navigate("playlist-detail", id)} />
-        )}
-        {currentPage === "playlist-detail" && selectedPlaylist && (
-          <PlaylistDetailPage playlist={selectedPlaylist} onBack={() => navigate("playlists")} />
-        )}
-        {currentPage === "contact" && <ContactPage />}
+        <Footer onNavigate={navigate} />
       </div>
-
-      <Footer onNavigate={navigate} />
-    </div>
     </>
   );
 }
