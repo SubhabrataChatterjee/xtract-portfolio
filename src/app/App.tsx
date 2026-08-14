@@ -10,6 +10,7 @@ import ThreeDBackground from "./components/ThreeDBackground";
 import ThreeDPanel from "./components/ThreeDPanel";
 import ThreeDParallax from "./components/ThreeDParallax";
 import BackgroundMusic from "./components/BackgroundMusic";
+import "@fontsource/space-grotesk";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -264,7 +265,7 @@ function VideoCard({ video }: { video: Video }) {
         <h3
           className="font-bold text-white text-sm leading-snug mb-2 line-clamp-2 overflow-hidden"
           style={{
-            fontFamily: "'Rajdhani', sans-serif",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontSize: "0.95rem",
           }}
         >
@@ -320,7 +321,7 @@ function PlaylistCard({ playlist, onClick }: { playlist: Playlist; onClick: () =
       <div className="p-5 flex flex-col flex-1">
         <h3
           className="font-black text-white mb-2"
-          style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "1.05rem", letterSpacing: "0.03em" }}
+          style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.05rem", letterSpacing: "0.03em" }}
         >
           {playlist.name}
         </h3>
@@ -569,7 +570,7 @@ function Sidebar({
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
           <span
             className="text-white font-black text-xl tracking-widest"
-            style={{ fontFamily: "'Orbitron', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.5)" }}
+            style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.5)" }}
           >
             XTRACT
           </span>
@@ -682,7 +683,7 @@ function SectionHeading({ title, emoji }: { title: string; emoji?: string }) {
     <div className="flex items-center gap-3 mb-10">
       <h2
         className="text-2xl sm:text-3xl font-black text-white whitespace-nowrap"
-        style={{ fontFamily: "'Orbitron', sans-serif", letterSpacing: "0.03em" }}
+        style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.03em" }}
       >
         {title}
       </h2>
@@ -801,7 +802,7 @@ function HomePage({
                 <h1
                   className="font-black text-white leading-none mb-3"
                   style={{
-                    fontFamily: "'Orbitron', sans-serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: "clamp(3.5rem, 9vw, 6rem)",
                     textShadow: "0 0 60px rgba(124,58,237,0.45)",
                   }}
@@ -812,7 +813,7 @@ function HomePage({
                 <p
                   className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold"
                   style={{
-                    fontFamily: "'Rajdhani', sans-serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                   }}
                 >
                   PC & Mobile Gaming Across All Genres 🎮
@@ -850,7 +851,7 @@ function HomePage({
                         <div
                           className="font-bold text-white text-sm"
                           style={{
-                            fontFamily: "'Rajdhani', sans-serif",
+                            fontFamily: "'Space Grotesk', sans-serif",
                           }}
                         >
                           {f.title}
@@ -978,7 +979,7 @@ function HomePage({
                 <h3
                   className="text-2xl font-black text-white mb-4 leading-tight"
                   style={{
-                    fontFamily: "'Rajdhani', sans-serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                   }}
                 >
                   {featuredVideo.title}
@@ -1068,7 +1069,7 @@ function HomePage({
                   activeStat === 0 ? "stat-active" : ""
                 }`}
                 style={{
-                  fontFamily: "'Orbitron', sans-serif",
+                  fontFamily: "'Space Grotesk', sans-serif",
                 }}
               >
                 {activeStat === 0
@@ -1109,7 +1110,7 @@ function HomePage({
                   activeStat === 1 ? "stat-active" : ""
                 }`}
                 style={{
-                  fontFamily: "'Orbitron', sans-serif",
+                  fontFamily: "'Space Grotesk', sans-serif",
                 }}
               >
                 {activeStat === 1
@@ -1150,7 +1151,7 @@ function HomePage({
                   activeStat === 2 ? "stat-active" : ""
                 }`}
                 style={{
-                  fontFamily: "'Orbitron', sans-serif",
+                  fontFamily: "'Space Grotesk', sans-serif",
                 }}
               >
                 {activeStat === 2
@@ -1227,7 +1228,7 @@ function HomePage({
             <h2
               className="font-black text-white mb-3"
               style={{
-                fontFamily: "'Orbitron', sans-serif",
+                fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: "clamp(1.6rem, 4vw, 2.5rem)",
                 letterSpacing: "0.04em",
               }}
@@ -1288,7 +1289,7 @@ function PlaylistsPage({
           <h1
             className="font-black text-white mb-4"
             style={{
-              fontFamily: "'Orbitron', sans-serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: "clamp(2rem, 5vw, 3.2rem)",
               textShadow: "0 0 50px rgba(124,58,237,0.35)",
             }}
@@ -1310,6 +1311,811 @@ function PlaylistsPage({
             />
           ))}
         </div>
+
+      </div>
+    </div>
+  );
+}
+
+function GameLibraryPage({
+  playlists,
+  onSelect,
+}: {
+  playlists: Playlist[];
+  onSelect: (id: string) => void;
+}) {
+
+  const achievements = [
+  {
+    id: "first-video",
+    icon: "🎬",
+    title: "FIRST BLOOD",
+    description: "Uploaded your first gaming video.",
+    requirement: "1 video uploaded",
+    unlocked: true,
+  },
+  {
+    id: "game-collector",
+    icon: "🎮",
+    title: "GAME COLLECTOR",
+    description: "Build a library of multiple games.",
+    requirement: "3 games completed",
+    unlocked: true,
+  },
+  {
+    id: "rising-star",
+    icon: "⭐",
+    title: "RISING STAR",
+    description: "Reach your first major view milestone.",
+    requirement: "1,000 total views",
+    unlocked: true,
+  },
+  {
+    id: "content-machine",
+    icon: "⚡",
+    title: "CONTENT MACHINE",
+    description: "Build a serious video catalog.",
+    requirement: "50 videos uploaded",
+    unlocked: true,
+  },
+  {
+    id: "viral",
+    icon: "🔥",
+    title: "BREAKOUT",
+    description: "One video breaks through the noise.",
+    requirement: "1,000 views on one video",
+    unlocked: false,
+  },
+  {
+    id: "legend",
+    icon: "👑",
+    title: "LEGEND",
+    description: "Reach the next level of XTRACT.",
+    requirement: "10,000 total views",
+    unlocked: false,
+  },
+];
+
+  const unlockedAchievements = achievements.filter(
+  (achievement) => achievement.unlocked
+);
+
+const xp = unlockedAchievements.length * 250;
+
+const currentLevel = Math.floor(xp / 500) + 1;
+
+const nextLevelXP = currentLevel * 500;
+
+const progress =
+  ((xp % 500) / 500) * 100;
+
+  const [selectedGame, setSelectedGame] = useState<Playlist | null>(null);
+  const handleGameTilt = (
+  e: React.MouseEvent<HTMLDivElement>
+) => {
+  const card = e.currentTarget;
+
+  const rect = card.getBoundingClientRect();
+
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  const rotateY = ((x - centerX) / centerX) * 7;
+  const rotateX = ((centerY - y) / centerY) * 7;
+
+  card.style.transform = `
+    perspective(900px)
+    rotateX(${rotateX}deg)
+    rotateY(${rotateY}deg)
+    translateY(-8px)
+  `;
+};
+
+const resetGameTilt = (
+  e: React.MouseEvent<HTMLDivElement>
+) => {
+  e.currentTarget.style.transform =
+    "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+};
+
+  return (
+  <div
+  className="relative w-full min-h-screen overflow-x-hidden"
+  style={{
+    background: "linear-gradient(180deg, #080c18, #0a0e1e)",
+  }}
+>
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <div className="text-center mb-16">
+
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
+            style={{
+              background: "rgba(6,182,212,0.08)",
+              border: "1px solid rgba(6,182,212,0.2)",
+            }}
+          >
+            <Gamepad2 className="w-4 h-4 text-cyan-400" />
+
+            <span className="text-xs font-bold tracking-[0.3em] text-cyan-400 uppercase">
+              XTRACT GAME LIBRARY
+            </span>
+          </div>
+
+          <h1
+            className="text-white font-black mb-4"
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: "clamp(2rem, 5vw, 4rem)",
+              textShadow:
+                "0 0 45px rgba(124,58,237,0.35)",
+            }}
+          >
+            GAME LIBRARY
+          </h1>
+
+          <p className="text-slate-400 text-lg">
+            Select your experience.
+          </p>
+
+          <div className="mt-4 text-xs text-slate-600 tracking-[0.2em] uppercase">
+            {playlists.length} GAMES AVAILABLE
+          </div>
+        </div>
+
+
+        {/* Game Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          {playlists.map((playlist, index) => (
+            <div
+              key={playlist.id}
+              className="group relative cursor-pointer"
+              style={{
+                animation:
+                  "cardReveal 0.7s cubic-bezier(0.22,1,0.36,1) both",
+                animationDelay: `${index * 0.1}s`,
+              }}
+              onClick={() => setSelectedGame(playlist)}
+            >
+
+              {/* Glow */}
+              <div
+                className="absolute -inset-1 rounded-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(124,58,237,0.45), rgba(6,182,212,0.3))",
+                  filter: "blur(14px)",
+                }}
+              />
+
+              {/* Card */}
+              <div
+  className="relative overflow-hidden rounded-[26px] game-library-card"
+  onMouseMove={handleGameTilt}
+  onMouseLeave={resetGameTilt}
+                style={{
+                  background:
+                    "linear-gradient(145deg, #141a2e, #0d1222)",
+                  border:
+                    "1px solid rgba(255,255,255,0.07)",
+                  boxShadow:
+                    "0 12px 35px rgba(0,0,0,0.45)",
+                  transition:
+                    "transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.45s ease",
+                }}
+              >
+
+                {/* Thumbnail */}
+                <div
+                  className="relative overflow-hidden"
+                  style={{
+                    aspectRatio: "16 / 9",
+                  }}
+                >
+                  <img
+                    src={playlist.thumbnail}
+                    alt={playlist.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, transparent 35%, rgba(8,12,24,0.95) 100%)",
+                    }}
+                  />
+
+                  {/* Game number */}
+                  <div
+                    className="absolute top-4 left-4 px-3 py-1.5 rounded-lg text-[10px] font-black tracking-[0.2em]"
+                    style={{
+                      background:
+                        "rgba(8,12,24,0.75)",
+                      backdropFilter: "blur(10px)",
+                      border:
+                        "1px solid rgba(255,255,255,0.08)",
+                      color: "#94a3b8",
+                    }}
+                  >
+                    GAME {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* Play icon */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div
+                      className="w-16 h-16 rounded-full flex items-center justify-center"
+                      style={{
+                        background:
+                          "rgba(124,58,237,0.9)",
+                        boxShadow:
+                          "0 0 35px rgba(124,58,237,0.7)",
+                      }}
+                    >
+                      <Play
+                        className="w-7 h-7 text-white fill-white ml-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+
+                {/* Information */}
+                <div className="p-6">
+
+                  <div className="flex items-start justify-between gap-4">
+
+                    <div>
+                      <h2
+                        className="text-xl font-black text-white group-hover:text-purple-300 transition-colors"
+                        style={{
+                          fontFamily:
+                            "'Space Grotesk', sans-serif",
+                        }}
+                      >
+                        {playlist.name}
+                      </h2>
+
+                      <p className="text-xs text-cyan-400 uppercase tracking-[0.18em] mt-1">
+                        {playlist.category || "Gaming"}
+                      </p>
+                    </div>
+
+                    <div
+                      className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{
+                        background:
+                          "rgba(124,58,237,0.1)",
+                        border:
+                          "1px solid rgba(124,58,237,0.18)",
+                      }}
+                    >
+                      <Gamepad2 className="w-5 h-5 text-purple-400" />
+                    </div>
+
+                  </div>
+
+
+                  <p className="text-slate-500 text-sm leading-relaxed mt-4 line-clamp-2">
+                    {playlist.description ||
+                      "Explore the videos and adventures from this game."}
+                  </p>
+
+
+                  {/* Bottom HUD */}
+                  <div
+                    className="flex items-center justify-between mt-6 pt-4"
+                    style={{
+                      borderTop:
+                        "1px solid rgba(255,255,255,0.06)",
+                    }}
+                  >
+
+                    <div className="flex items-center gap-2 text-slate-500 text-xs">
+                      <Play className="w-3.5 h-3.5" />
+
+                      <span>
+                        {playlist.videoCount ||
+                          playlist.videos?.length ||
+                          0}{" "}
+                        Videos
+                      </span>
+                    </div>
+
+                    <span className="text-xs font-bold text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                      SELECT GAME →
+                    </span>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          ))}
+
+        </div>
+
+        {selectedGame && (
+  <div
+    className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
+    style={{
+      background: "rgba(3,5,12,0.88)",
+      backdropFilter: "blur(18px)",
+      animation: "gameFocusIn 0.45s ease-out both",
+    }}
+  >
+
+    {/* Background artwork */}
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        backgroundImage: `url(${selectedGame.thumbnail})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        opacity: 0.12,
+        filter: "blur(20px)",
+        transform: "scale(1.1)",
+      }}
+    />
+
+    {/* Main panel */}
+    <div
+      className="relative w-full max-w-5xl overflow-hidden rounded-[32px]"
+      style={{
+        background:
+          "linear-gradient(145deg, rgba(20,26,46,0.97), rgba(8,12,24,0.98))",
+        border:
+          "1px solid rgba(255,255,255,0.1)",
+        boxShadow:
+          "0 30px 100px rgba(0,0,0,0.7), 0 0 60px rgba(124,58,237,0.15)",
+        animation:
+          "gameFocusPanel 0.55s cubic-bezier(0.22,1,0.36,1) both",
+      }}
+    >
+
+      {/* Close */}
+      <button
+        type="button"
+        onClick={() => setSelectedGame(null)}
+        className="absolute top-5 right-5 z-20 w-10 h-10 rounded-xl flex items-center justify-center text-slate-300 hover:text-white transition-all hover:scale-105"
+        style={{
+          background: "rgba(8,12,24,0.75)",
+          border:
+            "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        ✕
+      </button>
+
+
+      <div className="grid md:grid-cols-2">
+
+        {/* Artwork */}
+        <div className="relative min-h-[300px] md:min-h-[500px]">
+
+          <img
+            src={selectedGame.thumbnail}
+            alt={selectedGame.name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 30%, rgba(8,12,24,0.95) 100%), linear-gradient(0deg, rgba(8,12,24,0.65), transparent 60%)",
+            }}
+          />
+
+          {/* HUD label */}
+          <div
+            className="absolute top-6 left-6 px-3 py-2 rounded-lg text-[10px] font-black tracking-[0.25em] text-cyan-400"
+            style={{
+              background: "rgba(8,12,24,0.7)",
+              border:
+                "1px solid rgba(6,182,212,0.25)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            SELECTED GAME
+          </div>
+
+        </div>
+
+
+        {/* Info */}
+        <div className="relative flex flex-col justify-center p-8 sm:p-12">
+
+          <div className="text-xs font-bold tracking-[0.3em] text-purple-400 uppercase mb-4">
+            XTRACT // GAME DATABASE
+          </div>
+
+          <h2
+            className="text-4xl sm:text-5xl font-black text-white mb-3"
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              textShadow:
+                "0 0 30px rgba(124,58,237,0.3)",
+            }}
+          >
+            {selectedGame.name}
+          </h2>
+
+          <div className="text-cyan-400 text-sm font-bold tracking-[0.18em] uppercase mb-6">
+            {selectedGame.category || "Gaming"}
+          </div>
+
+          <p className="text-slate-400 leading-relaxed mb-8">
+            {selectedGame.description ||
+              "Explore the videos, episodes and adventures from this game."}
+          </p>
+
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 gap-4 mb-8">
+
+            <div
+              className="p-5 rounded-2xl"
+              style={{
+                background:
+                  "rgba(255,255,255,0.03)",
+                border:
+                  "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <div className="text-xs text-slate-500 uppercase tracking-widest mb-2">
+                Videos
+              </div>
+
+              <div className="text-2xl font-black text-white">
+                {selectedGame.videoCount ||
+                  selectedGame.videos?.length ||
+                  0}
+              </div>
+            </div>
+
+
+            <div
+              className="p-5 rounded-2xl"
+              style={{
+                background:
+                  "rgba(255,255,255,0.03)",
+                border:
+                  "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <div className="text-xs text-slate-500 uppercase tracking-widest mb-2">
+                Status
+              </div>
+
+              <div className="text-2xl font-black text-cyan-400">
+                ACTIVE
+              </div>
+            </div>
+
+          </div>
+
+
+          {/* Button */}
+          <button
+            type="button"
+            onClick={() => {
+              const id = selectedGame.id;
+              setSelectedGame(null);
+              onSelect(id);
+            }}
+            className="w-full sm:w-auto px-7 py-4 rounded-2xl font-black text-white flex items-center justify-center gap-3 transition-all hover:scale-[1.02]"
+            style={{
+              background:
+                "linear-gradient(135deg, #7c3aed, #06b6d4)",
+              boxShadow:
+                "0 10px 35px rgba(124,58,237,0.35)",
+            }}
+          >
+            <Play className="w-5 h-5 fill-white" />
+
+            VIEW PLAYLIST
+
+          </button>
+
+        </div>
+
+      </div>
+      {/* =========================================
+    ACHIEVEMENTS
+========================================= */}
+</div>
+<div>
+<section
+  className="mt-16 sm:mt-20"
+  id="achievements"
+>
+  
+  {/* Section heading */}
+
+  <div className="mb-8 sm:mb-10">
+  <div className="text-[11px] sm:text-xs font-bold tracking-[0.3em] text-purple-400 uppercase mb-2">
+    XTRACT // PROGRESSION
+  </div>
+
+  <h2
+    className="text-3xl sm:text-4xl md:text-5xl font-black text-white"
+    style={{
+      fontFamily: "'Space Grotesk', sans-serif",
+      letterSpacing: "-0.035em",
+    }}
+  >
+    ACHIEVEMENTS
+  </h2>
+
+  <p className="text-sm sm:text-base text-slate-400 mt-2 max-w-xl">
+    Milestones unlocked throughout the XTRACT gaming journey.
+  </p>
+</div>
+
+
+  {/* LEVEL CARD */}
+
+  <div
+    className="relative overflow-hidden rounded-[28px] p-7 sm:p-9 mb-8"
+    style={{
+      background:
+        "linear-gradient(145deg, rgba(20,26,46,0.95), rgba(10,14,30,0.98))",
+      border:
+        "1px solid rgba(124,58,237,0.18)",
+      boxShadow:
+        "0 18px 50px rgba(0,0,0,0.4), 0 0 40px rgba(124,58,237,0.08)",
+    }}
+  >
+
+    {/* Glow */}
+
+    <div
+      className="absolute -top-24 -right-24 w-64 h-64 rounded-full pointer-events-none"
+      style={{
+        background:
+          "radial-gradient(circle, rgba(124,58,237,0.18), transparent 70%)",
+        filter: "blur(20px)",
+      }}
+    />
+
+
+    <div className="relative flex flex-col md:flex-row md:items-center gap-7">
+
+      {/* Trophy */}
+
+      <div
+        className="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl shrink-0"
+        style={{
+          background:
+            "linear-gradient(145deg, rgba(124,58,237,0.22), rgba(6,182,212,0.12))",
+          border:
+            "1px solid rgba(124,58,237,0.25)",
+          boxShadow:
+            "0 12px 35px rgba(124,58,237,0.2)",
+        }}
+      >
+        🏆
+      </div>
+
+
+      {/* Level information */}
+
+      <div className="flex-1">
+
+        <div className="flex flex-wrap items-center gap-3 mb-2">
+
+          <span
+            className="text-xs font-bold tracking-[0.25em] text-cyan-400"
+          >
+            CREATOR LEVEL
+          </span>
+
+          <span
+            className="px-3 py-1 rounded-full text-xs font-black text-white"
+            style={{
+              background:
+                "linear-gradient(135deg, #7c3aed, #06b6d4)",
+            }}
+          >
+            LVL {currentLevel}
+          </span>
+
+        </div>
+
+
+        <div className="text-2xl sm:text-3xl font-black text-white mb-1">
+          XTRACT GAMING JOURNEY
+        </div>
+
+        <div className="text-sm text-slate-500">
+          {xp.toLocaleString()} XP earned
+        </div>
+
+
+        {/* XP bar */}
+
+        <div className="mt-5">
+
+          <div className="flex justify-between text-[11px] font-bold tracking-wider text-slate-500 mb-2">
+            <span>LEVEL {currentLevel}</span>
+            <span>{nextLevelXP.toLocaleString()} XP</span>
+          </div>
+
+          <div
+            className="h-2 rounded-full overflow-hidden"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+            }}
+          >
+
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${progress}%`,
+                background:
+                  "linear-gradient(90deg, #7c3aed, #06b6d4)",
+                boxShadow:
+                  "0 0 15px rgba(124,58,237,0.6)",
+                transition: "width 1s ease",
+              }}
+            />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<div
+  className="overflow-y-auto pr-3"
+  style={{
+    height: "min(520px, calc(100vh - 360px))",
+    minHeight: "320px",
+    scrollbarWidth: "thin",
+    scrollbarColor:
+      "rgba(124,58,237,0.6) rgba(255,255,255,0.04)",
+  }}
+>
+
+  {/* ACHIEVEMENT GRID */}
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-20">
+    
+    {achievements.map((achievement) => (
+      
+      <div
+        key={achievement.id}
+        className="achievement-card relative overflow-hidden rounded-[24px] p-5 sm:p-6"
+        style={{
+          background: achievement.unlocked
+            ? "linear-gradient(145deg, #141a2e, #0d1222)"
+            : "linear-gradient(145deg, #0d111e, #090c16)",
+
+          border: achievement.unlocked
+            ? "1px solid rgba(124,58,237,0.2)"
+            : "1px solid rgba(255,255,255,0.04)",
+
+          boxShadow: achievement.unlocked
+            ? "0 12px 30px rgba(0,0,0,0.35)"
+            : "none",
+
+          opacity: achievement.unlocked ? 1 : 0.55,
+        }}
+      >
+
+        {/* Glow */}
+
+        {achievement.unlocked && (
+          <div
+            className="absolute -top-16 -right-16 w-32 h-32 rounded-full pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(124,58,237,0.16), transparent 70%)",
+              filter: "blur(15px)",
+            }}
+          />
+        )}
+
+
+        {/* Icon */}
+
+        <div
+          className="relative w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5"
+          style={{
+            background: achievement.unlocked
+              ? "rgba(124,58,237,0.12)"
+              : "rgba(255,255,255,0.03)",
+
+            border: achievement.unlocked
+              ? "1px solid rgba(124,58,237,0.2)"
+              : "1px solid rgba(255,255,255,0.04)",
+
+            filter: achievement.unlocked
+              ? "none"
+              : "grayscale(1)",
+          }}
+        >
+          {achievement.unlocked
+            ? achievement.icon
+            : "🔒"}
+        </div>
+
+
+        {/* Title */}
+
+        <div
+          className={`text-lg font-black tracking-wide ${
+            achievement.unlocked
+              ? "text-white"
+              : "text-slate-500"
+          }`}
+        >
+          {achievement.title}
+        </div>
+
+
+        {/* Description */}
+
+        <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+          {achievement.description}
+        </p>
+
+
+        {/* Requirement */}
+
+        <div className="mt-5 text-[10px] font-bold tracking-[0.18em] uppercase">
+
+          {achievement.unlocked ? (
+            <span className="text-cyan-400">
+              ✓ UNLOCKED
+            </span>
+          ) : (
+            <span className="text-slate-600">
+              🔒 {achievement.requirement}
+            </span>
+          )}
+
+        </div>
+
+      </div>
+
+    ))}
+</div>
+  </div>
+
+</section>
+    </div>
+  </div>
+  
+)}
+
+        {/* Empty state */}
+        {playlists.length === 0 && (
+          <div className="text-center py-24">
+
+            <Gamepad2 className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+
+            <h2 className="text-white text-xl font-bold">
+              No games found
+            </h2>
+
+            <p className="text-slate-500 mt-2">
+              Your game library is waiting for its first adventure.
+            </p>
+
+          </div>
+        )}
 
       </div>
     </div>
@@ -1350,7 +2156,7 @@ function PlaylistDetailPage({ playlist, onBack }: { playlist: Playlist; onBack: 
                 </span>
                 <h1
                   className="font-black text-white mb-3 leading-tight"
-                  style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "clamp(1.8rem, 5vw, 3rem)" }}
+                  style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem, 5vw, 3rem)" }}
                 >
                   {playlist.name}
                 </h1>
@@ -1410,7 +2216,7 @@ function ContactPage() {
           <h1
             className="font-black text-white mb-4"
             style={{
-              fontFamily: "'Orbitron', sans-serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: "clamp(2rem, 5vw, 3rem)",
               textShadow: "0 0 50px rgba(124,58,237,0.35)",
             }}
@@ -1436,7 +2242,7 @@ function ContactPage() {
             </div>
             <h3
               className="font-black text-white text-xl mb-2"
-              style={{ fontFamily: "'Rajdhani', sans-serif" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Business Inquiries
             </h3>
@@ -1476,7 +2282,7 @@ function ContactPage() {
             </div>
             <h3
               className="font-black text-white text-xl mb-2"
-              style={{ fontFamily: "'Rajdhani', sans-serif" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Follow & Connect
             </h3>
@@ -1534,7 +2340,7 @@ function Footer({ onNavigate }: { onNavigate: (page: string) => void }) {
           <div>
             <h3
               className="font-black text-white text-2xl mb-2"
-              style={{ fontFamily: "'Orbitron', sans-serif", textShadow: "0 0 24px rgba(124,58,237,0.4)" }}
+              style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: "0 0 24px rgba(124,58,237,0.4)" }}
             >
               XTRACT
             </h3>
@@ -1749,6 +2555,9 @@ export default function App() {
     currentPage === "playlists" ||
     currentPage === "playlist-detail";
 
+  const isGameLibraryActive =
+  currentPage === "game-library";
+
   return (
     <>
       <BackgroundMusic />
@@ -1788,6 +2597,32 @@ export default function App() {
               transform: translateY(-10px);
             }
           }
+
+          @keyframes gameFocusIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gameFocusPanel {
+  from {
+    opacity: 0;
+    transform: perspective(1200px)
+      scale(0.88)
+      rotateX(6deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(1200px)
+      scale(1)
+      rotateX(0deg);
+  }
+}
 
           /* =========================================
              HOMEPAGE ANIMATIONS
@@ -2016,6 +2851,20 @@ export default function App() {
             }
           }
 
+          .game-library-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition:
+    transform 0.12s ease-out,
+    box-shadow 0.35s ease;
+}
+
+.game-library-card:hover {
+  box-shadow:
+    0 25px 55px rgba(0,0,0,0.55),
+    0 0 35px rgba(124,58,237,0.22);
+}
+
           /* =========================================
              ACCESSIBILITY
           ========================================= */
@@ -2037,9 +2886,19 @@ export default function App() {
             }
           }
 
-          body {
-            overflow-x: hidden;
-          }
+          html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  height: auto;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+body {
+  margin: 0;
+}
 
           ::-webkit-scrollbar {
             width: 5px;
@@ -2107,7 +2966,7 @@ export default function App() {
             onClick={() => navigate("home")}
             className="font-black text-white text-lg tracking-widest flex-1 text-left sm:text-center"
             style={{
-              fontFamily: "'Orbitron', sans-serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               textShadow:
                 "0 0 20px rgba(124,58,237,0.4)",
             }}
@@ -2118,16 +2977,16 @@ export default function App() {
           {/* Desktop nav */}
 
           <div className="hidden sm:flex items-center gap-1">
-            {(
-              [
-                ["Home", "home"],
-                ["Playlists", "playlists"],
-                ["Contact", "contact"],
-              ] as [string, string][]
-            ).map(([label, page]) => {
+            {([
+  ["Home", "home"],
+  ["Playlists", "playlists"],
+  ["Game Library", "game-library"],
+  ["Contact", "contact"],
+] as [string, string][]).map(([label, page]) => {
               const active =
                 currentPage === page ||
-                (page === "playlists" && isPlaylistActive);
+                (page === "playlists" && isPlaylistActive) ||
+                (page === "game-library" && isGameLibraryActive);
 
               return (
                 <button
@@ -2192,6 +3051,13 @@ export default function App() {
               }
             />
           )}
+
+          {currentPage === "game-library" && (
+    <GameLibraryPage
+      playlists={PLAYLISTS}
+      onSelect={id => navigate("playlist-detail", id)}
+    />
+  )}
 
           {currentPage === "playlist-detail" &&
             selectedPlaylist && (

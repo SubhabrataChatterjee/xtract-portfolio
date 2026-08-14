@@ -1,5 +1,6 @@
 
-  import { createRoot } from "react-dom/client";
+  // @ts-ignore: allow side-effect import for module without declarations
+import { createRoot } from "react-dom/client";
   import App from "./app/App.tsx";
   // @ts-ignore: allow side-effect import for CSS without declarations
   import "./styles/index.css";
