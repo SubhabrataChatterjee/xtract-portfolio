@@ -726,7 +726,7 @@ function HomePage({
           className="min-h-screen flex items-center py-24 px-4 sm:px-8 lg:px-16 relative overflow-hidden"
           style={{
             background:
-              "linear-gradient(135deg, #080c18 0%, #0d1128 60%, #080c18 100%)",
+              "linear-gradient(135deg, rgba(8,12,24,0.55) 0%, rgba(13,17,40,0.48) 60%, rgba(8,12,24,0.55) 100%)",
           }}
         >
           {/* Animated Samurai Background */}
@@ -739,6 +739,7 @@ function HomePage({
               loop
               muted
               playsInline
+              style={{ zIndex: 2 }}
             />
 
             {/* Dark gaming overlay */}
@@ -800,26 +801,79 @@ function HomePage({
                 </div>
 
                 <h1
-                  className="font-black text-white leading-none mb-3"
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: "clamp(3.5rem, 9vw, 6rem)",
-                    textShadow: "0 0 60px rgba(124,58,237,0.45)",
-                  }}
-                >
+                  className="font-black text-white leading-none mb-3 card-reveal card-float"
+style={{
+  
+  fontFamily: "Space Grotesk, sans-serif",
+  fontSize: "5.5rem",
+  
+  textShadow: `
+    0 0 5px #c084fc,
+    0 0 15px #a855f7,
+    0 0 30px #a855f7,
+    0 0 55px #9333ea,
+    0 0 90px #7e22ce,
+    0 0 140px rgba(126, 34, 206, 0.9),
+    0 10px 40px rgba(0, 0, 0, 0.65),
+    0 20px 80px rgba(0, 0, 0, 0.65),
+    0 30px 120px rgba(0, 0, 0, 0.45)
+  `,
+}}               
+ >
                   XTRACT
                 </h1>
 
+<h2
+                  className="font-black text-white leading-none mb-3 card-reveal card-float"
+style={{
+  
+  fontFamily: "Space Grotesk, sans-serif",
+  fontSize: "1.0rem",
+  
+  textShadow: `
+    0 0 5px #c084fc,
+    0 0 15px #a855f7,
+    0 0 30px #a855f7,
+    0 0 55px #9333ea,
+    0 0 90px #7e22ce,
+    0 0 140px rgba(126, 34, 206, 0.9)
+  `,
+}}               
+ >
+                  PC & Mobile Gaming Across All Genres 
+              </h2>
                 <p
-                  className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold"
+                  className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold card-reveal card-float"
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  PC & Mobile Gaming Across All Genres 🎮
-                </p>
+  background: "linear-gradient(145deg, #141a2e, #111728)",
+  border: "1px solid rgba(255, 255, 255, 0.07)",
+  borderRadius: "1.5rem",
 
-                <p className="text-slate-400 mb-8 leading-relaxed text-[0.95rem]">
+  boxShadow:
+    "0 18px 45px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
+
+  backdropFilter: "blur(8px)",
+
+  textAlign: "justify",
+  fontSize: "0.85rem",
+
+  /* MAKE THE BOX BIGGER */
+  width: "100%",
+  minHeight: "120%",
+
+  /* Keeps the box centered */
+  
+
+  /* More vertical space without changing text */
+  padding: "1.2rem 1.5rem",
+
+  boxSizing: "border-box",
+
+  /* Prevent text from expanding into extra lines */
+  
+}}
+                  
+                >
                   Hello! I am Sinju — your destination for PC & Mobile Gaming
                   across all genres. From action-packed adventures and intense
                   FPS battles to story-driven games, indie gems, and casual
@@ -1027,10 +1081,6 @@ function HomePage({
       <section
         id="channel-stats"
         className="py-20 px-4 sm:px-8 lg:px-16"
-        style={{
-          background:
-            "linear-gradient(180deg, #080c18, #0a0e1e)",
-        }}
       >
         <div className="max-w-7xl mx-auto">
 
@@ -1214,10 +1264,7 @@ function HomePage({
       <section
         id="playlists-preview"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
-        style={{
-          background:
-            "linear-gradient(180deg, #080c18, #0a0e1e)",
-        }}
+        
       >
         <div className="max-w-7xl mx-auto">
 
@@ -1422,9 +1469,7 @@ const resetGameTilt = (
   return (
   <div
   className="relative w-full min-h-screen overflow-x-hidden"
-  style={{
-    background: "linear-gradient(180deg, #080c18, #0a0e1e)",
-  }}
+  
 >
       <div className="max-w-7xl mx-auto">
 
@@ -2556,42 +2601,46 @@ export default function App() {
   const isGameLibraryActive =
   currentPage === "game-library";
 
-  return (
+ return (
   <>
     <BackgroundMusic />
 
-    {/* LIVE WALLPAPER */}
     <video
-      className="fixed inset-0 w-full h-full object-cover"
       src="/bg.mp4"
       autoPlay
       muted
       loop
       playsInline
-      aria-hidden="true"
+      className="fixed inset-0 w-full h-full object-cover"
       style={{
-        zIndex: 0,
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        objectFit: "cover",
+        zIndex: -10,
+        pointerEvents: "none",
       }}
     />
 
-    {/* DARK OVERLAY */}
     <div
       className="fixed inset-0 pointer-events-none"
       style={{
-        zIndex: 1,
-        background:
-          "rgba(4, 7, 18, 0.72)",
+        background: "rgba(4, 7, 18, 0.55)",
+        zIndex: -9,
       }}
     />
 
-    {/* WEBSITE */}
     <div
       className="relative min-h-screen"
       style={{
-        zIndex: 2,
+        zIndex: 1,
         fontFamily: "'Inter', sans-serif",
       }}
     >
+
+      {/* EVERYTHING YOU ALREADY HAVE */}
         {/* =========================================
             ANIMATIONS
         ========================================= */}
