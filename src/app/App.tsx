@@ -570,7 +570,7 @@ function Sidebar({
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
           <span
             className="text-white font-black text-xl tracking-widest"
-            style={{ fontFamily: "'Orbitron', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.5)" }}
+            style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.5)" }}
           >
             XTRACT
           </span>
@@ -801,79 +801,26 @@ function HomePage({
                 </div>
 
                 <h1
-                  className="font-black text-white leading-none mb-3 card-reveal card-float"
-style={{
-  
-  fontFamily: "Orbitron, sans-serif",
-  fontSize: "5.5rem",
-  
-  textShadow: `
-    0 0 5px #c084fc,
-    0 0 15px #a855f7,
-    0 0 30px #a855f7,
-    0 0 55px #9333ea,
-    0 0 90px #7e22ce,
-    0 0 140px rgba(126, 34, 206, 0.9),
-    0 10px 40px rgba(0, 0, 0, 0.65),
-    0 20px 80px rgba(0, 0, 0, 0.65),
-    0 30px 120px rgba(0, 0, 0, 0.45)
-  `,
-}}               
- >
+                  className="font-black text-white leading-none mb-3"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: "clamp(3.5rem, 9vw, 6rem)",
+                    textShadow: "0 0 60px rgba(124,58,237,0.45)",
+                  }}
+                >
                   XTRACT
                 </h1>
 
-<h2
-                  className="font-black text-white leading-none mb-3 card-reveal card-float"
-style={{
-  
-  fontFamily: "Space Grotesk, sans-serif",
-  fontSize: "1.0rem",
-  
-  textShadow: `
-    0 0 5px #c084fc,
-    0 0 15px #a855f7,
-    0 0 30px #a855f7,
-    0 0 55px #9333ea,
-    0 0 90px #7e22ce,
-    0 0 140px rgba(126, 34, 206, 0.9)
-  `,
-}}               
- >
-                  PC & Mobile Gaming Across All Genres 
-              </h2>
                 <p
-                  className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold card-reveal card-float"
+                  className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold"
                   style={{
-  background: "linear-gradient(145deg, #141a2e, #111728)",
-  border: "1px solid rgba(255, 255, 255, 0.07)",
-  borderRadius: "1.5rem",
-
-  boxShadow:
-    "0 18px 45px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
-
-  backdropFilter: "blur(8px)",
-
-  textAlign: "justify",
-  fontSize: "0.85rem",
-
-  /* MAKE THE BOX BIGGER */
-  width: "100%",
-  minHeight: "120%",
-
-  /* Keeps the box centered */
-  
-
-  /* More vertical space without changing text */
-  padding: "1.2rem 1.5rem",
-
-  boxSizing: "border-box",
-
-  /* Prevent text from expanding into extra lines */
-  
-}}
-                  
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
                 >
+                  PC & Mobile Gaming Across All Genres 🎮
+                </p>
+
+                <p className="text-slate-400 mb-8 leading-relaxed text-[0.95rem]">
                   Hello! I am Sinju — your destination for PC & Mobile Gaming
                   across all genres. From action-packed adventures and intense
                   FPS battles to story-driven games, indie gems, and casual
@@ -1081,6 +1028,10 @@ style={{
       <section
         id="channel-stats"
         className="py-20 px-4 sm:px-8 lg:px-16"
+        style={{
+          background:
+            "linear-gradient(180deg, #080c18, #0a0e1e)",
+        }}
       >
         <div className="max-w-7xl mx-auto">
 
@@ -1264,7 +1215,10 @@ style={{
       <section
         id="playlists-preview"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
-        
+        style={{
+          background:
+            "linear-gradient(180deg, #080c18, #0a0e1e)",
+        }}
       >
         <div className="max-w-7xl mx-auto">
 
@@ -1469,7 +1423,9 @@ const resetGameTilt = (
   return (
   <div
   className="relative w-full min-h-screen overflow-x-hidden"
-  
+  style={{
+    background: "linear-gradient(180deg, #080c18, #0a0e1e)",
+  }}
 >
       <div className="max-w-7xl mx-auto">
 
