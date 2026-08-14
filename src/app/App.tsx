@@ -176,7 +176,7 @@ function ClayButton({
 }) {
   const [pressed, setPressed] = useState(false);
   const baseStyle = variant === "primary" ? cs.btnPrimary : cs.btnSecondary;
-  const cls = `inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm tracking-wider transition-all duration-150 ${
+  const cls = `clay-button inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm tracking-wider transition-all duration-150 ${
     variant === "primary" ? "text-white" : "text-cyan-400"
   } ${className}`;
   const pressStyle: React.CSSProperties = {
@@ -556,7 +556,7 @@ function Sidebar({
       />
       <div
         ref={ref}
-        className="fixed top-0 left-0 h-full z-50 flex flex-col"
+        className="mobile-sidebar fixed top-0 left-0 h-full z-50 flex flex-col"
         style={{
           width: 300,
           background: "linear-gradient(180deg, #0f1525 0%, #080c18 100%)",
@@ -682,7 +682,7 @@ function SectionHeading({ title, emoji }: { title: string; emoji?: string }) {
   return (
     <div className="flex items-center gap-3 mb-10">
       <h2
-        className="text-2xl sm:text-3xl font-black text-white whitespace-nowrap"
+        className="section-heading-title text-2xl sm:text-3xl font-black text-white whitespace-nowrap"
         style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.03em" }}
       >
         {title}
@@ -801,7 +801,7 @@ function HomePage({
                 </div>
 
                 <h1
-                  className="font-black text-white leading-none mb-3 card-reveal card-float"
+                  className="hero-title font-black text-white leading-none mb-3 card-reveal card-float"
 style={{
   
   fontFamily: "Orbitron, sans-serif",
@@ -824,7 +824,7 @@ style={{
                 </h1>
 
 <h2
-                  className="font-black text-white leading-none mb-3 card-reveal card-float"
+                  className="hero-subtitle font-black text-white leading-none mb-3 card-reveal card-float"
 style={{
   
   fontFamily: "Space Grotesk, sans-serif",
@@ -843,7 +843,7 @@ style={{
                   PC & Mobile Gaming Across All Genres 
               </h2>
                 <p
-                  className="text-lg sm:text-xl text-slate-300 mb-8 font-semibold card-reveal card-float"
+                  className="hero-bio text-lg sm:text-xl text-slate-300 mb-8 font-semibold card-reveal card-float"
                   style={{
   background: "linear-gradient(145deg, #141a2e, #111728)",
   border: "1px solid rgba(255, 255, 255, 0.07)",
@@ -882,7 +882,7 @@ style={{
 
                 {/* Feature cards */}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+                <div className="hero-features grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
                   {FEATURES.map((f, i) => (
                     <div
                       key={i}
@@ -923,7 +923,7 @@ style={{
               {/* Hero buttons */}
 
               <div
-                className="flex flex-wrap gap-4 card-reveal card-float"
+                className="hero-actions flex flex-wrap gap-4 card-reveal card-float"
                 style={{
                   animationDelay: "0.95s",
                 }}
@@ -1022,7 +1022,7 @@ style={{
                 </div>
               </div>
 
-              <div className="p-8 flex flex-col justify-center">
+              <div className="featured-content p-8 flex flex-col justify-center">
 
                 <div className="text-xs font-bold tracking-[0.25em] text-purple-400 uppercase mb-3">
                   Featured
@@ -1096,7 +1096,7 @@ style={{
             ===================================== */}
 
             <div
-              className={`p-8 rounded-3xl text-center stat-card ${
+              className={`mobile-stat-card p-8 rounded-3xl text-center stat-card ${
                 activeStat === 0 ? "stat-card-active" : ""
               }`}
               style={{
@@ -1137,7 +1137,7 @@ style={{
             ===================================== */}
 
             <div
-              className={`p-8 rounded-3xl text-center stat-card ${
+              className={`mobile-stat-card p-8 rounded-3xl text-center stat-card ${
                 activeStat === 1 ? "stat-card-active" : ""
               }`}
               style={{
@@ -1178,7 +1178,7 @@ style={{
             ===================================== */}
 
             <div
-              className={`p-8 rounded-3xl text-center stat-card ${
+              className={`mobile-stat-card p-8 rounded-3xl text-center stat-card ${
                 activeStat === 2 ? "stat-card-active" : ""
               }`}
               style={{
@@ -1325,7 +1325,7 @@ function PlaylistsPage({
 }) {
   return (
     <div
-      className="min-h-screen py-24 px-4 sm:px-8 lg:px-16"
+      className="playlist-detail-page min-h-screen py-24 px-4 sm:px-8 lg:px-16"
       
     >
       <div className="max-w-7xl mx-auto">
@@ -1468,7 +1468,7 @@ const resetGameTilt = (
 
   return (
   <div
-  className="relative w-full min-h-screen overflow-x-hidden"
+  className="game-library-page relative w-full min-h-screen overflow-x-hidden px-4 sm:px-8 lg:px-16"
   
 >
       <div className="max-w-7xl mx-auto">
@@ -1686,7 +1686,7 @@ const resetGameTilt = (
 
         {selectedGame && (
   <div
-    className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
+    className="game-modal fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
     style={{
       background: "rgba(3,5,12,0.88)",
       backdropFilter: "blur(18px)",
@@ -1709,7 +1709,7 @@ const resetGameTilt = (
 
     {/* Main panel */}
     <div
-      className="relative w-full max-w-5xl overflow-hidden rounded-[32px]"
+      className="game-modal-panel relative w-full max-w-5xl overflow-hidden rounded-[32px]"
       style={{
         background:
           "linear-gradient(145deg, rgba(20,26,46,0.97), rgba(8,12,24,0.98))",
@@ -2251,7 +2251,7 @@ function ContactPage() {
 
   return (
     <div
-      className="min-h-screen py-24 px-4 sm:px-8 lg:px-16 flex items-center"
+      className="contact-page min-h-screen py-24 px-4 sm:px-8 lg:px-16 flex items-center"
       
     >
       <div className="max-w-4xl mx-auto w-full">
@@ -2273,7 +2273,7 @@ function ContactPage() {
 
         <div className="grid sm:grid-cols-2 gap-6">
           {/* Email card */}
-          <ClayCard className="p-8">
+          <ClayCard className="mobile-contact-card p-8">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
               style={{
@@ -2313,7 +2313,7 @@ function ContactPage() {
           </ClayCard>
 
           {/* Social card */}
-          <ClayCard className="p-8">
+          <ClayCard className="mobile-contact-card p-8">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl"
               style={{
@@ -2379,7 +2379,7 @@ function Footer({ onNavigate }: { onNavigate: (page: string) => void }) {
       style={{ background: "#04060f", borderTop: "1px solid rgba(255,255,255,0.04)" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid sm:grid-cols-3 gap-10 mb-10">
+        <div className="footer-grid grid sm:grid-cols-3 gap-10 mb-10">
           <div>
             <h3
               className="font-black text-white text-2xl mb-2"
@@ -2936,6 +2936,370 @@ export default function App() {
     0 25px 55px rgba(0,0,0,0.55),
     0 0 35px rgba(124,58,237,0.22);
 }
+
+
+          /* =========================================
+             MOBILE RESPONSIVE OPTIMIZATION
+             Desktop styling remains unchanged.
+          ========================================= */
+
+          /* Prevent long labels / controls from creating horizontal overflow. */
+          .clay-button {
+            min-width: 0;
+            max-width: 100%;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.25;
+            flex-shrink: 1;
+          }
+
+          @media (max-width: 639px) {
+            html,
+            body,
+            #root {
+              width: 100%;
+              max-width: 100%;
+              overflow-x: hidden !important;
+            }
+
+            body {
+              -webkit-text-size-adjust: 100%;
+            }
+
+            /* Top navigation */
+            nav.fixed.top-0 {
+              min-height: 64px;
+              padding: 0.65rem 0.75rem !important;
+              gap: 0.55rem;
+            }
+
+            nav.fixed.top-0 > button:nth-child(2) {
+              min-width: 0;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              font-size: 0.95rem;
+            }
+
+            /* Sidebar */
+            .mobile-sidebar {
+              width: min(300px, 88vw) !important;
+              max-width: 88vw;
+            }
+
+            /* All major sections use compact mobile spacing. */
+            section,
+            .playlist-detail-page,
+            .contact-page {
+              max-width: 100%;
+            }
+
+            /* Hero */
+            .hero-title {
+              font-size: clamp(3.2rem, 18vw, 5.5rem) !important;
+              line-height: 0.95 !important;
+              letter-spacing: -0.04em;
+              overflow-wrap: anywhere;
+              word-break: break-word;
+            }
+
+            .hero-subtitle {
+              font-size: 0.82rem !important;
+              line-height: 1.35 !important;
+            }
+
+            .hero-bio {
+              font-size: 0.82rem !important;
+              line-height: 1.55 !important;
+              text-align: left !important;
+              min-height: 0 !important;
+              height: auto !important;
+              padding: 1rem !important;
+              margin-bottom: 1.25rem !important;
+            }
+
+            .hero-features {
+              gap: 0.65rem !important;
+              margin-bottom: 1.5rem !important;
+            }
+
+            .hero-features > div {
+              padding: 0.8rem !important;
+              min-width: 0;
+            }
+
+            .hero-features > div > span {
+              font-size: 1.35rem;
+              flex-shrink: 0;
+            }
+
+            .hero-features > div > div {
+              min-width: 0;
+            }
+
+            .hero-features .text-sm {
+              font-size: 0.76rem;
+              line-height: 1.25;
+            }
+
+            .hero-features .text-xs {
+              font-size: 0.68rem;
+              line-height: 1.35;
+            }
+
+            .hero-actions {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              gap: 0.7rem !important;
+            }
+
+            .hero-actions .clay-button {
+              width: 100%;
+              min-height: 46px;
+              padding: 0.75rem 0.9rem !important;
+            }
+
+            /* Section headings: allow the title to wrap instead of pushing the line off-screen. */
+            .section-heading-title {
+              white-space: normal !important;
+              font-size: 1.35rem !important;
+              line-height: 1.1 !important;
+            }
+
+            /* Featured video */
+            .featured-content {
+              padding: 1.15rem !important;
+            }
+
+            .featured-content h3 {
+              font-size: 1.15rem !important;
+              line-height: 1.3 !important;
+            }
+
+            .featured-content .flex.gap-5 {
+              flex-wrap: wrap;
+              gap: 0.75rem !important;
+            }
+
+            .featured-content .clay-button {
+              width: 100%;
+            }
+
+            /* Stats */
+            .mobile-stat-card {
+              padding: 1.25rem !important;
+              border-radius: 1.25rem !important;
+            }
+
+            .mobile-stat-card .text-4xl {
+              font-size: 2rem !important;
+            }
+
+            .mobile-stat-card .tracking-\[0\.2em\] {
+              letter-spacing: 0.12em !important;
+              font-size: 0.7rem !important;
+            }
+
+            /* Cards */
+            .rounded-2xl,
+            .rounded-3xl {
+              max-width: 100%;
+            }
+
+            /* Playlist / video card content */
+            .p-5 {
+              padding: 1rem !important;
+            }
+
+            .p-6 {
+              padding: 1rem !important;
+            }
+
+            .video-card,
+            .playlist-card {
+              min-width: 0;
+            }
+
+            /* Game library */
+            .game-library-page {
+              padding-top: 1.5rem;
+              padding-bottom: 2rem;
+            }
+
+            .game-library-page > .max-w-7xl {
+              width: 100%;
+            }
+
+            .game-library-page .text-center {
+              margin-bottom: 2.25rem;
+            }
+
+            .game-library-page .text-center h1 {
+              font-size: clamp(2rem, 13vw, 3rem) !important;
+              line-height: 1 !important;
+            }
+
+            .game-library-page .text-center p {
+              font-size: 0.9rem;
+            }
+
+            .game-library-page .grid {
+              gap: 1rem !important;
+            }
+
+            .game-library-card {
+              border-radius: 1.25rem !important;
+            }
+
+            .game-library-card .p-6 {
+              padding: 1rem !important;
+            }
+
+            .game-library-card h2 {
+              font-size: 1.05rem !important;
+              line-height: 1.2;
+              overflow-wrap: anywhere;
+            }
+
+            .game-library-card .text-sm {
+              font-size: 0.78rem;
+            }
+
+            /* On touch screens there is no useful mouse tilt; keep cards stable and readable. */
+            .game-library-card {
+              transform: none !important;
+            }
+
+            /* Game detail modal */
+            .game-modal {
+              padding: 0.65rem !important;
+              align-items: center !important;
+            }
+
+            .game-modal-panel {
+              width: 100% !important;
+              max-width: 100% !important;
+              max-height: 94vh;
+              overflow-y: auto !important;
+              border-radius: 1.25rem !important;
+            }
+
+            .game-modal-panel > .grid {
+              grid-template-columns: 1fr !important;
+            }
+
+            .game-modal-panel .min-h-\[300px\] {
+              min-height: 190px !important;
+              height: 190px;
+            }
+
+            .game-modal-panel .p-8,
+            .game-modal-panel .sm\:p-12 {
+              padding: 1.1rem !important;
+            }
+
+            .game-modal-panel h2 {
+              font-size: 1.75rem !important;
+              line-height: 1.1 !important;
+              overflow-wrap: anywhere;
+              padding-right: 2.2rem;
+            }
+
+            .game-modal-panel .grid-cols-2 {
+              gap: 0.6rem !important;
+            }
+
+            .game-modal-panel .grid-cols-2 > div {
+              padding: 0.85rem !important;
+            }
+
+            .game-modal-panel .w-10.h-10 {
+              width: 2.25rem !important;
+              height: 2.25rem !important;
+            }
+
+            .game-modal-panel > button {
+              top: 0.65rem !important;
+              right: 0.65rem !important;
+              width: 2.35rem !important;
+              height: 2.35rem !important;
+            }
+
+            /* Playlist detail banner */
+            .playlist-detail-page {
+              padding-top: 1.5rem !important;
+            }
+
+            .playlist-detail-page .mb-12 {
+              margin-bottom: 1.75rem !important;
+            }
+
+            .playlist-detail-page .relative.overflow-hidden[style*="3/1"] {
+              min-height: 190px !important;
+              aspect-ratio: 16 / 9 !important;
+            }
+
+            .playlist-detail-page .absolute.inset-0.flex.items-center {
+              padding-left: 1rem !important;
+              padding-right: 1rem !important;
+            }
+
+            .playlist-detail-page .absolute.inset-0.flex.items-center h1 {
+              font-size: 1.7rem !important;
+              max-width: 75%;
+              overflow-wrap: anywhere;
+            }
+
+            .playlist-detail-page .grid {
+              gap: 1rem !important;
+            }
+
+            /* Contact */
+            .contact-page {
+              padding-top: 2rem !important;
+              padding-bottom: 2rem !important;
+            }
+
+            .mobile-contact-card {
+              padding: 1.1rem !important;
+            }
+
+            .mobile-contact-card .clay-button {
+              width: 100%;
+            }
+
+            .mobile-contact-card a {
+              max-width: 100%;
+            }
+
+            /* Footer */
+            .footer-grid {
+              grid-template-columns: 1fr !important;
+              gap: 1.75rem !important;
+              margin-bottom: 2rem !important;
+            }
+
+            footer {
+              padding-top: 2.5rem !important;
+              padding-bottom: 2rem !important;
+            }
+
+            /* Keep decorative 3D elements from causing accidental horizontal overflow. */
+            .hero-orbit {
+              max-width: 100%;
+            }
+
+            /* Make generic buttons comfortable tap targets without forcing them wider. */
+            button,
+            a {
+              max-width: 100%;
+            }
+
+            button {
+              -webkit-tap-highlight-color: transparent;
+            }
+          }
 
           /* =========================================
              ACCESSIBILITY
