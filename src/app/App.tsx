@@ -570,7 +570,7 @@ function Sidebar({
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
           <span
             className="text-white font-black text-xl tracking-widest"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.5)" }}
+            style={{ fontFamily: "'Orbitron', sans-serif", textShadow: "0 0 20px rgba(124,58,237,0.5)" }}
           >
             XTRACT
           </span>
@@ -804,7 +804,7 @@ function HomePage({
                   className="font-black text-white leading-none mb-3 card-reveal card-float"
 style={{
   
-  fontFamily: "Space Grotesk, sans-serif",
+  fontFamily: "Orbitron, sans-serif",
   fontSize: "5.5rem",
   
   textShadow: `
