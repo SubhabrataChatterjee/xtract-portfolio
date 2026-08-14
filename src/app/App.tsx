@@ -915,9 +915,7 @@ function HomePage({
       <section
         id="featured-video"
         className="py-20 px-4 sm:px-8 lg:px-16 section-reveal section-float"
-        style={{
-          background: "#080c18",
-        }}
+        
       >
         <div className="max-w-7xl mx-auto">
 
@@ -1177,7 +1175,7 @@ function HomePage({
       <section
         className="py-20 px-4 sm:px-8 lg:px-16 section-float"
         style={{
-          background: "#080c18",
+          
         }}
       >
         <div className="max-w-7xl mx-auto">
@@ -1281,7 +1279,7 @@ function PlaylistsPage({
   return (
     <div
       className="min-h-screen py-24 px-4 sm:px-8 lg:px-16"
-      style={{ background: "#080c18" }}
+      
     >
       <div className="max-w-7xl mx-auto">
 
@@ -2126,7 +2124,7 @@ const resetGameTilt = (
 
 function PlaylistDetailPage({ playlist, onBack }: { playlist: Playlist; onBack: () => void }) {
   return (
-    <div className="min-h-screen py-24 px-4 sm:px-8 lg:px-16" style={{ background: "#080c18" }}>
+    <div className="min-h-screen py-24 px-4 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <button
           onClick={onBack}
@@ -2209,7 +2207,7 @@ function ContactPage() {
   return (
     <div
       className="min-h-screen py-24 px-4 sm:px-8 lg:px-16 flex items-center"
-      style={{ background: "#080c18" }}
+      
     >
       <div className="max-w-4xl mx-auto w-full">
         <div className="text-center mb-16">
@@ -2559,16 +2557,41 @@ export default function App() {
   currentPage === "game-library";
 
   return (
-    <>
-      <BackgroundMusic />
+  <>
+    <BackgroundMusic />
 
-      <div
-        className="min-h-screen"
-        style={{
-          background: "#080c18",
-          fontFamily: "'Inter', sans-serif",
-        }}
-      >
+    {/* LIVE WALLPAPER */}
+    <video
+      className="fixed inset-0 w-full h-full object-cover"
+      src="/bg.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
+      aria-hidden="true"
+      style={{
+        zIndex: 0,
+      }}
+    />
+
+    {/* DARK OVERLAY */}
+    <div
+      className="fixed inset-0 pointer-events-none"
+      style={{
+        zIndex: 1,
+        background:
+          "rgba(4, 7, 18, 0.72)",
+      }}
+    />
+
+    {/* WEBSITE */}
+    <div
+      className="relative min-h-screen"
+      style={{
+        zIndex: 2,
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
         {/* =========================================
             ANIMATIONS
         ========================================= */}
