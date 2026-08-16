@@ -80,11 +80,7 @@ const PLAYLISTS: Playlist[] = [
   },
 ];
 
-const POPULAR_VIDEOS: Video[] = [
-  { id: "wDjtyUnWK_g", title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔", thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg", views: "236", date: "2026-06-29", duration: "17:12", description: "" },
-  { id: "xLtKxqV6xAI", title: "GENICHIRO BECOMES THE GOD OF LIGHTNING ⚡ | Sekiro - EP7", thumbnail: "https://i.ytimg.com/vi/xLtKxqV6xAI/hqdefault.jpg", views: "124", date: "2026-05-31", duration: "37:55", description: "" },
-  { id: "qUsFGEK_oLc", title: "GIDEON CHASES ME WITH HIS RPG | Resident Evil Requiem - EP7", thumbnail: "https://i.ytimg.com/vi/qUsFGEK_oLc/hqdefault.jpg", views: "3", date: "2026-04-14", duration:"2:20:23", description: ""},
-];
+
 
 const FEATURED_VIDEO = {
   title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔",
@@ -699,6 +695,7 @@ function HomePage({
   onNavigate,
   playlists,
   featuredVideo,
+  popularVideos,
   channel,
   totalLikes,
   activeStat,
@@ -707,6 +704,7 @@ function HomePage({
   onNavigate: (page: string, id?: string) => void;
   playlists: Playlist[];
   featuredVideo: Video;
+  popularVideos: Video[];
   channel: any;
   totalLikes: number;
   activeStat: number;
@@ -1239,7 +1237,7 @@ style={{
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            {POPULAR_VIDEOS.map((v, i) => (
+            {popularVideos.map((v, i) => (
               <div
                 key={v.id}
                 className="card-reveal card-float"
@@ -2503,7 +2501,8 @@ export default function App() {
         }
 
         const data = await response.json();
-
+        console.log("FRONTEND POPULAR VIDEOS:", data.popularVideos);
+        
         setCHANNEL(data.channel || null);
         setPLAYLISTS(data.playlists || []);
         setPOPULAR_VIDEOS(data.popularVideos || []);
@@ -3467,14 +3466,15 @@ body {
         <div className="pt-[72px]">
           {currentPage === "home" && (
             <HomePage
-              onNavigate={navigate}
-              playlists={PLAYLISTS}
-              featuredVideo={FEATURED_VIDEO}
-              channel={CHANNEL}
-              totalLikes={totalLikes}
-              activeStat={activeStat}
-              displayStat={displayStat}
-            />
+  onNavigate={navigate}
+  playlists={PLAYLISTS}
+  featuredVideo={FEATURED_VIDEO}
+  popularVideos={POPULAR_VIDEOS}
+  channel={CHANNEL}
+  totalLikes={totalLikes}
+  activeStat={activeStat}
+  displayStat={displayStat}
+/>
           )}
 
           {currentPage === "playlists" && (

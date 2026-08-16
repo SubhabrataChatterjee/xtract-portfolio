@@ -314,23 +314,48 @@ console.log(
       });
     }
 
-    // --------------------------------
-    // 4. POPULAR VIDEOS
-    // --------------------------------
+// --------------------------------
+// 4. POPULAR VIDEOS
+// --------------------------------
 
-    const popularVideos = [...videos]
-      .sort((a, b) => {
-        const viewsA = Number(
-          a.views.replace(/,/g, "")
-        );
+const popularVideos = [...videos]
+  .filter((video) => {
+    const parts = video.duration.split(":").map(Number);
 
-        const viewsB = Number(
-          b.views.replace(/,/g, "")
-        );
+    let totalSeconds = 0;
 
-        return viewsB - viewsA;
-      })
-      .slice(0, 3);
+    if (parts.length === 2) {
+      totalSeconds = parts[0] * 60 + parts[1];
+    } else if (parts.length === 3) {
+      totalSeconds =
+        parts[0] * 3600 +
+        parts[1] * 60 +
+        parts[2];
+    }
+
+    return totalSeconds > 181;
+  })
+  .sort((a, b) => {
+    const viewsA = Number(
+      String(a.views).replace(/,/g, "")
+    );
+
+    const viewsB = Number(
+      String(b.views).replace(/,/g, "")
+    );
+
+    return viewsB - viewsA;
+  })
+  .slice(0, 3);
+
+  console.log(
+  "POPULAR VIDEOS:",
+  popularVideos.map((video) => ({
+    title: video.title,
+    duration: video.duration,
+    views: video.views,
+  }))
+);
 
     // --------------------------------
     // 5. FEATURED VIDEO
