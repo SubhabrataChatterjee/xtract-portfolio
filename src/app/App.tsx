@@ -80,11 +80,7 @@ const PLAYLISTS: Playlist[] = [
   },
 ];
 
-const POPULAR_VIDEOS: Video[] = [
-  { id: "wDjtyUnWK_g", title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔", thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg", views: "", date: "2026-06-29", duration: "17:12", description: "" },
-  { id: "xLtKxqV6xAI", title: "GENICHIRO BECOMES THE GOD OF LIGHTNING ⚡ | Sekiro - EP7", thumbnail: "https://i.ytimg.com/vi/xLtKxqV6xAI/hqdefault.jpg", views: "", date: "2026-05-31", duration: "37:55", description: "" },
-  { id: "qUsFGEK_oLc", title: "GIDEON CHASES ME WITH HIS RPG | Resident Evil Requiem - EP7", thumbnail: "https://i.ytimg.com/vi/qUsFGEK_oLc/hqdefault.jpg", views: "", date: "2026-04-14", duration:"2:20:23", description: ""},
-];
+
 
 const FEATURED_VIDEO = {
   title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔",
@@ -707,6 +703,7 @@ function HomePage({
   onNavigate,
   playlists,
   featuredVideo,
+  popularVideos,
   channel,
   totalLikes,
   activeStat,
@@ -715,6 +712,7 @@ function HomePage({
   onNavigate: (page: string, id?: string) => void;
   playlists: Playlist[];
   featuredVideo: Video;
+  popularVideos: Video[];
   channel: any;
   totalLikes: number;
   activeStat: number;
@@ -1247,7 +1245,7 @@ style={{
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            {POPULAR_VIDEOS.map((v, i) => (
+            {popularVideos.map((v, i) => (
               <div
                 key={v.id}
                 className="card-reveal card-float"
@@ -2752,30 +2750,30 @@ export default function App() {
   // =========================================
 
   useEffect(() => {
-    async function loadYouTubeData() {
-      try {
-        const response = await fetch(
-          "https://xtract-youtube-backend.onrender.com/api/youtube/data"
-        );
+  async function loadYouTubeData() {
+    try {
+      const response = await fetch(
+        "https://xtract-youtube-backend.onrender.com/api/youtube/data"
+      );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch YouTube data");
-        }
-
-        const data = await response.json();
-
-        setCHANNEL(data.channel || null);
-        setPLAYLISTS(data.playlists || []);
-        setPOPULAR_VIDEOS(data.popularVideos || []);
-        setFEATURED_VIDEO(data.featuredVideo || null);
-        setTotalLikes(Number(data.totalLikes || 0));
-      } catch (error) {
-        console.error("YouTube data error:", error);
+      if (!response.ok) {
+        throw new Error("Failed to fetch YouTube data");
       }
-    }
 
-    loadYouTubeData();
-  }, []);
+      const data = await response.json();
+
+      setCHANNEL(data.channel || null);
+      setPLAYLISTS(data.playlists || []);
+      setPOPULAR_VIDEOS(data.popularVideos || []);
+      setFEATURED_VIDEO(data.featuredVideo || null);
+      setTotalLikes(Number(data.totalLikes || 0));
+    } catch (error) {
+      console.error("YouTube data error:", error);
+    }
+  }
+
+  loadYouTubeData();
+}, []);
 
   // =========================================
   // COUNTING ANIMATION
@@ -3731,6 +3729,7 @@ body {
               onNavigate={navigate}
               playlists={PLAYLISTS}
               featuredVideo={FEATURED_VIDEO}
+              popularVideos={POPULAR_VIDEOS}
               channel={CHANNEL}
               totalLikes={totalLikes}
               activeStat={activeStat}
