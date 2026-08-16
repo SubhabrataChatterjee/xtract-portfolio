@@ -3,7 +3,7 @@ import {
   Menu, X, ChevronDown, ChevronRight, Play,
   Mail, Youtube, Instagram, Twitter, MessageCircle,
   Eye, Calendar, ArrowLeft, Star, Zap, Trophy, Target,
-  Gamepad2,
+  Gamepad2, Heart, Sparkles,
   Video,
 } from "lucide-react";
 import ThreeDBackground from "./components/ThreeDBackground";
@@ -80,7 +80,11 @@ const PLAYLISTS: Playlist[] = [
   },
 ];
 
-
+const POPULAR_VIDEOS: Video[] = [
+  { id: "wDjtyUnWK_g", title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔", thumbnail: "https://i.ytimg.com/vi/wDjtyUnWK_g/hqdefault.jpg", views: "", date: "2026-06-29", duration: "17:12", description: "" },
+  { id: "xLtKxqV6xAI", title: "GENICHIRO BECOMES THE GOD OF LIGHTNING ⚡ | Sekiro - EP7", thumbnail: "https://i.ytimg.com/vi/xLtKxqV6xAI/hqdefault.jpg", views: "", date: "2026-05-31", duration: "37:55", description: "" },
+  { id: "qUsFGEK_oLc", title: "GIDEON CHASES ME WITH HIS RPG | Resident Evil Requiem - EP7", thumbnail: "https://i.ytimg.com/vi/qUsFGEK_oLc/hqdefault.jpg", views: "", date: "2026-04-14", duration:"2:20:23", description: ""},
+];
 
 const FEATURED_VIDEO = {
   title: "UNLEASH THE AVATAR : THIS INDIAN GAME LOOKS AWESOME, BUT...🤔",
@@ -624,6 +628,14 @@ function Sidebar({
           </div>
 
           <NavBtn
+            label="Member"
+            icon="❤️"
+            active={currentPage === "member"}
+            activeStyle={activeStyle}
+            onClick={() => { onNavigate("member"); onClose(); }}
+          />
+
+          <NavBtn
             label="Contact"
             icon="📧"
             active={currentPage === "contact"}
@@ -695,7 +707,6 @@ function HomePage({
   onNavigate,
   playlists,
   featuredVideo,
-  popularVideos,
   channel,
   totalLikes,
   activeStat,
@@ -704,7 +715,6 @@ function HomePage({
   onNavigate: (page: string, id?: string) => void;
   playlists: Playlist[];
   featuredVideo: Video;
-  popularVideos: Video[];
   channel: any;
   totalLikes: number;
   activeStat: number;
@@ -1237,7 +1247,7 @@ style={{
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            {popularVideos.map((v, i) => (
+            {POPULAR_VIDEOS.map((v, i) => (
               <div
                 key={v.id}
                 className="card-reveal card-float"
@@ -2222,6 +2232,258 @@ function PlaylistDetailPage({ playlist, onBack }: { playlist: Playlist; onBack: 
   );
 }
 
+// ─── Member Page ───────────────────────────────────────────────────────────────
+
+function MemberPage() {
+  const SUPPORT_UPI_ID = "sinjuyt07@oksbi";
+  const qrImage = "/gpay-qr.jpeg";
+  const membershipUrl = "https://www.youtube.com/@xTracttGG/join";
+
+  const [showPayment, setShowPayment] = useState(false);
+
+  return (
+    <div className="min-h-screen py-16 sm:py-20 px-4 sm:px-8 lg:px-16">
+      <div className="max-w-6xl mx-auto">
+
+        {/* Hero */}
+        <section
+          className="relative overflow-hidden rounded-3xl p-8 sm:p-14 lg:p-20 text-center"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 10%, rgba(124,58,237,0.24), transparent 52%), linear-gradient(145deg, rgba(15,21,37,0.97), rgba(8,12,24,0.98))",
+            border: "1px solid rgba(124,58,237,0.24)",
+            boxShadow:
+              "0 30px 100px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)",
+          }}
+        >
+          <div
+            className="absolute w-72 h-72 rounded-full blur-3xl pointer-events-none"
+            style={{
+              background: "rgba(124,58,237,0.14)",
+              top: "-150px",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          />
+
+          <div className="relative z-10">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-7 text-xs font-black tracking-[0.22em] uppercase"
+              style={{
+                background: "rgba(124,58,237,0.12)",
+                border: "1px solid rgba(124,58,237,0.3)",
+                color: "#a78bfa",
+              }}
+            >
+              <Heart className="w-4 h-4 fill-current" />
+              XTRACT MEMBER
+            </div>
+
+            <h1
+              className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                textShadow: "0 0 35px rgba(124,58,237,0.35)",
+              }}
+            >
+              SUPPORT THE
+              <span className="block text-purple-400">GRIND.</span>
+            </h1>
+
+            <p className="max-w-2xl mx-auto mt-6 text-base sm:text-lg text-slate-400 leading-relaxed">
+              Every upload, every boss fight and every late-night gaming
+              session takes time. If you enjoy the content, support the journey
+              or join the channel and become part of the grind.
+            </p>
+
+            {/* Support / Membership Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-10">
+              <ClayButton
+                variant="primary"
+                onClick={() => setShowPayment(true)}
+                className="w-full sm:w-auto px-8 py-4"
+              >
+                <span className="text-lg">☕</span>
+                Buy Me a Coffee
+              </ClayButton>
+
+              <ClayButton
+                variant="secondary"
+                href={membershipUrl}
+                className="w-full sm:w-auto px-8 py-4"
+              >
+                <Heart className="w-4 h-4 fill-current" />
+                Join the Grind
+              </ClayButton>
+            </div>
+
+            <p className="mt-5 text-xs text-slate-600">
+              Support directly via UPI or join the official YouTube membership.
+            </p>
+          </div>
+        </section>
+
+        {/* UPI QR Modal */}
+        {showPayment && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            style={{
+              background: "rgba(0,0,0,0.78)",
+              backdropFilter: "blur(10px)",
+            }}
+            onClick={() => setShowPayment(false)}
+          >
+            <div
+              className="w-full max-w-md rounded-3xl p-6 sm:p-8 text-center"
+              style={{
+                ...cs.card,
+                boxShadow:
+                  "0 30px 100px rgba(0,0,0,0.75), 0 0 60px rgba(124,58,237,0.16)",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div className="text-left">
+                  <p className="text-xs font-black tracking-[0.22em] text-cyan-400 uppercase">
+                    SUPPORT XTRACT
+                  </p>
+                  <h3 className="text-xl font-black text-white mt-1">
+                    Buy Me a Coffee ☕
+                  </h3>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowPayment(false)}
+                  className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"
+                  aria-label="Close QR window"
+                >
+                  <X className="w-5 h-5 text-slate-400" />
+                </button>
+              </div>
+
+              {/* QR Code */}
+              <div className="flex justify-center mb-6">
+                <div
+                  className="p-3 rounded-2xl"
+                  style={{
+                    background: "#fff",
+                    boxShadow: "0 12px 35px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <img
+                    src={qrImage}
+                    alt="XTRACT UPI payment QR code"
+                    className="w-56 h-56 sm:w-64 sm:h-64 object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* UPI ID */}
+              <div
+                className="rounded-2xl p-4"
+                style={{
+                  background: "rgba(124,58,237,0.08)",
+                  border: "1px solid rgba(124,58,237,0.18)",
+                }}
+              >
+                <p className="text-xs text-slate-500 uppercase tracking-wider">
+                  UPI ID
+                </p>
+                <p className="text-lg sm:text-xl font-black text-white mt-1 break-all">
+                  {SUPPORT_UPI_ID}
+                </p>
+              </div>
+
+              <p className="mt-5 text-xs text-slate-500 leading-relaxed">
+                Scan the QR code with Google Pay or any UPI app, or use the UPI
+                ID above to send your support directly.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Why Support */}
+        <section className="mt-16">
+          <SectionHeading title="WHY SUPPORT?" emoji="🎮" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <ClayCard className="p-6">
+              <div className="text-3xl mb-4">🎬</div>
+              <h3 className="text-white font-black mb-2">MORE CONTENT</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Help make more gaming videos, playthroughs and challenges possible.
+              </p>
+            </ClayCard>
+
+            <ClayCard className="p-6">
+              <div className="text-3xl mb-4">🎮</div>
+              <h3 className="text-white font-black mb-2">MORE GAMES</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Help explore new games, genres and experiences.
+              </p>
+            </ClayCard>
+
+            <ClayCard className="p-6">
+              <div className="text-3xl mb-4">⚡</div>
+              <h3 className="text-white font-black mb-2">BETTER QUALITY</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Support improvements to the setup, production and overall quality.
+              </p>
+            </ClayCard>
+
+            <ClayCard className="p-6">
+              <div className="text-3xl mb-4">❤️</div>
+              <h3 className="text-white font-black mb-2">KEEP IT ALIVE</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Most importantly, help keep the gaming grind going.
+              </p>
+            </ClayCard>
+          </div>
+        </section>
+
+        {/* Member Message */}
+        <section className="mt-16">
+          <ClayCard
+            className="p-8 sm:p-12 text-center"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(124,58,237,0.10), rgba(6,182,212,0.04))",
+            }}
+          >
+            <Sparkles className="w-8 h-8 text-purple-400 mx-auto mb-5" />
+
+            <h2
+              className="text-2xl sm:text-3xl font-black text-white"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              THIS IS MORE THAN SUPPORT.
+            </h2>
+
+            <p className="max-w-2xl mx-auto mt-4 text-slate-400 leading-relaxed">
+              It's a way of saying:
+              <span className="text-white font-bold">
+                {" "}keep playing, keep creating, keep pushing.
+              </span>
+            </p>
+
+            <div className="mt-7 flex items-center justify-center gap-2 text-purple-400 font-black tracking-[0.2em] text-xs">
+              <span>PLAY</span>
+              <span>•</span>
+              <span>CREATE</span>
+              <span>•</span>
+              <span>REPEAT</span>
+            </div>
+          </ClayCard>
+        </section>
+      </div>
+    </div>
+  );
+}
+
 // ─── Contact Page ─────────────────────────────────────────────────────────────
 
 function ContactPage() {
@@ -2361,7 +2623,7 @@ function ContactPage() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer({ onNavigate }: { onNavigate: (page: string) => void }) {
-  const navLinks: [string, string][] = [["Home", "home"], ["Playlists", "playlists"], ["Contact", "contact"]];
+  const navLinks: [string, string][] = [["Home", "home"], ["Playlists", "playlists"], ["Member", "member"], ["Contact", "contact"]];
   const socials = [
     { icon: <Youtube className="w-5 h-5" />, color: "text-red-400" },
     { icon: <Instagram className="w-5 h-5" />, color: "text-pink-400" },
@@ -2501,8 +2763,7 @@ export default function App() {
         }
 
         const data = await response.json();
-        console.log("FRONTEND POPULAR VIDEOS:", data.popularVideos);
-        
+
         setCHANNEL(data.channel || null);
         setPLAYLISTS(data.playlists || []);
         setPOPULAR_VIDEOS(data.popularVideos || []);
@@ -3414,6 +3675,7 @@ body {
   ["Home", "home"],
   ["Playlists", "playlists"],
   ["Game Library", "game-library"],
+  ["Member", "member"],
   ["Contact", "contact"],
 ] as [string, string][]).map(([label, page]) => {
               const active =
@@ -3466,16 +3728,17 @@ body {
         <div className="pt-[72px]">
           {currentPage === "home" && (
             <HomePage
-  onNavigate={navigate}
-  playlists={PLAYLISTS}
-  featuredVideo={FEATURED_VIDEO}
-  popularVideos={POPULAR_VIDEOS}
-  channel={CHANNEL}
-  totalLikes={totalLikes}
-  activeStat={activeStat}
-  displayStat={displayStat}
-/>
+              onNavigate={navigate}
+              playlists={PLAYLISTS}
+              featuredVideo={FEATURED_VIDEO}
+              channel={CHANNEL}
+              totalLikes={totalLikes}
+              activeStat={activeStat}
+              displayStat={displayStat}
+            />
           )}
+
+          {currentPage === "member" && <MemberPage />}
 
           {currentPage === "playlists" && (
             <PlaylistsPage
