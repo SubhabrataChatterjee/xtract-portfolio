@@ -34,6 +34,23 @@ interface Playlist {
   videos: Video[];
 }
 
+function sortByLastVideoAdded(playlists: Playlist[]): Playlist[] {
+  const lastAddedAt = (playlist: Playlist) =>
+    (playlist.videos ?? []).reduce((latest, video) => {
+      const publishedAt = Date.parse(video.date);
+      return Number.isNaN(publishedAt)
+        ? latest
+        : Math.max(latest, publishedAt);
+    }, Number.NEGATIVE_INFINITY);
+
+  return [...playlists].sort((first, second) => {
+    const firstDate = lastAddedAt(first);
+    const secondDate = lastAddedAt(second);
+    if (firstDate === secondDate) return 0;
+    return secondDate - firstDate;
+  });
+}
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const PLAYLISTS: Playlist[] = [
@@ -103,22 +120,22 @@ const FEATURES = [
 
 const cs = {
   card: {
-    background: "linear-gradient(145deg, #141a2e, #111728)",
-    boxShadow: "0 20px 60px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2)",
-    border: "1px solid rgba(255,255,255,0.06)",
+    background: "linear-gradient(145deg, #151d19, #0e1411)",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)",
+    border: "1px solid rgba(255,255,255,0.075)",
   } as React.CSSProperties,
   cardHover: {
-    boxShadow: "0 28px 80px rgba(0,0,0,0.65), 0 8px 24px rgba(124,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
+    boxShadow: "0 28px 80px rgba(0,0,0,0.65), 0 8px 28px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08)",
   } as React.CSSProperties,
   btnPrimary: {
-    background: "linear-gradient(145deg, #7c3aed, #6d28d9)",
-    boxShadow: "0 8px 24px rgba(124,58,237,0.45), 0 2px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.18)",
-    border: "1px solid rgba(255,255,255,0.12)",
+    background: "linear-gradient(135deg, #d4ff5b, #a9e52d)",
+    boxShadow: "0 8px 24px rgba(157,219,45,0.22), 0 2px 8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.5)",
+    border: "1px solid rgba(220,255,139,0.7)",
   } as React.CSSProperties,
   btnSecondary: {
-    background: "linear-gradient(145deg, #141a2e, #1a2240)",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08)",
-    border: "1px solid rgba(6,182,212,0.3)",
+    background: "linear-gradient(145deg, #1a241d, #101612)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)",
+    border: "1px solid rgba(255,255,255,0.16)",
   } as React.CSSProperties,
 };
 
@@ -209,6 +226,93 @@ function ClayButton({
   );
 }
 
+const PAGE_DROPS: Record<string, { title: string; message: string }> = {
+  home: {
+    title: "First Spawn",
+    message: "Every great run starts with one player and a curious mind.",
+  },
+  playlists: {
+    title: "Playlist Cache",
+    message: "Every game has a soundtrack worth remembering.",
+  },
+  "game-library": {
+    title: "Rare Encounter",
+    message: "Some of the best discoveries happen between levels.",
+  },
+  "playlist-detail": {
+    title: "Boss Memory",
+    message: "Every run leaves a story behind.",
+  },
+  member: {
+    title: "Party Bonus",
+    message: "Every great run is better with a squad.",
+  },
+  contact: {
+    title: "Secret Signal",
+    message: "Your next message could start a new quest.",
+  },
+};
+
+function ArcadeEasterEgg({ page }: { page: string }) {
+  const [open, setOpen] = useState(false);
+  const drop = PAGE_DROPS[page] ?? PAGE_DROPS.home;
+
+  useEffect(() => {
+    setOpen(false);
+  }, [page]);
+
+  return (
+    <>
+      {open && (
+        <div
+          className="arcade-egg-panel fixed bottom-20 right-4 sm:right-6 z-[80]"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-lime-300">
+                Hidden Drop // Found
+              </div>
+              <h2 className="mt-2 text-base font-black text-white">{drop.title}</h2>
+              <p className="mt-1 text-sm leading-relaxed text-slate-300">{drop.message}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close hidden drop"
+              className="arcade-egg-close grid h-7 w-7 shrink-0 place-items-center"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-[9px] font-bold uppercase tracking-[0.18em]">
+            <span className="text-slate-500">Archive Fragment</span>
+            <span className="text-lime-300">+100 Curiosity</span>
+          </div>
+        </div>
+      )}
+      <button
+        type="button"
+        onClick={() => setOpen((wasOpen) => !wasOpen)}
+        aria-label={open ? "Close hidden drop" : "Explore hidden drop"}
+        aria-expanded={open}
+        title="Explore hidden drop"
+        className="arcade-egg-trigger fixed bottom-6 right-20 z-[80] grid place-items-center"
+      >
+        <span className="arcade-egg-cube" aria-hidden="true">
+          <span className="arcade-egg-face arcade-egg-front">X</span>
+          <span className="arcade-egg-face arcade-egg-back" />
+          <span className="arcade-egg-face arcade-egg-right" />
+          <span className="arcade-egg-face arcade-egg-left" />
+          <span className="arcade-egg-face arcade-egg-top" />
+          <span className="arcade-egg-face arcade-egg-bottom" />
+        </span>
+      </button>
+    </>
+  );
+}
+
 // ─── Video Card ───────────────────────────────────────────────────────────────
 
 function VideoCard({ video }: { video: Video }) {
@@ -232,8 +336,10 @@ function VideoCard({ video }: { video: Video }) {
         <img
           src={video.thumbnail}
           alt={video.title}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          style={{ background: "#141a2e" }}
+          style={{ background: "#111813" }}
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -242,13 +348,13 @@ function VideoCard({ video }: { video: Video }) {
           <div
             className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
             style={{
-              background: "rgba(124,58,237,0.92)",
+              background: "rgba(198,255,61,0.94)",
               boxShadow:
-                "0 0 28px rgba(124,58,237,0.7), 0 4px 12px rgba(0,0,0,0.5)",
+                "0 0 24px rgba(198,255,61,0.32), 0 4px 12px rgba(0,0,0,0.5)",
               animation: "playPulse 2.5s ease-in-out infinite",
             }}
           >
-            <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+            <Play className="w-6 h-6 text-black fill-black ml-0.5" />
           </div>
         </div>
 
@@ -298,13 +404,15 @@ function PlaylistCard({ playlist, onClick }: { playlist: Playlist; onClick: () =
         <img
           src={playlist.thumbnail}
           alt={playlist.name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          style={{ background: "#141a2e" }}
+          style={{ background: "#111813" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div
           className="absolute top-3 right-3 text-white text-xs font-bold px-3 py-1 rounded-full"
-          style={{ background: "rgba(124,58,237,0.88)", boxShadow: "0 2px 8px rgba(124,58,237,0.5)" }}
+          style={{ background: "rgba(17,24,19,0.92)", boxShadow: "0 2px 8px rgba(0,0,0,0.4)", border: "1px solid rgba(198,255,61,0.22)" }}
         >
           {playlist.videoCount} videos
         </div>
@@ -442,6 +550,7 @@ function GamingVisual({
       {/* Profile image */}
       <div
         className="relative z-10 flex items-center justify-center"
+        data-gamer-avatar="true"
         style={{
           width: "260px",
           height: "260px",
@@ -459,6 +568,15 @@ function GamingVisual({
           className="w-full h-full object-cover"
           draggable={false}
         />
+        <div className="hero-player-hud absolute inset-x-0 bottom-0 flex items-center justify-between px-4 py-3">
+          <div>
+            <div className="text-[9px] font-bold tracking-[0.24em] text-lime-300 uppercase">Player One</div>
+            <div className="text-white font-black tracking-wider">XTRACT</div>
+          </div>
+          <div className="flex items-center gap-2 text-[10px] font-bold tracking-[0.16em] text-lime-300 uppercase">
+            <span className="hero-status-dot" /> Ready
+          </div>
+        </div>
       </div>
       </div>
       </div>
@@ -535,8 +653,8 @@ function Sidebar({
   }, [isOpen, onClose]);
 
   const activeStyle: React.CSSProperties = {
-    background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(6,182,212,0.09))",
-    boxShadow: "inset 0 0 0 1px rgba(124,58,237,0.28)",
+    background: "linear-gradient(100deg, rgba(198,255,61,0.16), rgba(198,255,61,0.04))",
+    boxShadow: "inset 3px 0 0 #c6ff3d, inset 0 0 0 1px rgba(198,255,61,0.12)",
   };
 
   return (
@@ -555,9 +673,9 @@ function Sidebar({
         className="mobile-sidebar fixed top-0 left-0 h-full z-50 flex flex-col"
         style={{
           width: 300,
-          background: "linear-gradient(180deg, #0f1525 0%, #080c18 100%)",
-          boxShadow: "8px 0 48px rgba(0,0,0,0.8), inset -1px 0 rgba(255,255,255,0.04)",
-          borderRight: "1px solid rgba(255,255,255,0.05)",
+          background: "linear-gradient(180deg, #141c17 0%, #090e0b 100%)",
+          boxShadow: "8px 0 48px rgba(0,0,0,0.8), inset -1px 0 rgba(198,255,61,0.12)",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
           transform: isOpen ? "translateX(0)" : "translateX(-100%)",
           transition: "transform 0.38s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
@@ -994,6 +1112,8 @@ style={{
                 <img
                   src={featuredVideo.thumbnail}
                   alt={featuredVideo.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   style={{
                     background: "#141a2e",
@@ -1568,6 +1688,8 @@ const resetGameTilt = (
                   <img
                     src={playlist.thumbnail}
                     alt={playlist.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
 
@@ -2189,6 +2311,8 @@ function PlaylistDetailPage({ playlist, onBack }: { playlist: Playlist; onBack: 
             <img
               src={playlist.thumbnail}
               alt={playlist.name}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
               style={{ background: "#141a2e" }}
             />
@@ -2763,7 +2887,9 @@ export default function App() {
       const data = await response.json();
 
       setCHANNEL(data.channel || null);
-      setPLAYLISTS(data.playlists || []);
+      setPLAYLISTS(
+        sortByLastVideoAdded(data.playlists || [])
+      );
       setPOPULAR_VIDEOS(data.popularVideos || []);
       setFEATURED_VIDEO(data.featuredVideo || null);
       setTotalLikes(Number(data.totalLikes || 0));
@@ -2889,10 +3015,10 @@ export default function App() {
     />
 
     <div
-      className="relative min-h-screen"
+      className="gamer-interface relative min-h-screen"
       style={{
         zIndex: 1,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
 
@@ -2902,16 +3028,243 @@ export default function App() {
         ========================================= */}
 
         <style>{`
+          .gamer-interface {
+            --arena-acid: #c6ff3d;
+            --arena-mint: #70e8c9;
+            --arena-panel: #111813;
+            color: #e9eee5;
+            background-image:
+              linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+            background-size: 48px 48px;
+          }
+
+          .gamer-interface h1,
+          .gamer-interface h2,
+          .gamer-interface h3,
+          .gamer-interface .section-heading-title {
+            font-family: 'Orbitron', 'Space Grotesk', sans-serif !important;
+          }
+
+          .gamer-interface .rounded-2xl {
+            border-radius: 8px !important;
+          }
+
+          .gamer-interface .rounded-3xl {
+            border-radius: 10px !important;
+          }
+
+          .gamer-interface .text-purple-300,
+          .gamer-interface .text-purple-400 {
+            color: var(--arena-acid) !important;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.92), 0 0 4px rgba(198,255,61,0.34), 0 0 10px rgba(198,255,61,0.2);
+          }
+
+          .gamer-interface .text-cyan-400 {
+            color: var(--arena-mint) !important;
+          }
+
+          .gamer-interface .text-lime-300 {
+            text-shadow: 0 1px 1px rgba(0,0,0,0.92), 0 0 4px rgba(198,255,61,0.34), 0 0 10px rgba(198,255,61,0.2);
+          }
+
+          .gamer-interface .clay-button {
+            border-radius: 3px !important;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: filter 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+          }
+
+          .gamer-interface .clay-button.text-white {
+            color: #11170d !important;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.28);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.42), inset 0 -2px 0 rgba(0,0,0,0.16), 0 3px 0 rgba(0,0,0,0.88), 0 0 15px rgba(198,255,61,0.28) !important;
+          }
+
+          .gamer-interface .clay-button.text-cyan-400 {
+            color: var(--arena-acid) !important;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.92), 0 0 4px rgba(198,255,61,0.38), 0 0 10px rgba(198,255,61,0.22);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 3px 0 rgba(0,0,0,0.9), 0 0 12px rgba(198,255,61,0.2) !important;
+          }
+
+          .gamer-interface .clay-button:hover {
+            filter: brightness(1.12);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 3px 0 rgba(0,0,0,0.9), 0 0 20px rgba(198,255,61,0.3), 0 8px 24px rgba(0,0,0,0.4) !important;
+          }
+
+          .gamer-interface button:focus-visible,
+          .gamer-interface a:focus-visible {
+            outline: 2px solid var(--arena-acid);
+            outline-offset: 3px;
+          }
+
+          .gamer-interface .hero-title {
+            color: var(--arena-acid) !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.96), 0 0 2px rgba(231,255,191,0.95), 0 0 8px rgba(198,255,61,0.95), 0 0 22px rgba(198,255,61,0.78), 0 0 48px rgba(198,255,61,0.48), 0 0 84px rgba(198,255,61,0.24), 0 8px 34px rgba(0,0,0,0.8) !important;
+          }
+
+          .gamer-interface .hero-bio,
+          .gamer-interface .hero-features > div,
+          .gamer-interface .mobile-stat-card {
+            background: linear-gradient(145deg, rgba(21,29,23,0.96), rgba(10,15,12,0.96)) !important;
+            border: 1px solid rgba(255,255,255,0.075) !important;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.4), inset 0 1px rgba(255,255,255,0.045) !important;
+          }
+
+          .gamer-interface .mobile-stat-card {
+            position: relative;
+            overflow: hidden;
+          }
+
+          .gamer-interface .mobile-stat-card.stat-card-active::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 48px;
+            height: 2px;
+            background: var(--arena-acid);
+            content: '';
+            box-shadow: 0 0 14px rgba(198,255,61,0.7);
+          }
+
+          .gamer-interface .mobile-stat-card.stat-card-active {
+            border-color: rgba(198,255,61,0.28) !important;
+            box-shadow: 0 14px 34px rgba(0,0,0,0.45), 0 0 22px rgba(198,255,61,0.08) !important;
+          }
+
+          .gamer-interface nav.fixed.top-0 {
+            background: rgba(10,15,12,0.9) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+            box-shadow: 0 8px 26px rgba(0,0,0,0.24);
+          }
+
+          .gamer-interface .hero-player-hud {
+            z-index: 2;
+            background: linear-gradient(0deg, rgba(5,9,7,0.94), rgba(5,9,7,0.12));
+            text-shadow: 0 1px 8px #000;
+          }
+
+          .gamer-interface [data-gamer-avatar='true'] {
+            border: 1px solid rgba(255,255,255,0.16) !important;
+            border-radius: 8px !important;
+            box-shadow: 0 20px 55px rgba(0,0,0,0.65) !important;
+          }
+
+          .hero-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--arena-acid);
+            box-shadow: 0 0 10px rgba(198,255,61,0.8);
+            animation: statusPulse 1.8s ease-in-out infinite;
+          }
+
+          @keyframes statusPulse {
+            50% { opacity: 0.45; }
+          }
+
+          .arcade-egg-trigger {
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: linear-gradient(145deg, rgba(25,35,27,0.96), rgba(8,13,10,0.96));
+            box-shadow: 0 4px 0 rgba(0,0,0,0.88), 0 0 16px rgba(198,255,61,0.12);
+            backdrop-filter: blur(10px);
+            transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+          }
+
+          .arcade-egg-trigger:hover {
+            transform: translateY(-2px) rotateX(-8deg) rotateY(8deg);
+            border-color: rgba(198,255,61,0.48);
+            box-shadow: 0 5px 0 rgba(0,0,0,0.88), 0 0 20px rgba(198,255,61,0.24);
+            animation-play-state: paused;
+            transform-style: preserve-3d;
+          }
+
+          .arcade-egg-trigger:active {
+            transform: translateY(1px) scale(0.96);
+          }
+
+          .arcade-egg-cube {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            transform-style: preserve-3d;
+            animation: arcadeEggRotate 12s linear infinite, arcadeEggBob 4.8s ease-in-out infinite;
+          }
+
+          .arcade-egg-trigger:hover .arcade-egg-cube {
+            animation-play-state: paused;
+            filter: drop-shadow(0 0 5px rgba(198,255,61,0.45));
+          }
+
+          .arcade-egg-face {
+            position: absolute;
+            display: grid;
+            width: 20px;
+            height: 20px;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,0.24);
+            background: linear-gradient(145deg, #29372a, #121a14);
+            color: #d8ff83;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 900;
+            backface-visibility: hidden;
+          }
+
+          .arcade-egg-front { transform: translateZ(10px); }
+          .arcade-egg-back { transform: rotateY(180deg) translateZ(10px); }
+          .arcade-egg-right { transform: rotateY(90deg) translateZ(10px); background: #29372a; }
+          .arcade-egg-left { transform: rotateY(-90deg) translateZ(10px); background: #18221a; }
+          .arcade-egg-top { transform: rotateX(90deg) translateZ(10px); background: #37462c; }
+          .arcade-egg-bottom { transform: rotateX(-90deg) translateZ(10px); background: #101611; }
+
+          .arcade-egg-panel {
+            width: min(280px, calc(100vw - 2rem));
+            padding: 16px;
+            transform-origin: bottom right;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: linear-gradient(145deg, rgba(20,29,22,0.98), rgba(8,13,10,0.98));
+            box-shadow: 0 16px 44px rgba(0,0,0,0.72), 0 0 18px rgba(198,255,61,0.1), inset 0 1px rgba(255,255,255,0.07);
+            animation: arcadeEggReveal 360ms cubic-bezier(0.2,0.8,0.2,1) both;
+          }
+
+          .arcade-egg-close {
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #cbd5c0;
+          }
+
+          @keyframes arcadeEggRotate {
+            from { transform: rotateX(-22deg) rotateY(0deg); }
+            to { transform: rotateX(-22deg) rotateY(360deg); }
+          }
+
+          @keyframes arcadeEggReveal {
+            from { opacity: 0; transform: perspective(700px) rotateX(16deg) rotateY(-5deg) translateY(12px) scale(0.94); }
+            to { opacity: 1; transform: perspective(700px) rotateX(0) rotateY(0) translateY(0) scale(1); }
+          }
+
+          @keyframes arcadeEggBob {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 0 -2px; }
+          }
+
           @keyframes playPulse {
             0%, 100% {
               box-shadow:
-                0 0 24px rgba(124,58,237,0.65),
+                0 0 20px rgba(198,255,61,0.28),
                 0 4px 12px rgba(0,0,0,0.5);
             }
 
             50% {
               box-shadow:
-                0 0 48px rgba(124,58,237,1),
+                0 0 32px rgba(198,255,61,0.48),
                 0 4px 18px rgba(0,0,0,0.6);
             }
           }
@@ -2968,14 +3321,14 @@ export default function App() {
             }
           }
 
-          /* HERO: continuous 3D Y-axis orbit */
+          /* HERO: 2.5-second spin followed by a 5-second hold */
 
           @keyframes heroOrbit {
             0% {
               transform: rotateY(0deg);
             }
 
-            23.8095% {
+            33.3333% {
               transform: rotateY(360deg);
             }
 
@@ -3083,7 +3436,7 @@ export default function App() {
 
           .hero-orbit-inner {
             transform-style: preserve-3d;
-            animation: heroOrbit 10.5s linear infinite;
+            animation: heroOrbit 7.5s linear infinite;
           }
 
           .hero-orbit-card {
@@ -3563,7 +3916,6 @@ export default function App() {
 
           @media (prefers-reduced-motion: reduce) {
             .hero-orbit,
-            .hero-orbit-inner,
             .hero-visual-enter,
             .hero-orbit-card,
             .card-reveal,
@@ -3573,8 +3925,18 @@ export default function App() {
             .floating-visual,
             .hero-grid,
             .hero-glow,
-            .stat-value.stat-active {
+            .stat-value.stat-active,
+            .arcade-egg-cube,
+            .arcade-egg-panel {
               animation: none !important;
+            }
+
+            .arcade-egg-trigger,
+            .arcade-egg-trigger:hover,
+            .arcade-egg-trigger:active {
+              transition: none !important;
+              transform: none !important;
+              translate: none !important;
             }
           }
 
@@ -3718,6 +4080,8 @@ body {
             Contact
           </ClayButton>
         </nav>
+
+        <ArcadeEasterEgg page={currentPage} />
 
         {/* =========================================
             PAGES

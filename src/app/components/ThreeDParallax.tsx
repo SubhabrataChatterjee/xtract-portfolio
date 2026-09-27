@@ -99,33 +99,54 @@ export default function ThreeDParallax({
       currentPosition.y
     );
 
-    animationFrame.current =
-      requestAnimationFrame(animate);
+    const remainingX =
+      targetPosition.x - currentPosition.x;
+    const remainingY =
+      targetPosition.y - currentPosition.y;
+
+    if (
+      Math.abs(remainingX) > 0.02 ||
+      Math.abs(remainingY) > 0.02
+    ) {
+      animationFrame.current =
+        requestAnimationFrame(animate);
+      return;
+    }
+
+    currentPosition.x = targetPosition.x;
+    currentPosition.y = targetPosition.y;
+    updateTransform(
+      currentPosition.x,
+      currentPosition.y
+    );
+    animationFrame.current = null;
+
+    if (containerRef.current) {
+      containerRef.current.style.willChange = "auto";
+    }
   };
 
-  /*
-   * Start animation loop once.
-   */
   useEffect(() => {
-    animationFrame.current =
-      requestAnimationFrame(animate);
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    const finePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    );
 
-    return () => {
-      if (
-        animationFrame.current !==
-        null
-      ) {
-        cancelAnimationFrame(
-          animationFrame.current
-        );
+    if (reducedMotion.matches || !finePointer.matches) {
+      return;
+    }
+
+    const requestAnimation = () => {
+      if (animationFrame.current !== null) return;
+      if (containerRef.current) {
+        containerRef.current.style.willChange = "transform";
       }
+      animationFrame.current =
+        requestAnimationFrame(animate);
     };
-  }, []);
 
-  /*
-   * Mouse movement.
-   */
-  useEffect(() => {
     const handleMouseMove = (
       event: MouseEvent
     ) => {
@@ -155,11 +176,27 @@ export default function ThreeDParallax({
           normalizedY *
           intensity,
       };
+
+      requestAnimation();
+    };
+
+    const handleMouseLeave = () => {
+      target.current = { x: 0, y: 0 };
+      requestAnimation();
+    };
+
+    const handleMouseOut = (event: MouseEvent) => {
+      if (!event.relatedTarget) handleMouseLeave();
     };
 
     window.addEventListener(
       "mousemove",
       handleMouseMove,
+      { passive: true }
+    );
+    window.addEventListener(
+      "mouseout",
+      handleMouseOut,
       { passive: true }
     );
 
@@ -168,8 +205,16 @@ export default function ThreeDParallax({
         "mousemove",
         handleMouseMove
       );
+      window.removeEventListener(
+        "mouseout",
+        handleMouseOut
+      );
+      if (animationFrame.current !== null) {
+        cancelAnimationFrame(animationFrame.current);
+        animationFrame.current = null;
+      }
     };
-  }, [intensity]);
+  }, [intensity, depth]);
 
   return (
     <div
@@ -183,8 +228,6 @@ export default function ThreeDParallax({
 
         transformStyle:
           "preserve-3d",
-
-        willChange: "transform",
 
         /*
          * Keeps children in their own
