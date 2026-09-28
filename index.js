@@ -2,9 +2,16 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
+import { google } from "googleapis";
+import { randomBytes } from "node:crypto";
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import "dotenv/config";
+
+console.log("CLIENT ID =", process.env.GOOGLE_CLIENT_ID);
 
 dotenv.config({ override: true });
-
 console.log(
   "Gemini key loaded:",
   process.env.GEMINI_API_KEY ? "YES" : "NO"
@@ -13,6 +20,13 @@ console.log(
 const app = express();
 const PORT = process.env.PORT || 3001;
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY, });
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+const isHosted = process.env.NODE_ENV === "production" || process.env.RENDER === "true";
+const oauthRedirectUri = isHosted
+  ? process.env.GOOGLE_REDIRECT_URI || `https://localhost:${PORT}/api/youtube/oauth/callback`
+  : process.env.GOOGLE_LOCAL_REDIRECT_URI || `http://localhost:${PORT}/`;
+const oauthCallbackPath = new URL(oauthRedirectUri).pathname;
+const oauthStates = new Map();
 
 app.use(cors());
 app.use(express.json());
@@ -41,10 +55,94 @@ async function youtubeRequest(endpoint, params) {
   return response.json();
 }
 
+function createYoutubeOAuthClient() {
+  const { GOOGLE_CLIENT_ID: clientId, GOOGLE_CLIENT_SECRET: clientSecret } = process.env;
+  if (!clientId || !clientSecret) {
+    throw new Error("YouTube OAuth client credentials are not configured.");
+  }
+  return new google.auth.OAuth2(clientId, clientSecret, oauthRedirectUri);
+}
+
+app.get("/api/youtube/oauth/start", (req, res) => {
+  try {
+    const oauthClient = createYoutubeOAuthClient();
+    const state = randomBytes(32).toString("hex");
+    oauthStates.set(state, Date.now() + 10 * 60 * 1000);
+
+    for (const [savedState, expiresAt] of oauthStates) {
+      if (expiresAt < Date.now()) oauthStates.delete(savedState);
+    }
+
+    return res.redirect(
+      oauthClient.generateAuthUrl({
+        access_type: "offline",
+        include_granted_scopes: true,
+        prompt: "consent",
+        scope: ["https://www.googleapis.com/auth/yt-analytics.readonly"],
+        state,
+      }),
+    );
+  } catch (error) {
+    return res.status(503).send(error.message);
+  }
+});
+
+app.get(oauthCallbackPath, async (req, res) => {
+  const state = typeof req.query.state === "string" ? req.query.state : "";
+  const expiresAt = oauthStates.get(state);
+  oauthStates.delete(state);
+
+  if (!state || !expiresAt || expiresAt < Date.now()) {
+    return res.status(400).send("OAuth state is invalid or expired. Start the connection again.");
+  }
+
+  if (req.query.error) {
+    return res.status(400).send("YouTube authorization was cancelled. You can close this tab.");
+  }
+
+  if (typeof req.query.code !== "string") {
+    return res.status(400).send("YouTube did not return an authorization code.");
+  }
+
+  try {
+    const oauthClient = createYoutubeOAuthClient();
+    const { tokens } = await oauthClient.getToken(req.query.code);
+    const refreshToken = tokens.refresh_token;
+
+    if (!refreshToken) {
+      return res.status(400).send(
+        "Google did not issue a refresh token. Revoke this app's access in your Google Account and connect again.",
+      );
+    }
+
+    process.env.GOOGLE_REFRESH_TOKEN = refreshToken;
+
+    if (process.env.NODE_ENV !== "production") {
+      const envPath = path.join(projectRoot, ".env");
+      const currentEnv = await readFile(envPath, "utf8").catch((error) => {
+        if (error.code === "ENOENT") return "";
+        throw error;
+      });
+      const envLines = currentEnv
+        .split(/\r?\n/)
+        .filter((line) => !/^\s*(?:export\s+)?GOOGLE_REFRESH_TOKEN=/.test(line));
+      envLines.push(`GOOGLE_REFRESH_TOKEN=${refreshToken}`);
+      await writeFile(envPath, `${envLines.filter(Boolean).join("\n")}\n`, { mode: 0o600 });
+    }
+
+    return res.type("html").send(
+      "<!doctype html><html><head><meta charset=\"utf-8\"><title>YouTube connected</title></head><body style=\"font-family:system-ui;max-width:36rem;margin:12vh auto;padding:0 1.5rem;background:#101512;color:#f1f5f9\"><h1>YouTube connected</h1><p>Authorization succeeded. Return to Analytics and select Refresh to load your channel data.</p><p>For hosted deployments, add the refresh token as GOOGLE_REFRESH_TOKEN in the backend environment so it survives restarts.</p></body></html>",
+    );
+  } catch (error) {
+    console.error("YouTube OAuth callback failed:", error.message);
+    return res.status(502).send("YouTube authorization could not be completed. Check the OAuth redirect URI and try again.");
+  }
+});
+
 app.get("/api/youtube/analytics", async (req, res) => {
-  const clientId = process.env.YOUTUBE_OAUTH_CLIENT_ID;
-  const clientSecret = process.env.YOUTUBE_OAUTH_CLIENT_SECRET;
-  const refreshToken = process.env.YOUTUBE_OAUTH_REFRESH_TOKEN;
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
 
   if (!clientId || !clientSecret) {
     return res.status(503).json({
@@ -54,7 +152,7 @@ app.get("/api/youtube/analytics", async (req, res) => {
 
   if (!refreshToken) {
     return res.status(503).json({
-      error: "A channel-owner YouTube OAuth refresh token is required. Authorize the account with the yt-analytics.readonly scope and set YOUTUBE_OAUTH_REFRESH_TOKEN on the backend.",
+      error: "A channel-owner YouTube OAuth refresh token is required. Authorize the account with the yt-analytics.readonly scope and set GOOGLE_REFRESH_TOKEN on the backend.",
     });
   }
 
@@ -894,10 +992,42 @@ function formatDuration(totalSeconds) {
   )}`;
 }
 
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
+
+app.get("/auth/google", (req, res) => {
+  console.log("REDIRECT URI:", process.env.GOOGLE_REDIRECT_URI);
+  const url = oauth2Client.generateAuthUrl({
+    access_type: "offline",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/yt-analytics.readonly"
+    ]
+  });
+  res.redirect(url);
+});
+
+app.get("/auth/google/callback", async (req, res) => {
+  try {
+    const { tokens } = await oauth2Client.getToken(req.query.code);
+
+    res.send("YouTube authorization successful! Check VS Code terminal.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("OAuth failed");
+  }
+});
 // --------------------------------
 // START SERVER
 // --------------------------------
 
-app.listen(PORT, "0.0.0.0", () => {
+const server = app.listen(PORT, () => {
   console.log(`YouTube backend running on port ${PORT}`);
+});
+
+server.on("error", (err) => {
+  console.error("SERVER ERROR:", err);
 });

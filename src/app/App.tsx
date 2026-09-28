@@ -1,9 +1,9 @@
-import { lazy, Suspense, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Menu, X, ChevronDown, ChevronRight, Play,
   Mail, Youtube, Instagram, Twitter, MessageCircle,
   Eye, Calendar, ArrowLeft, Star, Zap, Trophy, Target,
-  Gamepad2, Heart, Sparkles, BarChart3, RefreshCw, Users, Clock3,
+  Gamepad2, Heart, Sparkles,
   Video,
 } from "lucide-react";
 import ThreeDBackground from "./components/ThreeDBackground";
@@ -34,35 +34,7 @@ interface Playlist {
   videos: Video[];
 }
 
-interface AnalyticsRow {
-  day: string;
-  views: number;
-  subscribersGained: number;
-  subscribersLost: number;
-  subscribers: number;
-  watchTimeMinutes: number;
-  watchTimeHours: number;
-}
-
-interface AnalyticsReport {
-  startDate: string;
-  endDate: string;
-  totals: {
-    views: number;
-    subscribersGained: number;
-    subscribersLost: number;
-    subscribers: number;
-    watchTimeMinutes: number;
-    watchTimeHours: number;
-  };
-  rows: AnalyticsRow[];
-}
-
-const AnalyticsChart = lazy(() => import("./components/AnalyticsChart"));
-const YOUTUBE_BACKEND_URL = (
-  import.meta.env.VITE_YOUTUBE_BACKEND_URL ||
-  (import.meta.env.DEV ? "" : "https://xtract-youtube-backend.onrender.com")
-).replace(/\/+$/, "");
+const YOUTUBE_BACKEND_URL = "https://xtract-youtube-backend.onrender.com";
 
 function sortByLastVideoAdded(playlists: Playlist[]): Playlist[] {
   const lastAddedAt = (playlist: Playlist) =>
@@ -736,14 +708,6 @@ function Sidebar({
             onClick={() => { onNavigate("home"); onClose(); }}
           />
 
-          <NavBtn
-            label="Analytics"
-            icon="📊"
-            active={currentPage === "analytics"}
-            activeStyle={activeStyle}
-            onClick={() => { onNavigate("analytics"); onClose(); }}
-          />
-
           {/* Playlists accordion */}
           <div>
             <NavBtn
@@ -850,146 +814,6 @@ function SectionHeading({ title, emoji }: { title: string; emoji?: string }) {
       {emoji && <span className="text-2xl">{emoji}</span>}
       <div className="h-px flex-1 ml-2" style={{ background: "linear-gradient(90deg, rgba(124,58,237,0.5), transparent)" }} />
     </div>
-  );
-}
-
-function AnalyticsPage() {
-  const [report, setReport] = useState<AnalyticsReport | null>(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [refreshId, setRefreshId] = useState(0);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadAnalytics() {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await fetch(
-          `${YOUTUBE_BACKEND_URL}/api/youtube/analytics`,
-          { signal: controller.signal },
-        );
-        const result = await response.json().catch(() => null);
-        if (!response.ok) {
-          throw new Error(
-            result?.error ||
-              (response.status === 404
-                ? "The Analytics API is not deployed on the backend yet."
-                : "Unable to load YouTube analytics."),
-          );
-        }
-        if (!result) throw new Error("The Analytics API returned an invalid response.");
-        setReport(result as AnalyticsReport);
-      } catch (loadError) {
-        if (!controller.signal.aborted) {
-          setError(
-            loadError instanceof Error
-              ? loadError.message
-              : "Unable to load YouTube analytics.",
-          );
-        }
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
-    }
-
-    loadAnalytics();
-    return () => controller.abort();
-  }, [refreshId]);
-
-  const dateLabel = (date: string) =>
-    new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-
-  const metrics = report
-    ? [
-        { label: "Views", value: report.totals.views.toLocaleString("en-US"), icon: Eye, color: "#c6ff3d" },
-        { label: "Net subscribers", value: report.totals.subscribers.toLocaleString("en-US"), icon: Users, color: "#57d6c5" },
-        { label: "Watch time (hours)", value: report.totals.watchTimeHours.toLocaleString("en-US", { maximumFractionDigits: 1 }), icon: Clock3, color: "#f5bd58" },
-      ]
-    : [];
-
-  return (
-    <main className="min-h-[calc(100vh-72px)] px-4 py-10 sm:px-8 lg:px-16">
-      <div className="mx-auto max-w-7xl">
-        <header className="mb-8 flex flex-wrap items-end justify-between gap-5">
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-lime-300">
-              <BarChart3 className="h-4 w-4" /> YOUTUBE ANALYTICS
-            </div>
-            <h1 className="text-3xl font-black text-white sm:text-4xl">Channel performance</h1>
-            <p className="mt-2 text-sm text-slate-400">
-              {report
-                ? `${dateLabel(report.startDate)} - ${dateLabel(report.endDate)}`
-                : "Mar 3, 2026 - today"}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setRefreshId((value) => value + 1)}
-            disabled={loading}
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-lime-300/40 hover:text-lime-200 disabled:cursor-wait disabled:opacity-50"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </button>
-        </header>
-
-        {error && (
-          <div
-            role="alert"
-            className="mb-7 rounded-xl border border-amber-300/20 px-4 py-3 text-sm text-amber-100"
-            style={{ background: "rgba(245,189,88,0.08)" }}
-          >
-            {error}
-          </div>
-        )}
-
-        {report && (
-          <>
-            <div className="mb-7 grid gap-3 sm:grid-cols-3">
-              {metrics.map(({ label, value, icon: Icon, color }) => (
-                <div
-                  key={label}
-                  className="rounded-2xl px-5 py-5 sm:px-6"
-                  style={{
-                    background: "linear-gradient(145deg, rgba(19,27,23,0.96), rgba(10,15,12,0.96))",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}
-                >
-                  <div className="mb-4 flex items-center gap-2 text-sm text-slate-400">
-                    <Icon className="h-4 w-4" style={{ color }} />
-                    {label}
-                  </div>
-                  <div className="break-all text-3xl font-black text-white sm:text-4xl">{value}</div>
-                </div>
-              ))}
-            </div>
-
-            <Suspense fallback={<div className="py-16 text-center text-slate-500">Loading charts...</div>}>
-              <div className="grid gap-4 lg:grid-cols-2">
-                <AnalyticsChart title="Views" dataKey="views" color="#c6ff3d" data={report.rows} />
-                <AnalyticsChart title="Net subscribers" dataKey="subscribers" color="#57d6c5" data={report.rows} />
-                <div className="lg:col-span-2">
-                  <AnalyticsChart
-                    title="Watch time"
-                    dataKey="watchTimeHours"
-                    color="#f5bd58"
-                    data={report.rows}
-                    unit=" hours"
-                  />
-                </div>
-              </div>
-            </Suspense>
-          </>
-        )}
-      </div>
-    </main>
   );
 }
 
@@ -4211,7 +4035,6 @@ body {
           <div className="hidden sm:flex items-center gap-1">
             {([
   ["Home", "home"],
-  ["Analytics", "analytics"],
   ["Playlists", "playlists"],
   ["Game Library", "game-library"],
   ["Member", "member"],
@@ -4281,8 +4104,6 @@ body {
           )}
 
           {currentPage === "member" && <MemberPage />}
-
-          {currentPage === "analytics" && <AnalyticsPage />}
 
           {currentPage === "playlists" && (
             <PlaylistsPage
