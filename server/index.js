@@ -41,6 +41,123 @@ async function youtubeRequest(endpoint, params) {
   return response.json();
 }
 
+app.get("/api/youtube/analytics", async (req, res) => {
+  const clientId = process.env.YOUTUBE_OAUTH_CLIENT_ID;
+  const clientSecret = process.env.YOUTUBE_OAUTH_CLIENT_SECRET;
+  const refreshToken = process.env.YOUTUBE_OAUTH_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret) {
+    return res.status(503).json({
+      error: "YouTube OAuth client credentials are missing from the backend environment.",
+    });
+  }
+
+  if (!refreshToken) {
+    return res.status(503).json({
+      error: "A channel-owner YouTube OAuth refresh token is required. Authorize the account with the yt-analytics.readonly scope and set YOUTUBE_OAUTH_REFRESH_TOKEN on the backend.",
+    });
+  }
+
+  try {
+    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        refresh_token: refreshToken,
+        grant_type: "refresh_token",
+      }),
+    });
+
+    if (!tokenResponse.ok) {
+      return res.status(502).json({
+        error: "YouTube Analytics authorization failed. Check the backend OAuth credentials and refresh token.",
+      });
+    }
+
+    const { access_token: accessToken } = await tokenResponse.json();
+    if (!accessToken) {
+      return res.status(502).json({
+        error: "YouTube did not return an Analytics access token.",
+      });
+    }
+
+    const startDate = "2026-03-03";
+    const endDate = new Date().toISOString().slice(0, 10);
+    const pageSize = 200;
+    const rows = [];
+    let startIndex = 1;
+
+    while (true) {
+      const url = new URL("https://youtubeanalytics.googleapis.com/v2/reports");
+      const params = {
+        ids: "channel==MINE",
+        startDate,
+        endDate,
+        metrics: "views,subscribersGained,subscribersLost,estimatedMinutesWatched",
+        dimensions: "day",
+        sort: "day",
+        maxResults: String(pageSize),
+        startIndex: String(startIndex),
+      };
+      Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+
+      const reportResponse = await fetch(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (!reportResponse.ok) {
+        return res.status(502).json({
+          error: "Unable to retrieve channel analytics from YouTube.",
+        });
+      }
+
+      const report = await reportResponse.json();
+      const pageRows = report.rows || [];
+      rows.push(...pageRows);
+      if (pageRows.length < pageSize) break;
+      startIndex += pageSize;
+    }
+
+    const dailyRows = rows.map(([day, views, gained, lost, watchTimeMinutes]) => ({
+      day,
+      views: Number(views || 0),
+      subscribersGained: Number(gained || 0),
+      subscribersLost: Number(lost || 0),
+      subscribers: Number(gained || 0) - Number(lost || 0),
+      watchTimeMinutes: Number(watchTimeMinutes || 0),
+      watchTimeHours: Number(watchTimeMinutes || 0) / 60,
+    }));
+
+    const totals = dailyRows.reduce(
+      (sum, row) => ({
+        views: sum.views + row.views,
+        subscribersGained: sum.subscribersGained + row.subscribersGained,
+        subscribersLost: sum.subscribersLost + row.subscribersLost,
+        subscribers: sum.subscribers + row.subscribers,
+        watchTimeMinutes: sum.watchTimeMinutes + row.watchTimeMinutes,
+        watchTimeHours: sum.watchTimeHours + row.watchTimeHours,
+      }),
+      {
+        views: 0,
+        subscribersGained: 0,
+        subscribersLost: 0,
+        subscribers: 0,
+        watchTimeMinutes: 0,
+        watchTimeHours: 0,
+      },
+    );
+
+    return res.json({ startDate, endDate, totals, rows: dailyRows });
+  } catch (error) {
+    console.error("YouTube Analytics request failed:", error.message);
+    return res.status(502).json({
+      error: "Unable to retrieve channel analytics from YouTube.",
+    });
+  }
+});
+
 app.get("/api/youtube/data", async (req, res) => {
   try {
     console.log("Fetching YouTube data...");

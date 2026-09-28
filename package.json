@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "server": "node server/index.js",
+    "dev:full": "concurrently -k \"npm:dev\" \"npm:server\""
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -53,6 +55,7 @@
     "dotenv": "^17.4.2",
     "embla-carousel-react": "8.6.0",
     "express": "^5.2.1",
+    "googleapis": "^182.0.0",
     "input-otp": "1.4.2",
     "lucide-react": "0.487.0",
     "motion": "12.23.24",
